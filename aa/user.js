@@ -1,0 +1,91 @@
+const emailHandler = require('../extends/email');
+const Employee = require('../models/employee');
+const Counter = require('../models/counter');
+
+module.exports = function (app, apiLocation) {
+
+	//init employee schema => _id is increment key
+	var counter = new Counter({_id: Employee.collection.collectionName});
+	counter.save(err => {
+		if(err) console.log('Counter of employees is already exists');
+	});
+	
+	//new employee
+	app.post(apiLocation + '/signup', function(req, res) {
+		//if(!checkEmailAndPassword(req.body.email, req.body.password)) return res.json({response : 'Error'}); //check signup mail&password like client
+
+		Counter.findByIdAndUpdate(counter, { $inc: { seq: 1 } }, { new: true }, (err, result) => {
+			if(err) return res.json({response : 'Error'});
+	
+			req.body.eid = Number(result.seq);
+			var newEmployee = new Employee(req.body);
+			newEmployee.status = 'New Employee';
+			newEmployee.save(err => {
+				console.log(err);
+				if(err){
+					if(err.code == 11000)
+						return res.json({response : 'Error', msg : 'Employee already exists in the system'}); 
+					return res.json({response : 'Error'})
+				}
+
+				//var text = 'User: ' + req.body.email + '\nPassword: ' + req.body.password;
+				//emailHandler.sendMail(req.body.email, 'Thank you for registering', text); //send mail to user about successful registration
+				return res.json({response : 'Success', msg : 'Successfully registered to user ' + req.body.email });
+			});
+		});
+	});
+	
+	//forgotpassword
+	app.post(apiLocation + '/forgotpassword', function(req, res) {
+		if(req.body.email == null) return res.json({response : 'Error'});
+		
+		Employee.findOne({email: req.body.email.toLowerCase()}, (err, result) => {
+			if(err) return res.json({response : 'Error'});
+			if(result == null) return res.json({response : 'Error', msg : 'User ' + req.body.email + ' doesnt in the system'});
+			
+			//var text = 'User: ' + result._id + '\nPassword: ' + result.password;
+			//emailHandler.sendMail(req.body.email, 'Reset Password', text); //send mail with the password
+			return res.json({response : 'Success', msg : 'Password sent to email ' + req.body.email });
+		});
+	});
+	
+	//login
+	app.post(apiLocation + '/login', function(req, res) {
+		if(req.body.email == null) return res.json({response : 'Error'});
+	
+		Employee.findOne({email: req.body.email.toLowerCase()}, (err, result) => {
+			if(err) return res.json({response : 'Error'});
+			if((result == null) || (result.password != req.body.password)) return res.json({response : 'Error', msg : 'Incorrect username or password'});
+			
+			//req.session.user = result;
+			return res.json({response : 'Success', msg : 'Login successful' });
+		});
+	});
+	
+	//logout from system
+	app.post(apiLocation + '/logout', function(req, res) {
+		if(!req.session.user) return res.json({response : 'Error'}); //block guests
+		
+		//req.session.user = null;
+		res.json({response : 'Success', msg : 'Logout successful'});
+	});
+};
+
+//check mail and password
+function checkEmailAndPassword(email, pass){
+	if(email == null || pass == null) return false;
+	if (!email.match(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/))
+		return false;
+	if(pass.length < 6){
+		return false;
+	} else if (!pass.match(/^(?=.*[A-Z])/)){
+		return false;
+	} else if (!pass.match(/^(?=.*[a-z])/)){
+		return false;
+	} else if (!pass.match(/^(?=.*\d)/)){
+		return false;
+	} else if (!pass.match(/^(?=.*[-!$%^&*()_+|~=`{}\[\]:\/;<>?,.@#])/)){
+		return false;
+	}
+	return true;
+}
