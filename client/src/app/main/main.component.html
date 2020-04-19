@@ -1,0 +1,16 @@
+<!-- main content -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-*-1">
+      <app-side></app-side>
+    </div>
+    <div class="col-*-11" style="padding-left:60px;">
+      <app-brandchart *ngIf="checkselected('Income')"></app-brandchart>
+      <app-allgaragestable *ngIf="checkselected('Income')"></app-allgaragestable>
+      <app-garagetable *ngIf="checkselected('Treatment')"></app-garagetable>
+      <app-map *ngIf="checkselected('Map')"></app-map>
+      <app-usertable *ngIf="checkselected('Users')"></app-usertable> 
+    </div>
+  </div>
+  </div>
+  <router-outlet></router-outlet>

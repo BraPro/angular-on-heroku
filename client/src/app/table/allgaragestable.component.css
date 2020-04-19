@@ -1,0 +1,72 @@
+  /* Structure */
+  table {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  th.mat-sort-header-sorted {
+    color: #212121;
+  }
+  
+  .tableBG {
+    background-color:white;
+    opacity: 0.75;
+  }
+  
+  
+  @media screen and (max-width: 600px) {
+    input{
+      float: none;
+      display: block;
+      text-align: left;
+      width: 100%;
+      margin: 0;
+      padding: 15px;
+    }
+  
+    input{
+      border: 1px solid #ccc;
+    }
+  }
+  
+  span{
+   border-radius: 5px 0px 0px 5px;
+   text-align: center;
+   background-color: #212121;
+   opacity: 0.75;
+   color:#999;
+   border:0 !important;
+   margin-top: 2%;
+   margin-bottom: 2px;
+   padding-top: 10px;
+   padding-right: 10px;
+   padding-left: 10px;
+   height: 32px;
+   font-size: 10px;
+   }
+   
+   input{
+    border-radius: 0px 5px 5px 0px;
+    margin-top: 2%;
+    height: 32px;
+    font-size: 10px;
+    width: 130px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+  }
+  
+  /* When the input field gets focus, change its width to 100% */
+
+  input:focus{
+     border-radius: 0px 5px 5px 0px;
+     border-width: 5px;
+  }
+  .example-spacer {
+    flex: 0 0 40%;
+  }
+
+  

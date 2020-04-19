@@ -1,0 +1,1 @@
+{"version":3,"file":"side.component.js","sourceRoot":"","sources":["../../../../../../src/app2/shared/side/side.component.ts"],"names":[],"mappings":";AAAA,OAAO,EAAE,SAAS,EAAE,MAAM,eAAe,CAAC;AAU1C,IAAa,aAAa,GAA1B,MAAa,aAAa;CAEvB,CAAA;AAFU,aAAa;IALzB,SAAS,CAAC;QACT,QAAQ,EAAE,UAAU;QACpB,WAAW,EAAE,uBAAuB;QACpC,SAAS,EAAE,CAAC,sBAAsB,CAAC;KACpC,CAAC;GACW,aAAa,CAEvB;SAFU,aAAa"}

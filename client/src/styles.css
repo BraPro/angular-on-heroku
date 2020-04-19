@@ -1,0 +1,140 @@
+
+
+
+/* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;
+  box-sizing:border-box;
+  margin: 0;
+}
+
+body {
+  background-color: #5cc6ff;
+  background-image: url("https://images.unsplash.com/photo-1503217195339-397eb18024e1?ixlib=rb-1.2.1&w=1000&q=80");
+	/*background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg stroke='%23efffd6' stroke-width='86.8' stroke-opacity='0.05' %3E%3Ccircle fill='%235cc6ff' cx='0' cy='0' r='1800'/%3E%3Ccircle fill='%234dbcef' cx='0' cy='0' r='1700'/%3E%3Ccircle fill='%233fb3e0' cx='0' cy='0' r='1600'/%3E%3Ccircle fill='%2333a9d0' cx='0' cy='0' r='1500'/%3E%3Ccircle fill='%23279fc0' cx='0' cy='0' r='1400'/%3E%3Ccircle fill='%231d95b1' cx='0' cy='0' r='1300'/%3E%3Ccircle fill='%23138ca2' cx='0' cy='0' r='1200'/%3E%3Ccircle fill='%230c8294' cx='0' cy='0' r='1100'/%3E%3Ccircle fill='%23077885' cx='0' cy='0' r='1000'/%3E%3Ccircle fill='%23056e77' cx='0' cy='0' r='900'/%3E%3Ccircle fill='%2305646a' cx='0' cy='0' r='800'/%3E%3Ccircle fill='%23065b5d' cx='0' cy='0' r='700'/%3E%3Ccircle fill='%23075151' cx='0' cy='0' r='600'/%3E%3Ccircle fill='%23084845' cx='0' cy='0' r='500'/%3E%3Ccircle fill='%23083e3a' cx='0' cy='0' r='400'/%3E%3Ccircle fill='%23083530' cx='0' cy='0' r='300'/%3E%3Ccircle fill='%23072d26' cx='0' cy='0' r='200'/%3E%3Ccircle fill='%2306241d' cx='0' cy='0' r='100'/%3E%3C/g%3E%3C/svg%3E");
+	*/background-attachment: fixed;
+	background-size: cover;
+	color:black;
+	font-family: "Arial";
+	min-height:100%;
+	padding:0;
+	margin:0;
+	position:relative;
+}
+
+
+.formDIV {
+	margin: auto;
+	margin-top: 10%;
+	border-radius: 15px;
+	background-color:white;
+	border: 2px solid #808080;
+	padding-left:1.1%;
+	padding-right:1.1%;
+	opacity: 0.75;
+}
+
+.vertical-center {
+  min-height: 93%;
+  width:100%;
+  display: flex;
+  align-items: center;
+}
+
+.selected {
+  background-color: #B0B0B0 !important;
+}
+
+td.details-control
+{
+    background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
+}
+
+.navbar-style {
+	position: absolute;
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+  background-color: white;
+  opacity:0.75;
+}
+
+
+.logo {
+  background-size: contain;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow, transform;
+  transition-property: box-shadow, transform;
+  }
+
+
+.logo:hover,.logo:focus,.logo:active {
+	background: url("./assets/img/logo.png");
+	background-size: contain;
+	box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  }
+
+
+tbody:hover td {
+    color: transparent;
+	text-shadow: 0 0 3px #aaa;
+  }
+  
+  tbody:hover tr:hover td {
+    color: #444;
+	text-shadow: 0 1px 0 #fff;
+  }
+  
+  
+  /* Responsive Styles */
+  @media screen and (max-width: 767px) {
+
+    .card-container,.formDIV > *:not(.circle-link) ,
+    .terminal {
+      width: 100%;
+    }
+
+    .card:not .formDIV:not .highlight-card {
+      height: 16px;
+      margin: 8px 0;
+    }
+
+    .card.highlight-card span {
+      margin-left: 72px;
+    }
+
+    svg#rocket-smoke {
+      right: 120px;
+      transform: rotate(-5deg);
+    }
+  }
+
+  @media screen and (max-width: 575px) {
+    svg#rocket-smoke {
+      display: none;
+      visibility: hidden;
+    }
+  }
+  
+ .ng-leave {
+    display:none !important;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+  
+
