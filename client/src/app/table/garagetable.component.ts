@@ -2,7 +2,7 @@ import { Component,OnInit, ViewChild } from '@angular/core';
  
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { CarDialogBoxComponent } from '../main/dialog-box/car-dialog-box.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -56,7 +56,7 @@ export class GarageTableComponent implements OnInit {
  
   openDialog(action,obj) {
     obj.action = action;
-    const dialogRef = this.dialog.open(DialogBoxComponent, {
+    const dialogRef = this.dialog.open(CarDialogBoxComponent, {
       width: '250px',
       data:obj
     });

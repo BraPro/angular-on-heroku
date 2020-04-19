@@ -2,7 +2,7 @@ import { Component,OnInit, ViewChild } from '@angular/core';
  
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { UserDialogBoxComponent } from '../dialog-box/user-dialog-box.component';
+import { UserDialogBoxComponent } from '../main/dialog-box/user-dialog-box.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';

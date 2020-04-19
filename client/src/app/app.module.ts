@@ -52,8 +52,8 @@ import { MapComponent } from './shared/map/map.component'
 //services
 import { SharedService } from './shared/shared.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DialogBoxComponent } from './dialog-box/dialog-box.component';
-import { UserDialogBoxComponent } from './dialog-box/user-dialog-box.component';
+import { CarDialogBoxComponent } from './main/dialog-box/car-dialog-box.component';
+import { UserDialogBoxComponent } from './main/dialog-box/user-dialog-box.component';
 
 
   
@@ -77,7 +77,7 @@ import { UserDialogBoxComponent } from './dialog-box/user-dialog-box.component';
     UserTableComponent,
     BrandchartComponent,
     GarageTableComponent,
-    DialogBoxComponent,
+    CarDialogBoxComponent,
     UserDialogBoxComponent,
     MapComponent,
      
