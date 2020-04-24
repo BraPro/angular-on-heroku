@@ -9,6 +9,7 @@ import { UserService } from '../_services';
 import { SharedService } from './../shared/shared.service';
 
 
+
 @Component({
 	selector: 'app-login',
 	templateUrl: './login.component.html',
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
     loading = false;
     submitted = false;
 	returnUrl: string;
-	permission: boolean = true;
+	
 	
 	@ViewChild("EmailForgot", { read: ViewContainerRef }) container;
 	@ViewChild("Alert", { read: ViewContainerRef }) alertContainer;
@@ -95,7 +96,7 @@ export class LoginComponent implements OnInit {
 
 	onSubmit() {
 		this.submitted = true;
-		this.FilterbyPermission(this.permission);
+		
 
         // stop here if form is invalid
         if (this.loginForm.invalid) {
@@ -111,10 +112,9 @@ export class LoginComponent implements OnInit {
 		.pipe(first())
 		.subscribe(
 			data => {
-				//this.alertService.success('Registration successful', true);
-				this.sharedService.sendClickEvent(data);
+				
 				if(data.response == 'Success'){
-
+					this.sharedService.loginUser(data.data);
 					setTimeout(() => {  this.router.navigate(['/main']); }, 1000);
 				}
 			},
@@ -158,8 +158,4 @@ export class LoginComponent implements OnInit {
 		this.submitted = false;
 	  }
 
-	  FilterbyPermission(permission:boolean){
-		this.sharedService.loginUser(permission);
-		setTimeout(() => {  this.router.navigate(['/main']); }, 1000);
-	  };
 }

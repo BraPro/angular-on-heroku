@@ -11,17 +11,14 @@ import { Router } from '@angular/router';
 })
 export class SideComponent implements OnInit {
   @ViewChild('menu') menu;
-  permission:boolean = false;
+  permission: string //'New Employee','Employee', 'Manager', 'Admin', 'None'
   selected:string = 'Income';
   subscription: Subscription;
   public _router: Router;
 
   constructor(private _loginService: SharedService) {
     this._loginService.loginStateObservable.subscribe(res => {
-      if (res == 'admin')
-        this.permission = true;
-      else
-        this.permission = false;
+        this.permission = res;
     })
   }
 
@@ -29,6 +26,28 @@ export class SideComponent implements OnInit {
    if(this.selected==element){return};
    this.selected=element;
    this._loginService.selectMenu(element);
+  }
+
+  checkpermission(element:string){
+    if(element=="active"){
+      if(this.permission =='Admin'||this.permission =='Manager'||this.permission =='Employee')
+      return true;
+      else return false;
+    }else if(element=="users"){
+      if(this.permission =='Admin'||this.permission =='Manager')
+      return true;
+      else return false;
+    }else if(element=="welcome"){
+      if(this.permission =='New Employee')
+       return true
+       else return false;
+    }else if(element=="blocked"){
+      if(this.permission =='None')
+      return true
+      else return false;
+    }
+
+    return false;
   }
 
   ngOnInit(){

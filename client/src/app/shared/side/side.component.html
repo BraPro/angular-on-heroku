@@ -3,7 +3,8 @@
 
 <mat-sidenav mode="side" opened>
 <nav class="main-menu" >
-  <ul >
+    <ul >
+    <div *ngIf="checkpermission('active');else blocked"> 
       <li (click)="Select('Income')">
           <a href="/main" [ngClass]="{'is-active ': selected=='Income'}" onclick="return false;">
               <i class="fa fa-bar-chart-o fa-2x"  [ngClass]="{'is-active ': selected=='Income'}" #Income></i>
@@ -31,7 +32,7 @@
               </span>
           </a>
       </li>
-      <li *ngIf="permission" #menu (click)="Select('Users')">
+      <li *ngIf="checkpermission('users')" #menu (click)="Select('Users')">
           <a href="/main" [ngClass]="{'is-active ': selected=='Users'}" onclick="return false;">
              <i class="fa fa-list fa-2x"  [ngClass]="{'is-active ': selected=='Users'}" #Users ></i>
               <span class="nav-text">
@@ -39,17 +40,43 @@
               </span>
           </a>
       </li>
-  </ul>
-  <ul class="logout">
-      <li>
-         <a href="/">
-               <i class="fa fa-power-off fa-2x" (click)="Select('Logout')" #Logout></i>
-              <span class="nav-text">
-                  Logout
-              </span>
-          </a>
-      </li>  
-  </ul>
+ 
+  
+</div>
+<ng-template #blocked>
+
+    <li *ngIf="checkpermission('welcome')" #menu (click)="Select('Welcome')">
+        <a href="/main" [ngClass]="{'is-active ': selected=='Welcome'}" onclick="return false;">
+           <i class="fa fa-list fa-2x"  [ngClass]="{'is-active ': selected=='Welcome'}" #Users ></i>
+            <span class="nav-text">
+                Welcome
+            </span>
+        </a>
+    </li>
+
+    <li *ngIf="checkpermission('blocked')" #menu (click)="Select('Blocked')">
+        <a href="/main" [ngClass]="{'is-active ': selected=='Blocked'}" onclick="return false;">
+           <i class="fa fa-list fa-2x"  [ngClass]="{'is-active ': selected=='Blocked'}" #Users ></i>
+            <span class="nav-text">
+                Blocked
+            </span>
+        </a>
+    </li>
+</ng-template>
+
+</ul>
+
+
+<ul class="logout">
+    <li>
+       <a href="/">
+             <i class="fa fa-power-off fa-2x" (click)="Select('Logout')" #Logout></i>
+            <span class="nav-text">
+                Logout
+            </span>
+        </a>
+    </li>  
+</ul>
 </nav>
 </mat-sidenav>
 

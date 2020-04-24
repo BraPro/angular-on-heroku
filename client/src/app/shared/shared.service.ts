@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import {Employee} from '../_models/employee'
 
 @Injectable({
   providedIn: 'root'
@@ -7,25 +8,25 @@ import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
 export class SharedService {
   private subject = new Subject<any>();
+  private lol:string;
+  employeeData: Employee;
   
-  loginState: BehaviorSubject<string>;
+  loginState: BehaviorSubject<any>;
   loginStateObservable: Observable<string>;
   selectState: BehaviorSubject<string>;
   selectStateObservable: Observable<string>;
 
   constructor() {
-    this.loginState = new BehaviorSubject<string>('loggedout');
+    this.loginState = new BehaviorSubject<any>('loggedout');
     this.loginStateObservable = this.loginState.asObservable();
     this.selectState = new BehaviorSubject<string>('main');
     this.selectStateObservable = this.selectState.asObservable();
   }
 
-  loginUser(permission:boolean) {
-    if(permission){
-     this.loginState.next("admin");}
-    else{
-     this.loginState.next("employee");}
-
+  loginUser(data:Employee) {
+    this.employeeData=data;
+    console.log(this.employeeData.status);
+    this.loginState.next(this.employeeData.status);
   }
 
   selectMenu(selected:string){ 
