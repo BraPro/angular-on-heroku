@@ -39,7 +39,6 @@ export class RegisterComponent implements OnInit {
 	ngOnInit() {
 		
 		this.registerForm = this.formBuilder.group({
-			id: ['', {validators: [ Validators.required,Validators.pattern("^([0-9]{9})$")], updateOn:'change'}],
 			firstname: ['', {validators: [ Validators.required], updateOn:'change'}],
 			lastname: ['', {validators: [ Validators.required], updateOn:'change'}],
 			email: ['', {validators: [ Validators.required,Validators.email], updateOn:'change'}],

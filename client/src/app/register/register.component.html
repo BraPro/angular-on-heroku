@@ -12,21 +12,8 @@
 				<h1 class="LognRegister" style="text-align:center" >Sign Up</h1>
 				<div class="form-login-container" >
 					<div class="col-sm-6">
-						<div id="IdGroup" class="form-group" [ngClass]="displayFieldCss('id')">
-							<label for="inputID">ID:</label>
-							<div class="input-group">
-								  <span class="input-group-addon">
-									<span class="glyphicon glyphicon-user"></span>
-								  </span>
-									<input type="text" formControlName="id" class="form-control" id="id" placeholder="Enter ID" required/>
-								</div>
-							<app-field-error-display 
-								[displayError]="isFieldValid('id')" 
-								errorMsg="Please enter a valid israel id number">
-							</app-field-error-display>
-						</div>
 						<div id="FirstNameGroup" class="form-group" [ngClass]="displayFieldCss('firstname')">
-							<label for="inputID">First name:</label>
+							<label for="inputFirstName">First name:</label>
 							<div class="input-group">
 								  <span class="input-group-addon">
 									<span class="glyphicon glyphicon-user"></span>
@@ -39,7 +26,7 @@
 							</app-field-error-display>
 						</div>
 						<div id="LastNameGroup" class="form-group" [ngClass]="displayFieldCss('lastname')">
-							<label for="inputID">Last name:</label>
+							<label for="inputLastName">Last name:</label>
 							<div class="input-group">
 								  <span class="input-group-addon">
 									<span class="glyphicon glyphicon-user"></span>
@@ -51,24 +38,22 @@
 								errorMsg="Please enter a valid last name">
 							</app-field-error-display>
 						</div>
+						<div id="EmailGroup" class="form-group" [ngClass]="displayFieldCss('email')">
+							<label for="inputEmail">Email:</label>
+							<div class="input-group">
+								  <span class="input-group-addon">
+									<span class="glyphicon glyphicon-user"></span>
+								  </span>
+									<input type="text" formControlName="email" class="form-control" id="email" placeholder="Enter Email" required/>
+								</div>
+							<app-field-error-display 
+							[displayError]="isFieldValid('email')" 
+							errorMsg="Please enter a valid email address">
+							</app-field-error-display>
+						</div>
 					</div>
 
 					<div class="col-sm-6">
-					<div id="EmailGroup" class="form-group" [ngClass]="displayFieldCss('email')">
-						<label for="inputEmail">Email:</label>
-						<div class="input-group">
-							  <span class="input-group-addon">
-								<span class="glyphicon glyphicon-user"></span>
-							  </span>
-								<input type="text" formControlName="email" class="form-control" id="email" placeholder="Enter Email" required/>
-							</div>
-						<app-field-error-display 
-						[displayError]="isFieldValid('email')" 
-						errorMsg="Please enter a valid email address">
-					    </app-field-error-display>
-					</div>
-						
-
 					<div id="PasswordGroup" class="form-group" [ngClass]="displayFieldCss('password')">
 						<label for="inputPassword">Password:</label>
 						<div class="input-group">
