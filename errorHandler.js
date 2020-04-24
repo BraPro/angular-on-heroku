@@ -8,7 +8,7 @@ function errorHandler(err, req, res, next) {
         // mongoose validation error
 		return res.status(400).json({ response : 'Error', msg: err.message });
 	}
-	
+    
     if (err.name === 'UnauthorizedError') {
         // jwt authentication error
         return res.status(401).json({ response : 'Error', msg: 'Invalid Token' });

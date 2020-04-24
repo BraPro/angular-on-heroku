@@ -1,3 +1,6 @@
+const jwt = require('jsonwebtoken');
+const secret = require('../config').jwtSecret;
+
 const emailHandler = require('../extends/email');
 const Employee = require('../models/employee');
 const Counter = require('../models/counter');
@@ -68,7 +71,10 @@ module.exports = function (app, apiLocation) {
 			if((result == null) || (result.password != req.body.password)) return res.json({response : 'Error', msg : 'Incorrect username or password'});
 			
 			//req.session.user = result;
-			return res.json({response : 'Success', msg : 'Login successful', data: result});
+			//console.log(secret);
+			const token = jwt.sign({ sub: result._id }, secret);
+			result.password = null;
+			return res.json({response : 'Success', msg : 'Login successful', data: result, token });
 		});
 	});
 	

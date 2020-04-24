@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-//const jwt = require('./jwt');
+const jwt = require('./jwt');
+const errorHandler = require('./errorHandler');
 
 const projectConfig = require('./config');
 const mongooseUrl = process.env.MONGODB_URI || projectConfig.db.url;
@@ -12,7 +13,8 @@ const app = express();
 app.use(bodyParser.json());							// support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(cors());
-//app.use(jwt());
+app.use(jwt());
+app.use(errorHandler);
 //app.use(session({secret: projectConfig.jwtSecret, resave:false, saveUninitialized:true}));
 
 require('./api/user')(app, '/api/users');			//handle users requests
@@ -30,38 +32,7 @@ mongoose.connect(mongooseUrl,  {dbName: projectConfig.db.name, useCreateIndex: t
  }
 ).catch(error  => { console.log("Cannot connect DB"); });
 
-
 //block fav.ico
 app.get('/favicon.ico', function(req, res) {
 	res.end();
-});
-
-
-/*
-//signup page
-
-const session = require('express-session');
-__dirname += '/web/';
-
-app.get(pagesLocation.signup, function(req, res) {
-	if(req.session.user)
-		res.redirect(pagesLocation.maintance);
-	else
-		res.sendFile(path.join(__dirname + pagesRef.signup));
-});
-
-//404 page
-app.get(pagesLocation.notfound, function(req, res) {
-	res.status(404);
-	res.sendFile(path.join(__dirname + pagesRef.notfound));
-});
-
-//redirect to 404 page
-app.get('*', function(req, res){
-	res.redirect(pagesLocation.notfound);
-});
-*/
-
-app.get('*', function(req, res){
-	res.status(404).send('not found');
 });
