@@ -15,6 +15,10 @@ export class UserService {
         this.currentUser = this.currentUserSubject.asObservable();
     }
 
+    public isLoggin() : boolean{
+        return this.currentUserValue != null;
+    }
+
     public get currentUserValue(): Employee {
         return this.currentUserSubject.value;
     }

@@ -12,15 +12,15 @@ import { AccountComponent } from './account/account.component'
 
 
 const routes: Routes = [
-    { path: '', component: LoginComponent, canActivate:[AuthGuard] },
-    { path: 'login', component: LoginComponent},
-    { path: 'register', component: RegisterComponent },
-    { path: 'contactus', component: ContactusComponent },
-    { path: 'main', component: MainComponent },
-    { path: 'main-treat', component: MainComponent },
-    { path: 'main-map', component: MainComponent },
-    { path: 'main-users', component: MainComponent},
-    { path: 'account', component: AccountComponent },
+    { path: '', component: LoginComponent, canActivate:[AuthGuard]},
+    { path: 'login', component: LoginComponent, canActivate:[AuthGuard]},
+    { path: 'register', component: RegisterComponent, canActivate:[AuthGuard] },
+    { path: 'contactus', component: ContactusComponent},
+    { path: 'main', component: MainComponent, canActivate:[AuthGuard] },
+    { path: 'main-treat', component: MainComponent, canActivate:[AuthGuard] },
+    { path: 'main-map', component: MainComponent, canActivate:[AuthGuard] },
+    { path: 'main-users', component: MainComponent, canActivate:[AuthGuard] },
+    { path: 'account', component: AccountComponent, canActivate:[AuthGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
