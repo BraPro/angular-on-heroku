@@ -28,6 +28,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 
 
 //Components
+import { AlertHeaderComponent } from './shared/alert/alert-header.component';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -59,6 +60,7 @@ import { UserDialogBoxComponent } from './main/dialog-box/user-dialog-box.compon
   
 @NgModule({
 	declarations: [
+    AlertHeaderComponent,
 		AppComponent,
     LoginComponent,
     RegisterComponent,
