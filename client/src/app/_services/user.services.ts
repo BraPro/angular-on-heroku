@@ -31,10 +31,12 @@ export class UserService {
         return this.http.post<Response>(`${environment.apiUrl}/users/login`, e)
         .pipe(map(response => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
-            response.data.token = response.token
-            localStorage.setItem('currentUser', JSON.stringify(response.data));
-            this.currentUserSubject.next(response.data);
-            return response.data;
+            if(response.data){
+                response.data['token'] = response.token;
+                localStorage.setItem('currentUser', JSON.stringify(response.data));
+                this.currentUserSubject.next(response.data);
+            }
+            return response;
         }));
     }
 
