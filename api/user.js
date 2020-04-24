@@ -14,27 +14,35 @@ module.exports = function (app, apiLocation) {
 	app.post(apiLocation + '/signup', function(req, res) {
 		//if(!checkEmailAndPassword(req.body.email, req.body.password)) return res.json({response : 'Error'}); //check signup mail&password like client
 
-		Counter.findByIdAndUpdate(counter, { $inc: { seq: 1 } }, { new: true }, (err, result) => {
+		Employee.findOne({email: req.body.email.toLowerCase()}, (err, result) => {
 			if(err) return res.json({response : 'Error'});
+			if(result) return res.json({response : 'Error', msg : 'Employee already exists in the system'}); 
+			
+			Counter.findByIdAndUpdate(counter, { $inc: { seq: 1 } }, { new: true }, (err, result) => {
+				if(err) return res.json({response : 'Error'});
+		
+				req.body._id = Number(result.seq);
+				var newEmployee = new Employee(req.body);
+				newEmployee.email = req.body.email.toLowerCase();
+				newEmployee.status = 'New Employee';
+				if(Number(result.seq) == 1)
+					newEmployee.status = 'Admin';
+				delete newEmployee.manager
+				newEmployee.save(err => {
+					if(err){
+						if(err.code == 11000)
+							return res.json({response : 'Error', msg : 'Employee already exists in the system'}); 
+						return res.json({response : 'Error'})
+					}
 	
-			req.body._id = Number(result.seq);
-			var newEmployee = new Employee(req.body);
-			newEmployee.status = 'New Employee';
-			if(Number(result.seq) == 1)
-				newEmployee.status = 'Admin';
-			delete newEmployee.manager
-			newEmployee.save(err => {
-				if(err){
-					if(err.code == 11000)
-						return res.json({response : 'Error', msg : 'Employee already exists in the system'}); 
-					return res.json({response : 'Error'})
-				}
-
-				//var text = 'User: ' + req.body.email + '\nPassword: ' + req.body.password;
-				//emailHandler.sendMail(req.body.email, 'Thank you for registering', text); //send mail to user about successful registration
-				return res.json({response : 'Success', msg : 'Successfully registered to user ' + req.body.email });
+					//var text = 'User: ' + req.body.email + '\nPassword: ' + req.body.password;
+					//emailHandler.sendMail(req.body.email, 'Thank you for registering', text); //send mail to user about successful registration
+					return res.json({response : 'Success', msg : 'Successfully registered to user ' + req.body.email });
+				});
 			});
 		});
+
+
 	});
 	
 	//forgotpassword
@@ -60,7 +68,7 @@ module.exports = function (app, apiLocation) {
 			if((result == null) || (result.password != req.body.password)) return res.json({response : 'Error', msg : 'Incorrect username or password'});
 			
 			//req.session.user = result;
-			return res.json({response : 'Success', msg : 'Login successful' });
+			return res.json({response : 'Success', msg : 'Login successful', data: result});
 		});
 	});
 	
