@@ -50,7 +50,7 @@ export class SideComponent implements OnInit {
 		.subscribe(
 			data => {
         alert('sdf');
-        this.router.navigate(['/login']); //need to delete!!
+        this.router.navigate(['/']); //need to delete!!
 			},
 			error => {
 				//this.alertService.error(error);
