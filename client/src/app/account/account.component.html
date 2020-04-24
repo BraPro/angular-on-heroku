@@ -1,31 +1,27 @@
 <div class="container center-block vertical-center">
 	
 	<div class="formDIV">
-		<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+		<form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
 			<div class="row">
 				<h1 class="LognRegister" style="text-align:center" >Profile</h1>
 				<div class="form-login-container" >
 					<div class="col-sm-6">
-						<div id="IdGroup" class="form-group" [ngClass]="displayFieldCss('id')">
+						<div id="IdGroup" class="form-group" [ngClass]="displayFieldCss('_id')">
 							<label for="inputID">ID:</label>
 							<div class="input-group">
 								  <span class="input-group-addon">
 									<span class="glyphicon glyphicon-user"></span>
 								  </span>
-									<input type="text" formControlName="id" class="form-control" id="id" placeholder="Enter ID" [ngModel]="this.registerelement[0].id" disabled required/>
+									<input type="text" formControlName="_id" class="form-control" id="_id" placeholder="Enter ID" [ngModel]="this.user._id" disabled required/>
 								</div>
-							<app-field-error-display 
-								[displayError]="isFieldValid('id')" 
-								errorMsg="Please enter a valid israel id number">
-							</app-field-error-display>
 						</div>
 						<div id="FirstNameGroup" class="form-group" [ngClass]="displayFieldCss('firstname')">
-							<label for="inputID">First name:</label>
+							<label for="inputFirstName">First name:</label>
 							<div class="input-group">
 								  <span class="input-group-addon">
 									<span class="glyphicon glyphicon-user"></span>
 								  </span>
-									<input type="text" formControlName="firstname" class="form-control" id="firstname" placeholder="Enter First Name" [ngModel]="this.registerelement[0].firstname" required/>
+									<input type="text" formControlName="firstname" class="form-control" id="firstname" placeholder="Enter First Name" [ngModel]="this.user.firstname" required/>
 								</div>
 							<app-field-error-display 
 								[displayError]="isFieldValid('firstname')" 
@@ -33,12 +29,12 @@
 							</app-field-error-display>
 						</div>
 						<div id="LastNameGroup" class="form-group" [ngClass]="displayFieldCss('lastname')">
-							<label for="inputID">Last name:</label>
+							<label for="inputLastName">Last name:</label>
 							<div class="input-group">
 								  <span class="input-group-addon">
 									<span class="glyphicon glyphicon-user"></span>
 								  </span>
-									<input type="text" formControlName="lastname" class="form-control" id="lastname" placeholder="Enter Last Name" [ngModel]="this.registerelement[0].lastname" required/>
+									<input type="text" formControlName="lastname" class="form-control" id="lastname" placeholder="Enter Last Name" [ngModel]="this.user.lastname" required/>
 								</div>
 							<app-field-error-display 
 								[displayError]="isFieldValid('lastname')" 
@@ -54,7 +50,7 @@
 							  <span class="input-group-addon">
 								<span class="glyphicon glyphicon-user"></span>
 							  </span>
-								<input type="text" formControlName="email" class="form-control" id="email" placeholder="Enter Email" [ngModel]="this.registerelement[0].email" required/>
+								<input type="text" formControlName="email" class="form-control" id="email" placeholder="Enter Email" [ngModel]="this.user.email" required/>
 							</div>
 						<app-field-error-display 
 						[displayError]="isFieldValid('email')" 
@@ -70,7 +66,7 @@
 							<span class="glyphicon glyphicon-lock">
 							</span>
 							</span>
-							<input type="password" formControlName="password" name="password" class="form-control" id="password" placeholder="Enter Password" maxlength="32" [ngModel]="this.registerelement[0].password"required />
+							<input type="password" formControlName="password" name="password" class="form-control" id="password" placeholder="Enter Password" maxlength="32" value="" required />
 						</div>
 						<app-field-error-display 
 						[displayError]="isFieldValid('password')"
@@ -85,7 +81,7 @@
 							<span class="glyphicon glyphicon-lock">
 							</span>
 							</span>
-							<input type="password" formControlName="cpassword" class="form-control" id="cpassword" placeholder="Enter Confirmation" maxlength="32" [ngModel]="this.registerelement[0].password" required />
+							<input type="password" formControlName="cpassword" class="form-control" id="cpassword" placeholder="Enter Confirmation" maxlength="32" value="" required />
 						</div>	
 						<app-field-error-display 
 						[displayError]="isFieldValid('cpassword')"

@@ -70,7 +70,7 @@ module.exports = function (app, apiLocation) {
 			if(err) return res.json({response : 'Error'});
 			if((result == null) || (result.password != req.body.password)) return res.json({response : 'Error', msg : 'Incorrect username or password'});
 			
-			const token = jwt.sign({ sub: result._id }, secret);
+			const token = jwt.sign({ id: result._id }, secret);
 			result.password = null;
 			return res.json({response : 'Success', msg : 'Login successful', data: result, token });
 		});

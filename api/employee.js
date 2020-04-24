@@ -3,6 +3,9 @@ const Counter = require('../models/counter');
 const Garage = require('../models/garage');
 const htmlspecialchars = require('htmlspecialchars');
 
+const jwt = require('express-jwt');
+const jwtc = require('../jwt').isRevoked;
+
 module.exports = function (app, apiLocation) {
   
 	//get all employees
@@ -19,20 +22,24 @@ module.exports = function (app, apiLocation) {
 	app.get(apiLocation + '/:id', function(req, res) {	
 		//if(!req.session.user) return res.json({response : 'Error'}); //block guests
 		
-		Employee.findOne({eid : Number(req.params.id)}, (err, result) => {
+		Employee.findById(Number(req.params.id),  (err, result) => {
 			if(err) return res.json({response : 'Error'});
 			return res.json(result);
 		});
+		//Employee.findOne({eid : Number(req.params.id)}, (err, result) => {
+		//	if(err) return res.json({response : 'Error'});
+		//	return res.json(result);
+		//});
 	});
 
 	//get employee full by id
 	app.get(apiLocation + '/:id/full', function(req, res) {	
 		//if(!req.session.user) return res.json({response : 'Error'}); //block guests
 		
-		Employee.findOne({eid : Number(req.params.id)}, (err, result) => {
+		Employee.findById(Number(req.params.id), (err, result) => {
 			if(err) return res.json({response : 'Error'});
 			var fullEmployee = result;
-			Employee.findOne({eid: result.manager}, (err, result) => {
+			Employee.findById(Number(result.manager), (err, result) => {
 				fullEmployee.manager = result;
 				Garage.findById(fullEmployee.garage, (err, result) => {
 					fullEmployee.garage = result;
@@ -46,9 +53,9 @@ module.exports = function (app, apiLocation) {
 	app.get(apiLocation + '/:id/manager', function(req, res) {	
 		//if(!req.session.user) return res.json({response : 'Error'}); //block guests
 		
-		Employee.findById({eid : Number(req.params.id)}, (err, result) => {
+		Employee.findById(Number(req.params._id), (err, result) => {
 			if(err) return res.json({response : 'Error'});
-			Employee.findOne({eid: result.manager}, (err, result) => {
+			Employee.findById(Number(result.manager), (err, result) => {
 				if(err) return res.json({response : 'Error'});
 				return res.json(result);
 			});
@@ -59,7 +66,7 @@ module.exports = function (app, apiLocation) {
 	app.get(apiLocation + '/:id/garage', function(req, res) {	
 		//if(!req.session.user) return res.json({response : 'Error'}); //block guests
 		
-		Employee.findById({eid : Number(req.params.id)}, (err, result) => {
+		Employee.findById(Number(req.params._id), (err, result) => {
 			if(err) return res.json({response : 'Error'});
 			Garage.findById(result.garage, (err, result) => {
 				if(err) return res.json({response : 'Error'});
@@ -71,13 +78,13 @@ module.exports = function (app, apiLocation) {
 	//update employee
 	app.put(apiLocation + '/:id', function(req, res) {
 		//if(!req.session.user) return res.json({response : 'Error'}); //block guests
-		
-		req.body.eid = Number(req.params.id);
+		console.log("asD");
+		req.body._id = Number(req.params._id);
 		var updateEmployee =  new Employee(req.body);
-		Employee.findOneAndUpdate({eid: req.body.eid}, { $set: updateEmployee }, (err, result) => {
+		Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
 			if(err || result == null) return res.json({response : 'Error'});
 			
-			return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee.eid + ' was updated'}); 
+			return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' was updated'}); 
 		});
 	});
 	
@@ -85,11 +92,11 @@ module.exports = function (app, apiLocation) {
 	app.delete(apiLocation + '/:id', function(req, res) {
 		//if(!req.session.user) return res.json({response : 'Error'}); //block guests
 
-		Employee.findOneAndDelete({eid : Number(req.params.id)}, (err, result) => {
+		Employee.findByIdAndUpdate(Number(req.params._id), (err, result) => {
 			if (err) return res.json({response : 'Error'});
 
 			if(result == null) return res.json({response : 'Error', msg : 'Employee doesnt exist'}); 
-			return res.json({response : 'Success', msg : 'Employee number ' + Number(req.params.id) + ' was deleted'}); 
+			return res.json({response : 'Success', msg : 'Employee number ' + Number(req.params._id) + ' was deleted'}); 
 		});
 	});
 };

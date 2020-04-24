@@ -10,10 +10,10 @@ const mongooseUrl = process.env.MONGODB_URI || projectConfig.db.url;
 const port = process.env.PORT || projectConfig.port;
 const app = express();
 
-app.use(bodyParser.json());							// support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(bodyParser.json());							// support json encoded bodies
 app.use(cors());
-app.use(jwt());
+app.use(jwt.jwt());
 app.use(errorHandler);
 //app.use(session({secret: projectConfig.jwtSecret, resave:false, saveUninitialized:true}));
 
