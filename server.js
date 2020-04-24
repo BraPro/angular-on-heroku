@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(cors());
 //app.use(jwt());
 //app.use(session({secret: projectConfig.jwtSecret, resave:false, saveUninitialized:true}));
-
+///SDFSDF
 require('./api/user')(app, '/api/users');			//handle users requests
 require('./api/employee')(app, '/api/employees');	//handle employees requests
 require('./api/manager')(app, '/api/managers');		//handle managers requests
