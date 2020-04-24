@@ -11,5 +11,5 @@ export class Employee{
     garage: Garage;
     manager: Manager;
     token: string;
-    status: {type: string, enum : ['New Employee','Employee', 'Manager', 'None']};
+    status: {type: string, enum : ['New Employee','Employee', 'Manager', 'Admin', 'None']};
 }

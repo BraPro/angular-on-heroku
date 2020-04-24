@@ -20,6 +20,8 @@ module.exports = function (app, apiLocation) {
 			req.body._id = Number(result.seq);
 			var newEmployee = new Employee(req.body);
 			newEmployee.status = 'New Employee';
+			if(Number(result.seq) == 1)
+				newEmployee.status = 'Admin';
 			newEmployee.manager = 0
 			newEmployee.save(err => {
 				if(err){
