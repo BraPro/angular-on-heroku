@@ -51,14 +51,14 @@ export class RegisterComponent implements OnInit {
 	}
 
 
-	  isFieldValid(field: string) {
+	isFieldValid(field: string) {
 		return (
 			(!this.registerForm.get(field).valid && this.registerForm.get(field).touched) ||
 			(this.registerForm.get(field).untouched && this.submitted)
 		);
-	  }
+	}
 	
-	  displayFieldCss(field: string) {
+	displayFieldCss(field: string) {
 		if(this.registerForm.get(field).pristine || this.registerForm.get(field).untouched){
 			return;
 		}
@@ -71,7 +71,6 @@ export class RegisterComponent implements OnInit {
 		};
 	}
 	
-	  
 	get f() { return this.registerForm.controls; }
 
 	geterror(field: string) {
