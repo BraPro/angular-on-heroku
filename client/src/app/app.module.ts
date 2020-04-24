@@ -4,6 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //Modules
+import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { ModalModule } from './_modal';
@@ -109,7 +110,9 @@ import { UserDialogBoxComponent } from './main/dialog-box/user-dialog-box.compon
     MatDialogModule,
     MatInputModule,
   ],
-  providers: [SharedService],
+  providers: [SharedService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

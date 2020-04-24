@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 //Components
+import { AuthGuard } from './_helpers';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -11,7 +12,7 @@ import { AccountComponent } from './account/account.component'
 
 
 const routes: Routes = [
-    { path: '', component: LoginComponent},
+    { path: '', component: LoginComponent, canActivate: [AuthGuard]},
     { path: 'login', component: LoginComponent},
     { path: 'register', component: RegisterComponent },
     { path: 'contactus', component: ContactusComponent },
