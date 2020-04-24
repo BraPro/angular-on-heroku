@@ -10,6 +10,6 @@ export class Employee{
     password: string;
     garage: Garage;
     manager: Manager;
-    token: string;
+    token?: string;
     status: {type: string, enum : ['New Employee','Employee', 'Manager', 'Admin', 'None']};
 }

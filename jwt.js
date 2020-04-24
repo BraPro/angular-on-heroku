@@ -9,7 +9,8 @@ function jwt() {
             '/favicon.ico',
             '/api/users/login',
             '/api/users/forgotpassword',
-            '/api/users/signup'
+            '/api/users/signup',
+            '/api/users/logout'
         ]
     });
 }
