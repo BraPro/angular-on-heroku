@@ -3,6 +3,7 @@ import { ViewContainerRef, ComponentFactoryResolver, ComponentFactory, Component
 import { SharedService } from './../shared.service';
 import { Subscription}  from 'rxjs';
 import { Router } from '@angular/router';
+import { UserService } from '@app/_services';
 
 @Component({
   selector: 'app-side',
@@ -16,7 +17,7 @@ export class SideComponent implements OnInit {
   subscription: Subscription;
   public _router: Router;
 
-  constructor(private _loginService: SharedService) {
+  constructor(private _loginService: SharedService, private userService : UserService) {
     this._loginService.loginStateObservable.subscribe(res => {
         this.permission = res;
         if(this.permission =='New Employee')
@@ -40,6 +41,10 @@ export class SideComponent implements OnInit {
    if(this.selected==element){return};
    this.selected=element;
    this._loginService.selectMenu(element);
+
+   if(element == "Logout"){
+    this.userService.logout();
+   }
   }
 
   checkpermission(element:string){
