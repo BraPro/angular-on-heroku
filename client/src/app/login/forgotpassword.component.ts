@@ -92,14 +92,14 @@ export class ForgotPasswordComponent implements OnInit {
 		.subscribe(
 			data => {
 				//this.alertService.success('Registration successful', true);
-				this.sharedService.sendClickEvent(data);
+				this.sharedService.sendAlertEvent(data);
 				if(data.response == 'Success'){
 					setTimeout(() => {  this.router.navigate(['/login']); }, 1000);
 				}
 			},
 			error => {
 				//this.alertService.error(error);
-				this.sharedService.sendClickEvent({response: 'Error', msg: 'Check your internet connection'});
+				this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
 				
 			},
 			() => {

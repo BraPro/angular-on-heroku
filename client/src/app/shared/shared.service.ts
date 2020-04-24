@@ -7,7 +7,7 @@ import {Employee} from '../_models/employee'
 })
 
 export class SharedService {
-  private subject = new Subject<any>();
+  private alertMessage = new Subject<any>();
   private lol:string;
   employeeData: Employee;
   
@@ -33,12 +33,12 @@ export class SharedService {
     this.selectState.next(selected);
   }
   
-  sendClickEvent(e : any) {
-    this.subject.next(e);
+  sendAlertEvent(e : any) {
+    this.alertMessage.next(e);
   }
 
-  getClickEvent(): Observable<any>{ 
-    return this.subject.asObservable();
+  getAlertEvent(): Observable<any>{ 
+    return this.alertMessage.asObservable();
   }
   
 

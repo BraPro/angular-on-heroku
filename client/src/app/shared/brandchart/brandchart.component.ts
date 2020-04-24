@@ -56,7 +56,7 @@ export class BrandchartComponent {
     private componentFactoryResolver: ComponentFactoryResolver,
     private sharedService:SharedService
     ) {
-        this.clickEventsubscription=this.sharedService.getClickEvent().subscribe(val => {
+        this.clickEventsubscription=this.sharedService.getAlertEvent().subscribe(val => {
           this.openAlert(val);
         });
   }

@@ -112,7 +112,7 @@ export class LoginComponent implements OnInit {
 		.pipe(first())
 		.subscribe(
 			data => {
-				
+				this.sharedService.sendAlertEvent(data);
 				if(data.response == 'Success'){
 					this.sharedService.loginUser(data.data);
 					setTimeout(() => {  this.router.navigate(['/main']); }, 1000);
@@ -120,7 +120,7 @@ export class LoginComponent implements OnInit {
 			},
 			error => {
 				//this.alertService.error(error);
-				this.sharedService.sendClickEvent({response: 'Error', msg: 'Check your internet connection'});
+				this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
 				
 			},
 			() => {
