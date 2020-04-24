@@ -66,9 +66,6 @@ module.exports = function (app, apiLocation) {
 	app.post(apiLocation + '/login', function(req, res) {
 		if(req.body.email == null) return res.json({response : 'Error'});
 	
-		var text = 'User:';
-		emailHandler.sendMail("WeFix.Garages.Management@gmail.com", 'Thank you for registering', text); //send mail to user about successful registration
-
 		Employee.findOne({email: req.body.email.toLowerCase()}, (err, result) => {
 			if(err) return res.json({response : 'Error'});
 			if((result == null) || (result.password != req.body.password)) return res.json({response : 'Error', msg : 'Incorrect username or password'});
