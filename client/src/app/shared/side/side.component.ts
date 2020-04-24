@@ -12,14 +12,28 @@ import { Router } from '@angular/router';
 export class SideComponent implements OnInit {
   @ViewChild('menu') menu;
   permission: string //'New Employee','Employee', 'Manager', 'Admin', 'None'
-  selected:string = 'Income';
+  selected:string;
   subscription: Subscription;
   public _router: Router;
 
   constructor(private _loginService: SharedService) {
     this._loginService.loginStateObservable.subscribe(res => {
         this.permission = res;
+        if(this.permission =='New Employee')
+           this.selected='Welcome';
+        if(this.permission =='None')   
+           this.selected='Blocked'; 
     })
+  }
+
+  putselect()
+  {
+    if(this.permission =='New Employee')
+    this.selected='Welcome';
+    else if(this.permission =='None')   
+    this.selected='Blocked';
+    else 
+    this.selected='Income';
   }
 
   Select(element:string){
@@ -51,6 +65,7 @@ export class SideComponent implements OnInit {
   }
 
   ngOnInit(){
+    this.putselect();
     this._loginService.selectMenu(this.selected);
   }
 
