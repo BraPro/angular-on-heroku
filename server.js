@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const jwt = require('./jwt');
+//const jwt = require('./jwt');
 
 const projectConfig = require('./config');
 const mongooseUrl = process.env.MONGODB_URI || projectConfig.db.url;
@@ -12,14 +12,12 @@ const app = express();
 app.use(bodyParser.json());							// support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(cors());
-app.use(jwt());
+//app.use(jwt());
 //app.use(session({secret: projectConfig.jwtSecret, resave:false, saveUninitialized:true}));
 
 require('./api/user')(app, '/api/users');			//handle users requests
 require('./api/employee')(app, '/api/employees');	//handle employees requests
-require('./api/customer')(app, '/api/customers');	//handle customers requests
 require('./api/manager')(app, '/api/managers');		//handle managers requests
-require('./api/car')(app, '/api/cars');				//handle cars requests
 require('./api/treatment')(app, '/api/treatments');	//handle treatments requests
 require('./api/garage')(app, '/api/garages');		//handle garages requests
 require('./api/contactus')(app, '/api/contactus');	//handle contactus requests

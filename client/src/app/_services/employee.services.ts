@@ -29,7 +29,7 @@ export class EmployeeService {
     ///////////////////////////////////
 
     update(emp: Employee) {
-        return this.http.put<Response>(`api/employees/${emp.id}`, emp);
+        return this.http.put<Response>(`api/employees/${emp._id}`, emp);
     }
 
     delete(id: number) {

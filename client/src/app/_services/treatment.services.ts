@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Response, Car, Treatment, Garage, Customer} from '../_models'
+import { Response, Treatment, Garage} from '../_models'
 
 @Injectable({ providedIn: 'root' })
 export class TreatmentService {
@@ -21,14 +21,6 @@ export class TreatmentService {
 
     getGarageById(id: number) {
         return this.http.get<Garage>(`api/treatments/${id}/garage`);
-    }
-
-    getCarById(id: number) {
-        return this.http.get<Car>(`api/treatments/${id}/car`);
-    }
-
-    getCustomerById(id: number) {
-        return this.http.get<Customer>(`api/treatments/${id}/customer`);
     }
     ///////////////////////////////////
 

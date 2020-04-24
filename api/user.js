@@ -20,6 +20,7 @@ module.exports = function (app, apiLocation) {
 			req.body.eid = Number(result.seq);
 			var newEmployee = new Employee(req.body);
 			newEmployee.status = 'New Employee';
+			newEmployee.manager = 0
 			newEmployee.save(err => {
 				if(err){
 					if(err.code == 11000)

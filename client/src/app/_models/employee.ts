@@ -1,13 +1,15 @@
-import { Person } from './person';
 import { Garage } from './garage';
 import { Manager } from './manager';
 
-export class Employee extends Person{
-    eid: number;
+export class Employee{
+    _id: number;
+    firstname: string;
+    lastname: string;
+
     email: string;
     password: string;
     garage: Garage;
     manager: Manager;
     token: string;
-    status: string;
+    status: {type: string, enum : ['New Employee','Employee', 'Manager', 'None']};
 }

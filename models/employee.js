@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
-const Person = require('./person');
 
 const employeeSchema = new mongoose.Schema({
-	eid: {type: Number, required: true, unique: true },
+	_id: {type: Number, required: true},
+	firstname: {type: String, required: true},
+	lastname: {type: String, required: true},
+
 	email: {type: String, required: true, lowercase: true, unique: true},
 	password: {type: String, required: true},
 	garage: { type: Number, ref: 'Garage' },
-	manager: { type: Number, ref: 'Employee' },
-	status: {type: String, enum : ['New Employee','Employee', 'Manager'], default: 'New Employee', required: true},
+	manager: { type: Number, ref: 'Employee', default: 0 },
+	status: {type: String, enum : ['New Employee','Employee', 'Manager', 'None'], default: 'New Employee', required: true},
 	//token
 });
 
-employeeSchema.index({ id: 1, __t: 1}, { unique: true });
-module.exports = Employee = Person.discriminator('Employee', employeeSchema);
+module.exports = Employee = mongoose.model('Employee' ,employeeSchema);
