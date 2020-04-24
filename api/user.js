@@ -17,7 +17,7 @@ module.exports = function (app, apiLocation) {
 		Counter.findByIdAndUpdate(counter, { $inc: { seq: 1 } }, { new: true }, (err, result) => {
 			if(err) return res.json({response : 'Error'});
 	
-			req.body.eid = Number(result.seq);
+			req.body._id = Number(result.seq);
 			var newEmployee = new Employee(req.body);
 			newEmployee.status = 'New Employee';
 			newEmployee.manager = 0
