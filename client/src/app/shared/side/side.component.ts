@@ -41,7 +41,6 @@ export class SideComponent implements OnInit {
    if(this.selected==element){return};
    this.selected=element;
    this._loginService.selectMenu(element);
-
    if(element == "Logout"){
     this.userService.logout();
    }

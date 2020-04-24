@@ -41,6 +41,7 @@ export class UserService {
     }
 
     logout() {
+        alert('abc');
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
         return this.http.post<Response>(`${environment.apiUrl}/users/logout`, '');
