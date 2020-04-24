@@ -1,11 +1,13 @@
 const nodemailer = require('nodemailer')
-const email = '***mail***@gmail.com';
-const emailpass = '***email***password***';
+const projectConfigEmail = require('../config').email
 
 //define gmail login user and password to nodemailer
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
-	auth: { user: email, pass: emailpass }
+	host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+	auth: { user: projectConfigEmail.username, pass: projectConfigEmail.password }
 });
 
 //test mail sender
@@ -16,6 +18,8 @@ function sendMail(to, subject, text){
 	text: text
 	};
 	transporter.sendMail(mailOptions, function(error, info){
+		console.log(projectConfigEmail.username);
+		console.log(projectConfigEmail.password);
 		if (error) {
 			console.log(error);
 		} else {
@@ -24,4 +28,4 @@ function sendMail(to, subject, text){
 	});
 }
 
-module.exports = {sendMail, email};
+module.exports = {sendMail};

@@ -4,6 +4,7 @@ import { SharedService } from './../shared.service';
 import { Subscription}  from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from '@app/_services';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-side',
@@ -16,6 +17,8 @@ export class SideComponent implements OnInit {
   selected:string;
   subscription: Subscription;
   public _router: Router;
+  router: any;
+  sharedService: any;
 
   constructor(private _loginService: SharedService, private userService : UserService) {
     this._loginService.loginStateObservable.subscribe(res => {
@@ -42,7 +45,17 @@ export class SideComponent implements OnInit {
    this.selected=element;
    this._loginService.selectMenu(element);
    if(element == "Logout"){
-    this.userService.logout();
+    this.userService.logout()
+		.pipe(first())
+		.subscribe(
+			data => {
+        alert('sdf');
+        this.router.navigate(['/login']); //need to delete!!
+			},
+			error => {
+				//this.alertService.error(error);
+				this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
+			}); 
    }
   }
 

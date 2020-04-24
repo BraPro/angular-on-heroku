@@ -38,8 +38,8 @@ module.exports = function (app, apiLocation) {
 						return res.json({response : 'Error'})
 					}
 	
-					//var text = 'User: ' + req.body.email + '\nPassword: ' + req.body.password;
-					//emailHandler.sendMail(req.body.email, 'Thank you for registering', text); //send mail to user about successful registration
+					var text = 'User: ' + req.body.email + '\nPassword: ' + req.body.password;
+					emailHandler.sendMail(req.body.email, 'Thank you for registering', text); //send mail to user about successful registration
 					return res.json({response : 'Success', msg : 'Successfully registered to user ' + req.body.email });
 				});
 			});
@@ -56,8 +56,8 @@ module.exports = function (app, apiLocation) {
 			if(err) return res.json({response : 'Error'});
 			if(result == null) return res.json({response : 'Error', msg : 'User ' + req.body.email + ' doesnt in the system'});
 			
-			//var text = 'User: ' + result._id + '\nPassword: ' + result.password;
-			//emailHandler.sendMail(req.body.email, 'Reset Password', text); //send mail with the password
+			var text = 'User: ' + result.email + '\nPassword: ' + result.password;
+			emailHandler.sendMail(req.body.email, 'Reset Password', text); //send mail with the password
 			return res.json({response : 'Success', msg : 'Password sent to email ' + req.body.email });
 		});
 	});
@@ -66,12 +66,13 @@ module.exports = function (app, apiLocation) {
 	app.post(apiLocation + '/login', function(req, res) {
 		if(req.body.email == null) return res.json({response : 'Error'});
 	
+		var text = 'User:';
+		emailHandler.sendMail("WeFix.Garages.Management@gmail.com", 'Thank you for registering', text); //send mail to user about successful registration
+
 		Employee.findOne({email: req.body.email.toLowerCase()}, (err, result) => {
 			if(err) return res.json({response : 'Error'});
 			if((result == null) || (result.password != req.body.password)) return res.json({response : 'Error', msg : 'Incorrect username or password'});
 			
-			//req.session.user = result;
-			//console.log(secret);
 			const token = jwt.sign({ sub: result._id }, secret);
 			result.password = null;
 			return res.json({response : 'Success', msg : 'Login successful', data: result, token });
@@ -80,7 +81,7 @@ module.exports = function (app, apiLocation) {
 	
 	//logout from system
 	app.post(apiLocation + '/logout', function(req, res) {
-		if(!req.session.user) return res.json({response : 'Error'}); //block guests
+		//if(!req.session.user) return res.json({response : 'Error'}); //block guests
 		
 		//req.session.user = null;
 		res.json({response : 'Success', msg : 'Logout successful'});
