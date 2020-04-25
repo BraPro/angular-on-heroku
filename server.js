@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(bodyParser.json());							// support json encoded bodies
 app.use(cors());
-app.use(jwt.jwt());
+app.use(jwt());
 app.use(errorHandler);
 //app.use(session({secret: projectConfig.jwtSecret, resave:false, saveUninitialized:true}));
 

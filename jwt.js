@@ -3,8 +3,8 @@ const projectConfig = require('./config');
 const Employee = require('./models/employee');
 
 function jwt() {
-    const secret = {secret : projectConfig.jwtSecret};
-    return expressJwt({ secret, isRevoked }).unless({
+    //const secret = {secret : projectConfig.jwtSecret};
+    return expressJwt({ secret : projectConfig.jwtSecret, isRevoked : isRevoked }).unless({
         path: [
             // public routes that don't require authentication
             '/favicon.ico',
@@ -16,44 +16,15 @@ function jwt() {
     });
 }
 
-async function isRevoked(req, payload, done) {
-    console.log("asd");
+function isRevoked(req, payload, done) {
+    if(!Number(payload.id))
+        return done(new Error('missing_secret'));
     Employee.findById(Number(payload.id), (err, result) => {
-        console.log("asdddd");
-        if(result) done();
-
+        if(err) return done(err);
+        if (!result) { return done(new Error('missing_secret')); }
+        return done(false, null);
+        //return done(false, projectConfig.jwtSecret);
     });
-    return done(null, true);
-    /*
-    const user = await userService.getById(payload.id);
-    console.log(user);
-    // revoke token if user no longer exists
-    if (!user) {
-        return done(null, true);
-    }
-
-    done();
-    */
 };
 
-/*
-const authenticateJWT = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-
-    if (authHeader) {
-        const token = authHeader.split(' ')[1];
-
-        jwt.verify(token, accessTokenSecret, (err, user) => {
-            if (err) {
-                return res.sendStatus(403);
-            }
-
-            req.user = user;
-            next();
-        });
-    } else {
-        res.sendStatus(401);
-    }
-};
-*/
-module.exports = {jwt,isRevoked};
+module.exports = jwt;
