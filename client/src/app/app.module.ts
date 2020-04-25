@@ -44,7 +44,7 @@ import { FieldErrorDisplayComponent } from './shared/field-error-display/field-e
 import { PassValidator } from './validators/pass-validators'
 import { PassMatchValidator } from './validators/passmatch-validators'
 import { ForgotPasswordComponent } from './login/forgotpassword.component';
-import { AllGaragesTableComponent } from './table/allgaragestable.component';
+import { InfoCardComponent } from './table/info-card.component';
 import { GarageTableComponent } from './table/garagetable.component';
 import { UserTableComponent } from './table/usertable.component';
 import { BrandchartComponent } from './shared/brandchart/brandchart.component'
@@ -76,7 +76,7 @@ import { UserDialogBoxComponent } from './main/dialog-box/user-dialog-box.compon
     PassValidator,
     PassMatchValidator,
     ForgotPasswordComponent,
-    AllGaragesTableComponent,
+    InfoCardComponent,
     UserTableComponent,
     BrandchartComponent,
     GarageTableComponent,
