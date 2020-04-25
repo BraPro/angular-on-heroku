@@ -33,40 +33,79 @@
     }
   }
   
-  span{
-   border-radius: 5px 0px 0px 5px;
-   text-align: center;
-   background-color: #212121;
-   opacity: 0.75;
-   color:#999;
-   border:0 !important;
-   margin-top: 2%;
-   margin-bottom: 2px;
-   padding-top: 10px;
-   padding-right: 10px;
-   padding-left: 10px;
-   height: 32px;
-   font-size: 10px;
-   }
-   
-   input{
-    border-radius: 0px 5px 5px 0px;
-    margin-top: 2%;
-    height: 32px;
-    font-size: 10px;
-    width: 130px;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
-  }
-  
-  /* When the input field gets focus, change its width to 100% */
-
-  input:focus{
-     border-radius: 0px 5px 5px 0px;
-     border-width: 5px;
-  }
-  .example-spacer {
-    flex: 0 0 40%;
-  }
 
   
+  .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 25px;
+  }
+  
+  .card {
+    width: 150px;
+    border: 1px solid #ef9a9a;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+  }
+  
+  .card-header {
+    color: #d32f2f;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    border-bottom: 1px solid #ef9a9a;
+    background-color: #ffebee;
+    padding: 5px 10px;
+  }
+  
+  .card-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 0;
+  }
+  
+  .material-icons {
+    font-size: 36px;
+    color: #d32f2f;
+    margin-bottom: 5px;
+  }
+  
+  .main-description {
+    color: #d32f2f;
+    font-size: 12px;
+    text-align: center;
+  }
+  
+  #or-border {
+    border-color: #ffe082;
+  }
+  
+  #or-header {
+    background-color: #fff8e1;
+    border-color: #ffe082;
+    color: #ffa000;
+  }
+  
+  #or-color {
+    color: #ffa000;
+  }
+  
+  #or-border2 {
+    border-color: #80deea;
+  }
+  
+  #or-header2 {
+    background-color: #e0f7fa;
+    border-color: #80deea;
+    color: #0097a7;
+  }
+  
+  #or-color2 {
+    color: #0097a7;
+  }

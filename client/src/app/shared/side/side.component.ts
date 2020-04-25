@@ -44,19 +44,19 @@ export class SideComponent implements OnInit {
    if(this.selected==element){return};
    this.selected=element;
    this._loginService.selectMenu(element);
-   if(element == "Logout"){
-    this.userService.logout()
-		.pipe(first())
-		.subscribe(
-			data => {
-        alert('sdf');
-        this.router.navigate(['/']); //need to delete!!
-			},
-			error => {
-				//this.alertService.error(error);
-				this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
-			}); 
-   }
+  }
+
+  endsession(){
+      this.userService.logout()
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.router.navigate(['/']); //need to delete!!
+        },
+        error => {
+          //this.alertService.error(error);
+          this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
+        }); 
   }
 
   checkpermission(element:string){
@@ -85,6 +85,8 @@ export class SideComponent implements OnInit {
     this.putselect();
     this._loginService.selectMenu(this.selected);
   }
+
+  
 
 }
 
