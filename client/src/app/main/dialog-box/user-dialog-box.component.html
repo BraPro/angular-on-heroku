@@ -1,35 +1,27 @@
 <h1 mat-dialog-title><strong>{{action}} User</strong></h1>
 <div mat-dialog-content>
 
-  <mat-form-field *ngIf="action == 'Add';">
-    <input placeholder="{{action}} User Id" matInput [(ngModel)]="local_data.id">
-  </mat-form-field>
+       <!--['id','firstname','lastname','garage','status','manager','email','action'] -->
   
-  <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
-    <input placeholder="{{action}} User Email" matInput [(ngModel)]="local_data.email">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="action != 'Delete';">
+  <mat-form-field *ngIf="action != 'ResetPassword'; else elseTemplate">
     <input placeholder="{{action}} User Firstname" matInput [(ngModel)]="local_data.firstname">
   </mat-form-field>
 
-  <mat-form-field *ngIf="action != 'Delete';">
+  <mat-form-field *ngIf="action != 'ResetPassword';">
     <input placeholder="{{action}} User Lastname" matInput [(ngModel)]="local_data.lastname">
   </mat-form-field>
 
-  <mat-form-field *ngIf="action != 'Delete';">
-    <input placeholder="{{action}} User Password" matInput [(ngModel)]="local_data.password">
-  </mat-form-field>
-  
-  <mat-form-field *ngIf="action != 'Delete';">
-    <input placeholder="{{action}} User Permission" matInput [(ngModel)]="local_data.permission">
+  <mat-form-field *ngIf="action != 'ResetPassword';">
+    <input placeholder="{{action}} User Email" matInput [(ngModel)]="local_data.email">
   </mat-form-field>
 
+
   <ng-template #elseTemplate>
-    Sure to delete this User: <b>{{local_data.id}}</b>?
+    Are you sure to reset the current password of <b>{{local_data.firstname}}</b>?
+    New pass: {{this.newPassword}}
   </ng-template>
 </div>
 <div mat-dialog-actions style="padding-left:20px">
-  <button mat-button (click)="doAction()" mat-flat-button color="primary">{{action}}</button>
+  <button mat-button (click)="doAction()" mat-flat-button color="primary">Accept</button>
   <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
 </div>

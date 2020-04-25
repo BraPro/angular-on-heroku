@@ -120,9 +120,9 @@
   transition: all 0.5s ease;
 }
 
-.fa-trash-o:hover {
-  color: red;
-  text-shadow: 0 0 10px red;
+.fa-key:hover {
+  color: green;
+  text-shadow: 0 0 10px green;
   transition: all 0.5s ease;
 }
 

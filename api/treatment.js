@@ -11,9 +11,7 @@ module.exports = function (app, pageLocation) {
 	});
 
 	//get all treatments
-	app.get(pageLocation, function(req, res) {	
-		if(!req.session.user) return res.json({response : 'Error'}); //block guests
-		
+	app.get(pageLocation, function(req, res) {		
 		Treatment.find({}, (err, result) => {
 			if(err) return res.json({response : 'Error'});
 			return res.json(result);
@@ -21,9 +19,7 @@ module.exports = function (app, pageLocation) {
 	});
 
 	//add new treatment
-	app.post(pageLocation, function(req, res) {
-		if(!req.session.user) return res.json({response : 'Error'}); //block guests
-		
+	app.post(pageLocation + '/add', function(req, res) {	
 		Counter.findByIdAndUpdate(counter, { $inc: { seq: 1 } }, { new: true }, (err, result) => {
 			if(err) return res.json({response : 'Error'});
 			
@@ -41,9 +37,7 @@ module.exports = function (app, pageLocation) {
 	});
 	
 	//update treatment
-	app.put(pageLocation + '/:id', function(req, res) {
-		if(!req.session.user) return res.json({response : 'Error'}); //block guests
-		
+	app.put(pageLocation + '/:id', function(req, res) {	
 		req.body._id = req.params.id;
 		var updateTreatment =  new Treatment(req.body);
 		//updateTreatment.customer = htmlspecialchars(updateTreatment.customer); //prevet html injection
@@ -59,8 +53,6 @@ module.exports = function (app, pageLocation) {
 	
 	//delete treatment
 	app.delete(pageLocation + '/:id', function(req, res) {
-		if(!req.session.user) return res.json({response : 'Error'}); //block guests
-
 		Treatment.findByIdAndRemove(Number(req.params.id), (err, result) => {
 			if (err) return res.json({response : 'Error'});
 			

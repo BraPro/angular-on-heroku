@@ -6,53 +6,43 @@ import { CarDialogBoxComponent } from '../main/dialog-box/car-dialog-box.compone
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { GarageService , UserService ,TreatmentService } from '../_services';
+import { first } from 'rxjs/operators';
+import { Treatment } from '@app/_models';
+import { SharedService } from '@app/shared/shared.service';
+
 
  
-export interface TreatmentData {
-  id: number;
-  car: number;
-  customer: string;
-  details: string;
-  status: string;
-}
- 
-const ELEMENT_DATA: TreatmentData[] = [
-  {id: 1560608769632, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769633, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769634, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769635, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769636, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769637, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769638, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769639, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769640, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769641, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769642, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769643, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769644, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769645, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769646, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-  {id: 1560608769647, car:123456789, customer:'shlomi', details:'פנצר', status:'waiting'},
-];
+
 @Component({
   selector: 'app-garagetable',
   templateUrl: './garagetable.component.html',
   styleUrls: ['./garagetable.component.css']
 })
 export class GarageTableComponent implements OnInit {
-  displayedColumns: string[] = ['id','car','customer','details','status','action'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
- 
+  displayedColumns: string[] = ['date','id','carid','cost','status','details','action'];
+  dataSource = new MatTableDataSource<Treatment>();
+  
+
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  
 
   ngOnInit() {
+    this.refreshTable();
 	  this.dataSource.sort = this.sort;
 	  this.dataSource.paginator = this.paginator;
 	}
  
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog,
+    private garageService : GarageService,
+    private userService : UserService,
+    private treatmentService:TreatmentService,
+    private sharedService: SharedService){
+    }
+
+ 
  
   openDialog(action,obj) {
     obj.action = action;
@@ -73,37 +63,77 @@ export class GarageTableComponent implements OnInit {
   }
  
   addRowData(row_obj){
-    var d = new Date();
+    this.treatmentService.add(row_obj)
+		.pipe(first())
+		.subscribe(
+			data => {
+        //import to table
+        this.refreshTable();
+			},
+			error => {
+				//this.alertService.error(error);
+				this.sharedService.sendAlertEvent(error);
+			},
+			() => {
+			});
+   /* var d = new Date();
     this.dataSource.data.push({
       id:d.getTime(),
-      car:row_obj.car,
+      carid:row_obj.car,
       customer:row_obj.customer,
       details:row_obj.details,
       status:row_obj.status,
     });
     this.table.renderRows();
-    this.refreshTable();
+    this.refreshTable();*/
     
   }
   updateRowData(row_obj){
-     this.dataSource.data = this.dataSource.data.filter((value,key)=>{
+    this.treatmentService.update(row_obj)
+		.pipe(first())
+		.subscribe(
+			data => {
+        //import to table
+        this.refreshTable();
+			},
+			error => {
+				//this.alertService.error(error);
+				this.sharedService.sendAlertEvent(error);
+			},
+			() => {
+			});
+    /*this.dataSource.data = this.dataSource.data.filter((value,key)=>{
       if(value.id == row_obj.id){
-        value.car = row_obj.car;
+        value.carid = row_obj.car;
         value.customer = row_obj.customer;
         value.details = row_obj.details;
         value.status = row_obj.status;
       }
       this.refreshTable();
       return true;
-    });
+    });*/
   
     
   }
   deleteRowData(row_obj){
-    this.dataSource.data = this.dataSource.data.filter((value,key)=>{
+    this.treatmentService.delete(row_obj._id)
+		.pipe(first())
+		.subscribe(
+			data => {
+        //import to table
+        this.refreshTable();
+			},
+			error => {
+				//this.alertService.error(error);
+				this.sharedService.sendAlertEvent(error);
+			},
+			() => {
+      });
+      
+    /*this.dataSource.data = this.dataSource.data.filter((value,key)=>{
       return value.id != row_obj.id;
     });
-    this.refreshTable();
+    this.refreshTable();*/
   }
 
   applyFilter(event: Event) {
@@ -112,6 +142,19 @@ export class GarageTableComponent implements OnInit {
   }
   
   private refreshTable() {
+    this.garageService.getTreatmentsById(Number(this.userService.currentUserValue.garage))
+		.pipe(first())
+		.subscribe(
+			data => {
+        //import to table
+        this.dataSource.data=data;
+			},
+			error => {
+				//this.alertService.error(error);
+				this.sharedService.sendAlertEvent(error);
+			},
+			() => {
+			});
     this.dataSource.paginator = this.paginator;
 }
  

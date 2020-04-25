@@ -13,7 +13,7 @@ import { first } from 'rxjs/operators';
 })
 export class SideComponent implements OnInit {
   @ViewChild('menu') menu;
-  permission: string //'New Employee','Employee', 'Manager', 'Admin', 'None'
+  permission: string;//'New Employee','Employee', 'Manager', 'Admin', 'None'
   selected:string;
   subscription: Subscription;
   public _router: Router;
