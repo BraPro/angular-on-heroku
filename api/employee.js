@@ -17,6 +17,7 @@ module.exports = function (app, apiLocation) {
 	app.get(apiLocation + '/:id', function(req, res) {	
 		Employee.findById(Number(req.params.id),  (err, result) => {
 			if(err) return res.json({response : 'Error'});
+			if(result == null) return res.json({response : 'Error', msg : 'Employee doesnt exist'}); 
 			return res.json(result);
 		});
 	});
@@ -25,6 +26,7 @@ module.exports = function (app, apiLocation) {
 	app.get(apiLocation + '/:id/full', function(req, res) {	
 		Employee.findById(Number(req.params.id), (err, result) => {
 			if(err) return res.json({response : 'Error'});
+			if(result == null) return res.json({response : 'Error', msg : 'Employee doesnt exist'}); 
 			var fullEmployee = result;
 			Employee.findById(Number(result.manager), (err, result) => {
 				fullEmployee.manager = result;
@@ -40,6 +42,7 @@ module.exports = function (app, apiLocation) {
 	app.get(apiLocation + '/:id/manager', function(req, res) {	
 		Employee.findById(Number(req.params._id), (err, result) => {
 			if(err) return res.json({response : 'Error'});
+			if(result == null) return res.json({response : 'Error', msg : 'Employee doesnt exist'}); 
 			Employee.findById(Number(result.manager), (err, result) => {
 				if(err) return res.json({response : 'Error'});
 				return res.json(result);
@@ -51,6 +54,7 @@ module.exports = function (app, apiLocation) {
 	app.get(apiLocation + '/:id/garage', function(req, res) {	
 		Employee.findById(Number(req.params._id), (err, result) => {
 			if(err) return res.json({response : 'Error'});
+			if(result == null) return res.json({response : 'Error', msg : 'Employee doesnt exist'}); 
 			Garage.findById(result.garage, (err, result) => {
 				if(err) return res.json({response : 'Error'});
 				return res.json(result);
@@ -63,8 +67,8 @@ module.exports = function (app, apiLocation) {
 		var updateEmployee =  new Employee(req.body);
 		updateEmployee._id = Number(req.params._id);
 		Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
-			if(err || result == null) return res.json({response : 'Error'});
-			
+			if(err) return res.json({response : 'Error'});
+			if(result == null) return res.json({response : 'Error', msg : 'Employee doesnt exist'}); 
 			return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' was updated'}); 
 		});
 	});

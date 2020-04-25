@@ -51,8 +51,8 @@ module.exports = function (app, pageLocation) {
 		//updateTreatment.details = htmlspecialchars(updateTreatment.details); //prevet html injection
 		//updateTreatment.date = Date.now();
 		Treatment.findByIdAndUpdate(updateTreatment, { $set: updateTreatment }, (err, result) => {
-			if(err || result == null) return res.json({response : 'Error'});
-			
+			if(err) return res.json({response : 'Error'});
+			if(result == null) return res.json({response : 'Error', msg : 'Treatment doesnt exist'}); 
 			return res.json({response : 'Success', msg : 'Treatment number ' + updateTreatment._id + ' was updated'}); 
 		});
 	});

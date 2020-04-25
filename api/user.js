@@ -69,10 +69,11 @@ module.exports = function (app, apiLocation) {
 		Employee.findOne({email: req.body.email.toLowerCase()}, (err, result) => {
 			if(err) return res.json({response : 'Error'});
 			if((result == null) || (result.password != req.body.password)) return res.json({response : 'Error', msg : 'Incorrect username or password'});
-			
+			result = result.toJSON();
 			const token = jwt.sign({ id: result._id }, secret);
-			result.password = null;
-			return res.json({response : 'Success', msg : 'Login successful', data: result, token });
+			delete result.password;
+			result.token = token;
+			return res.json({response : 'Success', msg : 'Login successful', data: result });
 		});
 	});
 	
