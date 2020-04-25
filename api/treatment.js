@@ -19,7 +19,7 @@ module.exports = function (app, pageLocation) {
 			return res.json(result);
 		});
 	});
-	
+
 	//add new treatment
 	app.post(pageLocation, function(req, res) {
 		if(!req.session.user) return res.json({response : 'Error'}); //block guests

@@ -116,7 +116,7 @@ module.exports = function (app, apiLocation) {
 	});
 
 	//get garage treatments by id
-	app.get(apiLocation + '/:id/employees', function(req, res) {	
+	app.get(apiLocation + '/:id/treatments', function(req, res) {	
 		Garage.findById(Number(req.params.id), (err, result) => {
 			if(err) return res.json({response : 'Error'});	
 			if(result == null) return res.json({response : 'Error', msg : 'Garage doesnt exist'}); 
