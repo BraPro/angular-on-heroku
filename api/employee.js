@@ -3,9 +3,6 @@ const Counter = require('../models/counter');
 const Garage = require('../models/garage');
 const htmlspecialchars = require('htmlspecialchars');
 
-const jwt = require('express-jwt');
-const jwtc = require('../jwt').isRevoked;
-
 module.exports = function (app, apiLocation) {
   
 	//get all employees

@@ -18,7 +18,7 @@ function jwt() {
 
 function isRevoked(req, payload, done) {
     if(!Number(payload.id))
-        return done(new Error('missing_secret'));
+        return done(new Error('Invalid token'));
     Employee.findById(Number(payload.id), (err, result) => {
         if(err) return done(err);
         if (!result) { return done(new Error('missing_secret')); }
