@@ -6,18 +6,18 @@ import {Employee} from '../_models/employee'
   providedIn: 'root'
 })
 
-export class SharedService {
+export class SharedService{
   private alertMessage = new Subject<any>();
-  private lol:string;
   employeeData: Employee;
-  
+  isLogged :boolean;
   loginState: BehaviorSubject<any>;
   loginStateObservable: Observable<string>;
   selectState: BehaviorSubject<string>;
   selectStateObservable: Observable<string>;
 
   constructor() {
-    this.loginState = new BehaviorSubject<any>('loggedout');
+    this.isLogged=false;
+    this.loginState = new BehaviorSubject<any>('None');
     this.loginStateObservable = this.loginState.asObservable();
     this.selectState = new BehaviorSubject<string>('main');
     this.selectStateObservable = this.selectState.asObservable();
@@ -25,6 +25,9 @@ export class SharedService {
 
   loginUser(data:Employee) {
     this.employeeData=data;
+    this.isLogged=true;
+    localStorage.setItem('employeeData',JSON.stringify(data));
+    localStorage.setItem('isLogged',JSON.stringify(this.isLogged));
     console.log(this.employeeData.status);
     this.loginState.next(this.employeeData.status);
   }
@@ -40,8 +43,19 @@ export class SharedService {
   getAlertEvent(): Observable<any>{ 
     return this.alertMessage.asObservable();
   }
-  
 
+  WebRefreshed(){
+     this.isLogged = JSON.parse(localStorage.getItem('isLogged'));
+     if(this.isLogged){
+     this.employeeData = JSON.parse(localStorage.getItem('employeeData'));
+     this.loginState.next(this.employeeData.status);
+    }
+  }
 
+  logoutUser(){
+    localStorage.removeItem('isLogged');
+    localStorage.removeItem('employeeData');
+    this.isLogged=false;
+  }
   
 }

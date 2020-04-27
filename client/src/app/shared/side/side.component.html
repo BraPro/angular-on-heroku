@@ -4,7 +4,7 @@
 <mat-sidenav mode="side" opened>
 <nav class="main-menu" >
     <ul >
-    <div *ngIf="true;else blocked"> 
+    <div *ngIf="checkpermission('active');else blocked"> 
       <li (click)="Select('Income')">
           <a href="/main" [ngClass]="{'is-active ': selected=='Income'}" onclick="return false;">
               <i class="fa fa-bar-chart-o fa-2x"  [ngClass]="{'is-active ': selected=='Income'}" #Income></i>
@@ -32,7 +32,7 @@
               </span>
           </a>
       </li>
-      <li *ngIf="true" #menu (click)="Select('Users')">
+      <li *ngIf="checkpermission('users')" #menu (click)="Select('Users')">
           <a href="/main" [ngClass]="{'is-active ': selected=='Users'}" onclick="return false;">
              <i class="fa fa-list fa-2x"  [ngClass]="{'is-active ': selected=='Users'}" #Users ></i>
               <span class="nav-text">

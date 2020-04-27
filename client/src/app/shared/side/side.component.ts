@@ -13,8 +13,8 @@ import { first } from 'rxjs/operators';
 })
 export class SideComponent implements OnInit {
   @ViewChild('menu') menu;
-  permission: string;//'New Employee','Employee', 'Manager', 'Admin', 'None'
-  selected:string;
+  permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
+  selected:string;  //'Income','Treatment','Map','Users','Welcome','Blocked'
   subscription: Subscription;
   public _router: Router;
   router: any;
@@ -51,6 +51,7 @@ export class SideComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
+          this._loginService.logoutUser();
           this.router.navigate(['/']); //need to delete!!
         },
         error => {
@@ -82,6 +83,7 @@ export class SideComponent implements OnInit {
   }
 
   ngOnInit(){
+    this._loginService.WebRefreshed();
     this.putselect();
     this._loginService.selectMenu(this.selected);
   }
