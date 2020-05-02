@@ -127,7 +127,7 @@ export class UserTableComponent implements OnInit {
   }
   
   private refreshTable() {
-    this.employeeService.getAll()
+    this.employeeService.getAllFull()
 		.pipe(first())
 		.subscribe(
 			data => {

@@ -11,6 +11,10 @@ export class EmployeeService {
         return this.http.get<Employee[]>(`${environment.apiUrl}/employees`);
     }
 
+    getAllFull() {
+        return this.http.get<Employee[]>(`${environment.apiUrl}/employees/full`);
+    }
+
     getById(id: number) {
         return this.http.get<Employee>(`${environment.apiUrl}/employees/${id}`);
     }
