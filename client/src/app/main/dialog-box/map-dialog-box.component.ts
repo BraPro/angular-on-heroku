@@ -12,7 +12,8 @@ export class MapDialogBoxComponent {
  
   action:string;
   local_data:Garage;
-  
+
+
   constructor(
     public dialogRef: MatDialogRef<MapDialogBoxComponent>,
     //@Optional() is used to prevent error if no data is passed

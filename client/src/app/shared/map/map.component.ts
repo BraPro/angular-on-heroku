@@ -2,7 +2,9 @@ import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { MapDialogBoxComponent } from '../../main/dialog-box/map-dialog-box.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Garage } from '../../_models'
-
+import { GarageService } from '../../_services';
+import { SharedService } from '@app/shared/shared.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-map',
@@ -15,12 +17,14 @@ import { Garage } from '../../_models'
 export class MapComponent implements AfterViewInit {
   @ViewChild("mapContainer", { static: false }) gmap: ElementRef;
   map: google.maps.Map;
-  israel = {lat: 32.615846, lng: 35.304594};
+  israel = {lat: 31.771959, lng: 35.217018};
   selected = 'None';
+  garages:Garage;
 
-  constructor(public dialog: MatDialog){};
+  constructor(public dialog: MatDialog,private garageService:GarageService,private sharedService: SharedService,){};
 
   openDialog(action) {
+    
     var Sendmarkers = [this.markers,action];
     const dialogRef = this.dialog.open(MapDialogBoxComponent, {
       width: '250px',
@@ -38,25 +42,19 @@ export class MapComponent implements AfterViewInit {
   
   markers = [
     {
-      position: new google.maps.LatLng(32.800861, 35.104454),
-      map: this.map,
-      title: "Arik-Garage",
-      icon:"https://img.icons8.com/dusk/40/000000/car-service.png",
-      animation: google.maps.Animation.DROP
+      lat:32.800861,
+      lng:35.104454,
+      name: "Arik-Garage",
     },
     {
-      position: new google.maps.LatLng(32.847993, 35.063184),
-      map: this.map,
-      title: "Dor-Garage",
-      icon:"https://img.icons8.com/dusk/40/000000/car-service.png",
-      animation: google.maps.Animation.DROP
+      lat:32.847993,
+      lng:35.063184,
+      name: "Dor-Garage",
     },
-    {
-    position: new google.maps.LatLng(32.615846, 35.304594),
-    map: this.map,
-    title: "Shlomi-Garage",
-    icon:"https://img.icons8.com/dusk/40/000000/car-service.png",
-    animation: google.maps.Animation.DROP
+    { 
+    lat:32.615846,
+    lng:35.304594,
+    name: "Shlomi-Garage",
     }
   ];
 
@@ -67,7 +65,7 @@ export class MapComponent implements AfterViewInit {
 
   mapOptions: google.maps.MapOptions = {
     center: this.israel,
-    zoom: 10
+    zoom: 8
   };
 
   //Default Marker
@@ -96,29 +94,46 @@ export class MapComponent implements AfterViewInit {
     this.marker.setMap(this.map);
 
     //Adding other markers
-    this.loadAllMarkers();
+    this.loadAllMarkers(this.map);
   }
 
-  loadAllMarkers(): void {
-    this.markers.forEach(markerInfo => {
-      //Creating a new marker object
-      const marker = new google.maps.Marker({
-        ...markerInfo
-      });
+  loadAllMarkers(themap): void {
 
-      //creating a new info window with markers info
-      const infoWindow = new google.maps.InfoWindow({
-        content: marker.getTitle()
-      });
+    this.garageService.getAll()
+		.pipe(first())
+		.subscribe(
+			data => {
+        //import marks to map
+        var check = [];
+        var bounds = new google.maps.LatLngBounds();
+      
+        data.forEach(function (marker) {
+          var position = new google.maps.LatLng(marker.location.position.lat, marker.location.position.lng);
+          check.push(
+            new google.maps.Marker({
+              position: position,
+              map: themap,
+              title: marker.name,
+              icon:"https://img.icons8.com/dusk/40/000000/car-service.png",
+              animation: google.maps.Animation.DROP
+            })
+          );
+      
+          bounds.extend(position);
+        });
+      
+       // this.map.fitBounds(bounds);  מרכז את המפה סביב הנקודות.
 
-      //Add click event to open info window on marker
-      marker.addListener("click", () => {
-        infoWindow.open(marker.getMap(), marker);
-      });
-
-      //Adding marker to google map
-      marker.setMap(this.map);
-    }); }
+			},
+			error => {
+				//this.alertService.error(error);
+				this.sharedService.sendAlertEvent(error);
+			},
+			() => {
+			});
+    
+    
+    } 
 
     selectControl(controlDiv){
       // Set CSS for the control interior.
@@ -165,6 +180,7 @@ export class MapComponent implements AfterViewInit {
       geocoder.geocode({'address': address}, function(results, status) {
         if (status === 'OK') {
           resultsMap.setCenter(results[0].geometry.location);
+          resultsMap.zoom=10;
           alert(results[0].geometry.location);
         } else {
           alert('Geocode was not successful for the following reason: ' + status);
