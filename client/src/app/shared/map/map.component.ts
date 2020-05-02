@@ -186,7 +186,8 @@ export class MapComponent implements AfterViewInit {
         .pipe(first())
          .subscribe(
         data => {
-           this.sharedService.sendAlertEvent(data);
+           //this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
+           //this.sharedService.sendAlertEvent(data);
            this.loadAllMarkers(this.map);
         },
          error => {

@@ -7,7 +7,7 @@ import {Employee} from '../_models/employee'
 })
 
 export class SharedService{
-  private alertMessage = new Subject<any>();
+  alertMessage = new Subject<any>();
   employeeData: Employee;
   isLogged :boolean;
   loginState: BehaviorSubject<any>;
