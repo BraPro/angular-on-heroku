@@ -5,9 +5,9 @@ const locationSchema = new mongoose.Schema({
 	country: {type: String, required: true},
 	city: {type: String, required: true},
 	street: {type: String, required: true},
-	coordinates: { type: {
-		latitude:  { type: Number },
-		latitude:  { type: Number }
+	position: { type: {
+		lat:  { type: Number },
+		lng:  { type: Number }
 	}},
 });
 
