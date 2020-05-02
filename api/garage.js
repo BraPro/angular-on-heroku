@@ -11,6 +11,71 @@ module.exports = function (app, apiLocation) {
 		if(err) console.log('Counter of garages is already exists');
 	});
 
+	//get garages report
+	app.get(apiLocation + '/report', function(req, res) {
+		Garage.find({}, (err, result) => {
+			if(err) return res.json({response : 'Error'});
+			 
+			async function processItems(result){
+				af = [];
+				for(element of result) {
+					var fullGarage = element.toJSON();
+					const mang = await Employee.findById(fullGarage.manager);
+					fullGarage.manager = mang;
+					if(fullGarage.manager)
+						delete fullGarage.manager.password;
+					const emps = await Employee.find({garage: fullGarage._id});
+					fullGarage.employees = emps.length;
+					var lastyear = new Date(Date.now());
+					lastyear.setMonth(lastyear.getMonth() - 12);
+					var now = new Date(Date.now());
+					const trtms = await Treatment.aggregate([
+								{
+									$match: {
+										garage: Number(element._id),
+									},
+								},
+								{
+									$match: {
+										date: {
+											$gte: lastyear,
+											$lte: now
+										}
+									},
+								},
+								{
+									$project: {
+										id: "$garage",
+										year: {$year: "$date"},
+										month: {$month: "$date"},
+										day: {$dayOfMonth: "$date"},
+										cost: "$cost"
+									}
+								},
+								{
+									$group: {
+										_id: {
+											month: "$month",
+											year: "$year"
+										},
+										count: {
+											$sum: { "$sum" : 1 } ,
+										},
+										cost: {
+											$sum: { "$sum" : "$cost" } ,
+										}
+									}	
+								}
+					]);
+					fullGarage.report = trtms;
+					af.push(fullGarage);
+				}
+				return res.json(af);
+			};
+			processItems(result);
+		});
+	});
+
 	//get all garages
 	app.get(apiLocation, function(req, res) {	
 		Garage.find({}, (err, result) => {
@@ -89,72 +154,6 @@ module.exports = function (app, apiLocation) {
 					 });
 				});
 			});
-		});
-	});
-
-	//get garages report
-	app.get(apiLocation + '/ancc', function(req, res) {
-		console.log('a');
-		return res.json({'a':'a'});
-		
-		Garage.find({}, (err, result) => {
-			console.log('a');
-			if(err) return res.json({response : 'Error'});
-			 
-			async function processItems(result){
-				for(element of result) {
-					var fullGarage = element.toJSON();
-					const mang = await Employee.findById(fullGarage.manager);
-					delete mang.password;
-					fullGarage.manager = mang;
-					const emps = await Employee.find({garage: fullGarage._id});
-					fullGarage.employees = emps.length;
-					var lastyear = new Date(Date.now());
-					lastyear.setMonth(lastyear.getMonth() - 12);
-					var now = new Date(Date.now());
-					const trtms = await Treatment.aggregate([
-								{
-									$match: {
-										garage: Number(element._id),
-									},
-								},
-								{
-									$match: {
-										date: {
-											$gte: lastyear,
-											$lte: now
-										}
-									},
-								},
-								{
-									$project: {
-										id: "$garage",
-										year: {$year: "$date"},
-										month: {$month: "$date"},
-										day: {$dayOfMonth: "$date"},
-										cost: "$cost"
-									}
-								},
-								{
-									$group: {
-										_id: {
-											month: "$month",
-											year: "$year"
-										},
-										count: {
-											$sum: { "$sum" : 1 } ,
-										},
-										cost: {
-											$sum: { "$sum" : "$cost" } ,
-										}
-									}	
-								}
-							]);
-						fullGarage.report = trtms;
-					};
-					return res.json(result);
-				}
-			processItems(result);
 		});
 	});
 
