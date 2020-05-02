@@ -13,6 +13,23 @@ module.exports = function (app, apiLocation) {
 		});
 	});
 	
+	//get full all employees
+	app.get(apiLocation + '/full', function(req, res) {	
+		Employee.find({}, (err, result) => {
+			if(err) return res.json({response : 'Error'});
+			async function processItems(result){
+				for(element of result) {
+					const mang = await Employee.findById(Number(element.manager));
+					element.manager = mang;
+					const gara =  await Garage.findById(element.garage);
+					element.garage = gara;
+				}
+				return res.json(result);
+			};
+			processItems(result);
+		});
+	});
+
 	//get employee by id
 	app.get(apiLocation + '/:id', function(req, res) {	
 		Employee.findById(Number(req.params.id),  (err, result) => {
