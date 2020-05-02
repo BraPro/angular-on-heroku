@@ -56,6 +56,7 @@ import { SharedService } from './shared/shared.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CarDialogBoxComponent } from './main/dialog-box/car-dialog-box.component';
 import { UserDialogBoxComponent } from './main/dialog-box/user-dialog-box.component';
+import { MapDialogBoxComponent } from './main/dialog-box/map-dialog-box.component';
 
 
   
@@ -82,6 +83,7 @@ import { UserDialogBoxComponent } from './main/dialog-box/user-dialog-box.compon
     GarageTableComponent,
     CarDialogBoxComponent,
     UserDialogBoxComponent,
+    MapDialogBoxComponent,
     MapComponent,
      
   ],

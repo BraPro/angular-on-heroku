@@ -1,0 +1,26 @@
+<h1 mat-dialog-title><strong>{{action}} Garage</strong></h1>
+<div mat-dialog-content>                                                
+  <mat-form-field appearance="outline" *ngIf="action != 'Choose'; else elseTemplate">
+    <mat-label>{{action}} Name</mat-label>
+    <input  matInput [(ngModel)]="local_data.name">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" *ngIf="action != 'Choose';">
+    <mat-label>{{action}} Full Address </mat-label>
+    <input  matInput [(ngModel)]="local_data.location">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" *ngIf="action != 'Choose';">
+    <mat-label>{{action}} Manager</mat-label>
+    <input  matInput [(ngModel)]="local_data.manager">
+  </mat-form-field>
+
+
+  <ng-template #elseTemplate>
+    Choose: <b>lololol</b>?
+  </ng-template>
+</div>
+<div mat-dialog-actions style="padding-left:20px">
+  <button mat-button (click)="doAction()" mat-flat-button color="primary">{{action}}</button>
+  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+</div>

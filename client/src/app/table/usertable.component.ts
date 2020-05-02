@@ -6,7 +6,7 @@ import { UserDialogBoxComponent } from '../main/dialog-box/user-dialog-box.compo
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Treatment, Employee } from '@app/_models';
+import { Employee } from '@app/_models';
 import { GarageService , UserService ,TreatmentService } from '../_services';
 import { SharedService } from '@app/shared/shared.service';
 import { first } from 'rxjs/operators';

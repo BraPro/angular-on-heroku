@@ -2,5 +2,6 @@ export class Location {
     country: string;
     city: string;
     street: string;
-    coordinates: {latitude: number, longitude: number};
+    address:string;
+    position: {lat: number, lng: number};
 }
