@@ -2,28 +2,23 @@
 <div mat-dialog-content>                                                
   <mat-form-field appearance="outline" *ngIf="action != 'Choose'; else elseTemplate">
     <mat-label>{{action}} Name</mat-label>
-  <!--  <input  matInput [(ngModel)]="local_data.name"> -->
-  <input  matInput>
+    <input matInput [(ngModel)]="action_data.name">
   </mat-form-field>
 
   <mat-form-field appearance="outline" *ngIf="action != 'Choose';">
     <mat-label>{{action}} Country </mat-label>
-  <!--  <input  matInput [(ngModel)]="local_data.location.country">-->
-  <input  matInput>
+    <input matInput [(ngModel)]="action_data.location.country">
   </mat-form-field>
 
   <mat-form-field appearance="outline" *ngIf="action != 'Choose';">
     <mat-label>{{action}} City</mat-label>
- <!--   <input  matInput [(ngModel)]="local_data.location.city"> -->
-  <input  matInput>
+    <input matInput [(ngModel)]="action_data.location.city">
   </mat-form-field>
 
   <mat-form-field appearance="outline" *ngIf="action != 'Choose';">
     <mat-label>{{action}} Street</mat-label>
-  <!--  <input  matInput [(ngModel)]="local_data.location.street"> -->
-  <input  matInput>
+    <input matInput [(ngModel)]="action_data.location.street">
   </mat-form-field>
-
 
   <ng-template #elseTemplate>
     Choose: <b>lololol</b>?
