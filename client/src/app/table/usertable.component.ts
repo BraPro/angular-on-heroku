@@ -49,41 +49,20 @@ export class UserTableComponent implements OnInit {
     });
  
     dialogRef.afterClosed().subscribe(result => {
+      if(result.data.garage != null){
+        result.data.garage = result.data.garage._id;
+      }
+      if(result.data.manager != null){
+        result.data.manager = result.data.manager._id;
+      }
       if(result.event == 'ResetPassword'){
-        this.ResetRowPass(result.data);
+        this.updateRowData(result.data);
       }else if(result.event == 'Edit'){
         this.updateRowData(result.data);
       }
     });
   }
  
-  ResetRowPass(row_obj){
-
-    this.employeeService.update(row_obj)
-		.pipe(first())
-		.subscribe(
-			data => {
-        //import to table
-        this.refreshTable();
-			},
-			error => {
-				//this.alertService.error(error);
-				this.sharedService.sendAlertEvent(error);
-			},
-			() => {
-			});
-    /* this.dataSource.data.push({
-      id:row_obj.id,
-      email:row_obj.email,
-      firstname:row_obj.firstname,
-      lastname:row_obj.lastname,
-      password:row_obj.password,
-      permission:row_obj.permission,
-    });
-    this.table.renderRows();
-    this.refreshTable();*/
-    
-  }
   updateRowData(row_obj){
     this.employeeService.update(row_obj)
 		.pipe(first())
@@ -98,21 +77,8 @@ export class UserTableComponent implements OnInit {
 			},
 			() => {
 			});
-
-    /*this.dataSource.data = this.dataSource.data.filter((value,key)=>{
-      if(value.id == row_obj.id){
-        value.email=row_obj.email;
-        value.firstname=row_obj.firstname;
-        value.lastname=row_obj.lastname;
-        value.password=row_obj.password;
-        value.permission=row_obj.permission;
-      }
-      this.refreshTable();
-      return true;
-    });*/
-  
-    
   }
+  
   deleteRowData(row_obj){
 
   /*  this.dataSource.data = this.dataSource.data.filter((value,key)=>{
