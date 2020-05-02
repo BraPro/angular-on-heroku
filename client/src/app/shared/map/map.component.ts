@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { MapDialogBoxComponent } from '../../main/dialog-box/map-dialog-box.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Garage } from '../../_models'
+import { Garage, Location } from '../../_models'
 import { GarageService } from '../../_services';
 import { SharedService } from '@app/shared/shared.service';
 import { first } from 'rxjs/operators';
@@ -19,13 +19,16 @@ export class MapComponent implements AfterViewInit {
   map: google.maps.Map;
   israel = {lat: 31.771959, lng: 35.217018};
   selected = 'None';
-  garages:Garage;
+  garages:Garage[];
 
-  constructor(public dialog: MatDialog,private garageService:GarageService,private sharedService: SharedService,){};
+
+  constructor(public dialog: MatDialog,private garageService:GarageService,private sharedService: SharedService){
+  
+  };
 
   openDialog(action) {
     
-    var Sendmarkers = [this.markers,action];
+    var Sendmarkers = [this.garages,action];
     const dialogRef = this.dialog.open(MapDialogBoxComponent, {
       width: '250px',
       data:Sendmarkers
@@ -40,24 +43,6 @@ export class MapComponent implements AfterViewInit {
     });
   }
   
-  markers = [
-    {
-      lat:32.800861,
-      lng:35.104454,
-      name: "Arik-Garage",
-    },
-    {
-      lat:32.847993,
-      lng:35.063184,
-      name: "Dor-Garage",
-    },
-    { 
-    lat:32.615846,
-    lng:35.304594,
-    name: "Shlomi-Garage",
-    }
-  ];
-
   
 
   //Coordinates to set the center of the map
@@ -103,10 +88,11 @@ export class MapComponent implements AfterViewInit {
 		.pipe(first())
 		.subscribe(
 			data => {
+        
+        this.garages=data;
         //import marks to map
         var check = [];
         var bounds = new google.maps.LatLngBounds();
-      
         data.forEach(function (marker) {
           var position = new google.maps.LatLng(marker.location.position.lat, marker.location.position.lng);
           check.push(
@@ -176,25 +162,42 @@ export class MapComponent implements AfterViewInit {
         
     }
 
-    geocodeAddress(geocoder, resultsMap,address) {
-      geocoder.geocode({'address': address}, function(results, status) {
+    geocodeAddress(geocoder,resultsMap,garage) {
+      geocoder.geocode({'address':garage.location.country+','+garage.location.city+','+garage.location.street}, function(results, status) {
         if (status === 'OK') {
-          resultsMap.setCenter(results[0].geometry.location);
-          resultsMap.zoom=10;
-          alert(results[0].geometry.location);
+           resultsMap.setCenter(results[0].geometry.location);
+           resultsMap.zoom=15;
         } else {
           alert('Geocode was not successful for the following reason: ' + status);
         }
       });
+      garage.location.position=resultsMap.center;
+      
     }
    
     
 
-    AddGarage(data:any)
+    AddGarage(garage:any)
     {
-       alert('AddGarage');
        var geocoder = new google.maps.Geocoder();
-       this.geocodeAddress(geocoder, this.map,"adress");
+       this.geocodeAddress(geocoder,this.map,garage);
+       alert(garage.location.position);     
+       this.garageService.add(garage)
+        .pipe(first())
+         .subscribe(
+        data => {
+           this.sharedService.sendAlertEvent(data);
+           this.loadAllMarkers(this.map);
+        },
+         error => {
+         //this.alertService.error(error);
+         this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
+        },
+        () => {
+         });
+
+
+
     }
 
     ChooseGarage(data:any){alert('ChooseGarage');}
