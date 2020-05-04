@@ -20,14 +20,20 @@ export class MapComponent implements AfterViewInit {
   israel = {lat: 31.391959, lng: 35.217018};
   selected = 'None';
   garages:Garage[];
-
+  index:number;
+ 
 
   constructor(public dialog: MatDialog,private garageService:GarageService,private sharedService: SharedService){
   };
 
-  openDialog(action) {
-    
+  openDialog(action,i) {
+    if(action == "Edit"){
+    var Sendmarkers = [this.garages,action,i]; 
+    this.index=i;
+    }
+    else
     var Sendmarkers = [this.garages,action];
+    
     const dialogRef = this.dialog.open(MapDialogBoxComponent, {
       width: '250px',
       data:Sendmarkers
@@ -36,9 +42,13 @@ export class MapComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result.event == 'Add'){
         // AddGarage(garage:any, garageService: GarageService, sharedService: SharedService, map : google.maps.Map, loadAllMarkers : Function)
-        this.AddGarage(result.data, this.garageService, this.sharedService, this.map,  this.loadAllMarkers);
+        this.AddGarage(result.data, this.garageService, this.sharedService, this.map,  this.garages ,this.markers,this.RemoveAllmarkers ,this.loadAllMarkers);
       }else if(result.event == 'Choose'){
         this.ChooseGarage(result.data);
+      }else if(result.event == 'Edit'){
+        this.EditGarage(result.data);
+      }else if(result.event == 'Delete'){
+        this.DeleteGarage(result.data);
       }
     });
   }
@@ -53,9 +63,8 @@ export class MapComponent implements AfterViewInit {
     zoom: 8
   };
 
-  //Default Marker
-  marker = new google.maps.Marker({
-  });
+  //Default Markers
+  markers = [];
 
   ngAfterViewInit(): void {
     this.mapInitializer();
@@ -67,22 +76,11 @@ export class MapComponent implements AfterViewInit {
    this.selectControl(select);
    this.map.controls[google.maps.ControlPosition.LEFT_TOP].push(select);
 
-    //Adding Click event to default marker
-    this.marker.addListener("click", () => {
-      const infoWindow = new google.maps.InfoWindow({
-        content: this.marker.getTitle()
-      });
-      infoWindow.open(this.marker.getMap(), this.marker);
-    });
-
-    //Adding default marker to map
-    this.marker.setMap(this.map);
-
-    //Adding other markers
-    this.loadAllMarkers(this.map);
+    //Adding markers
+    this.loadAllMarkers(this.map , this.markers);
   }
 
-  loadAllMarkers(themap: google.maps.Map): void {
+  loadAllMarkers(themap: google.maps.Map, markers): void {
 
     this.garageService.getAll()
 		.pipe(first())
@@ -90,22 +88,21 @@ export class MapComponent implements AfterViewInit {
 			data => {
         this.garages=data;
         //import marks to map
-        var check = [];
+        var control=this;
         var bounds = new google.maps.LatLngBounds();
-        data.forEach(function (marker) {
+        data.forEach(function (marker,i) {
           var position = new google.maps.LatLng(marker.location.position.lat, marker.location.position.lng);
-          check.push(
-            new google.maps.Marker({
+          var check = new google.maps.Marker({
               position: position,
               map: themap,
               title: marker.name,
               icon:"https://img.icons8.com/dusk/40/000000/car-service.png",
-              animation: google.maps.Animation.DROP
-            }).addListener('click', function(){
-              alert(marker.name);
-            })
-          );
-      
+              animation: google.maps.Animation.DROP,
+            });
+              check.addListener('click', function(){
+                control.openDialog("Edit",i);
+             });
+          markers.push(check);
           bounds.extend(position);
         });
 
@@ -153,17 +150,17 @@ export class MapComponent implements AfterViewInit {
         
       // Setup the click event listeners.
       controlAdd.addEventListener('click', function() {
-        control.openDialog('Add');
+        control.openDialog('Add' ,null);
 
 	  });
 	  
 	    controlChoose.addEventListener('click', function() {
-        control.openDialog('Choose');
+        control.openDialog('Choose' ,null);
 	  });
         
     }
 
-    findLatLang(address, geocoder, mainMap) {
+    findLatLang(address, geocoder) {
       return new Promise(function(resolve, reject) {
           geocoder.geocode({'address': address}, function(results, status) {
               if (status === 'OK') {
@@ -174,30 +171,13 @@ export class MapComponent implements AfterViewInit {
       })
       })
   } 
-
-    geocodeAddress(geocoder,resultsMap,garage) {
-      geocoder.geocode({'address':garage.location.street+', '+garage.location.city+', '+garage.location.country}, function(results, status) {
-        if (status === 'OK') {
-           console.log(results);
-           resultsMap.setCenter(results[0].geometry.location);
-           garage.location.position = {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()};
-           console.log(garage.location);
-           resultsMap.zoom=30;
-        } else {
-          alert('Geocode was not successful for the following reason: ' + status);
-        }
-      });
-    }
    
-    
 
-    async AddGarage(garage:any, garageService: GarageService, sharedService: SharedService, themap : google.maps.Map, loadAllMarkers : Function)
+    async AddGarage(garage:any, garageService: GarageService, sharedService: SharedService, themap : google.maps.Map, garagearray : any ,markers , RemoveAllmarkers,loadAllMarkers)
     {
        var geocoder = new google.maps.Geocoder();
-       //this.geocodeAddress(geocoder, this.map, garage);
-       //garage.location.position = 
        let locationData = [];
-       locationData.push(this.findLatLang(garage.location.street+', '+garage.location.city+', '+garage.location.country, geocoder, this.map))
+       locationData.push(this.findLatLang(garage.location.street+', '+garage.location.city+', '+garage.location.country, geocoder))
        Promise.all(locationData)     
       .then(function(returnVals){
         garage.location.position = returnVals[0]; 
@@ -205,19 +185,9 @@ export class MapComponent implements AfterViewInit {
          .pipe(first())
           .subscribe(
          data => {
-            //this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
-            //loadAllMarkers(map);
             sharedService.sendAlertEvent(data);
-            new google.maps.Marker({
-                position: garage.location.position,
-                map: themap,
-                title: garage.name,
-                icon:"https://img.icons8.com/dusk/40/000000/car-service.png",
-                animation: google.maps.Animation.DROP
-              }).addListener('click', function(){
-                alert(garage.name);
-              });
-           
+            this.RemoveAllmarkers();
+            this.loadAllMarkers(this.map , this.markers);
          },
           error => {
           //this.alertService.error(error);
@@ -225,7 +195,12 @@ export class MapComponent implements AfterViewInit {
          },
          () => {
           });
-      })
+      }.bind(this))
+      
+        
+      
+
+     
       
     }
 
@@ -234,35 +209,49 @@ export class MapComponent implements AfterViewInit {
       this.map.setZoom(15);
   }
 
+    EditGarage(garage:Garage){
+      this.garageService.update(garage)
+      .pipe(first())
+       .subscribe(
+      data => {
+        this.RemoveAllmarkers();
+        this.loadAllMarkers(this.map , this.markers);
+         this.sharedService.sendAlertEvent(data);    
+      },
+       error => {
+        //this.alertService.error(error);
+       this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
+      },
+      () => {
+       });
+
+    }
+   
+    DeleteGarage(garage:Garage){
+      this.garageService.delete(garage._id)
+      .pipe(first())
+       .subscribe(
+      data => {
+          this.RemoveAllmarkers();
+          this.loadAllMarkers(this.map , this.markers);
+          this.sharedService.sendAlertEvent(data);
+      },
+       error => {
+        //this.alertService.error(error);
+       this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
+      },
+      () => {
+       });
+
+    }
+
+    RemoveAllmarkers(){
+      this.markers.forEach(marker => {
+         marker.setMap(null);
+      });
+
+      this.markers=[];
+      this.garages=[];
+    }
+
   }
-
- 
-
-/* map.setCenter({lat: 41.85, lng: -87.65});
-
-var markers;
-var bounds;
-
-
-
-function plotMarkers(m)
-{
-  markers = [];
-  bounds = new google.maps.LatLngBounds();
-
-  m.forEach(function (marker) {
-    var position = new google.maps.LatLng(marker.lat, marker.lng);
-
-    markers.push(
-      new google.maps.Marker({
-        position: position,
-        map: map,
-        animation: google.maps.Animation.DROP
-      })
-    );
-
-    bounds.extend(position);
-  });
-
-  map.fitBounds(bounds);
-}*/
