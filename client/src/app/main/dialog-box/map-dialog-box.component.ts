@@ -11,9 +11,8 @@ import { Garage , Location } from '../../_models'
 })
 export class MapDialogBoxComponent {
   action:string;
-  local_data:Garage[];
+  local_data:Garage;
   action_data: Garage;
-
 
   constructor(
     public dialogRef: MatDialogRef<MapDialogBoxComponent>,
@@ -23,15 +22,23 @@ export class MapDialogBoxComponent {
     this.local_data=data[0];
     this.action_data = new Garage();
     this.action_data.location = new Location();
+    
   }
  
   doAction(){
+   if(this.action == "Add")
+   this.dialogRef.close({event:this.action,data:this.action_data});
+   else
    this.dialogRef.close({event:this.action,data:this.action_data});
   }
  
   closeDialog(){
     this.dialogRef.close({event:'Cancel'});
   }
+
+  onSelection(e, v){
+    this.action_data = e.option.value;
+   }
  
  
 

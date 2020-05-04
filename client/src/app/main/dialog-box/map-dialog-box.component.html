@@ -21,7 +21,11 @@
   </mat-form-field>
 
   <ng-template #elseTemplate>
-    Choose: <b>lololol</b>?
+    <mat-selection-list #list (selectionChange)="onSelection($event, list.selectedOptions)" [multiple]="false">
+      <mat-list-option *ngFor="let garage of local_data" [value]="garage">
+        {{garage.name}}
+      </mat-list-option>
+  </mat-selection-list>
   </ng-template>
 </div>
 <div mat-dialog-actions style="padding-left:20px">

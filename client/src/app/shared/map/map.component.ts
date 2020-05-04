@@ -17,13 +17,12 @@ import { first } from 'rxjs/operators';
 export class MapComponent implements AfterViewInit {
   @ViewChild("mapContainer", { static: false }) gmap: ElementRef;
   map: google.maps.Map;
-  israel = {lat: 31.771959, lng: 35.217018};
+  israel = {lat: 31.391959, lng: 35.217018};
   selected = 'None';
   garages:Garage[];
 
 
   constructor(public dialog: MatDialog,private garageService:GarageService,private sharedService: SharedService){
-  
   };
 
   openDialog(action) {
@@ -36,7 +35,8 @@ export class MapComponent implements AfterViewInit {
  
     dialogRef.afterClosed().subscribe(result => {
       if(result.event == 'Add'){
-        this.AddGarage(result.data);
+        // AddGarage(garage:any, garageService: GarageService, sharedService: SharedService, map : google.maps.Map, loadAllMarkers : Function)
+        this.AddGarage(result.data, this.garageService, this.sharedService, this.map,  this.loadAllMarkers);
       }else if(result.event == 'Choose'){
         this.ChooseGarage(result.data);
       }
@@ -82,13 +82,12 @@ export class MapComponent implements AfterViewInit {
     this.loadAllMarkers(this.map);
   }
 
-  loadAllMarkers(themap): void {
+  loadAllMarkers(themap: google.maps.Map): void {
 
     this.garageService.getAll()
 		.pipe(first())
 		.subscribe(
 			data => {
-        
         this.garages=data;
         //import marks to map
         var check = [];
@@ -102,12 +101,14 @@ export class MapComponent implements AfterViewInit {
               title: marker.name,
               icon:"https://img.icons8.com/dusk/40/000000/car-service.png",
               animation: google.maps.Animation.DROP
+            }).addListener('click', function(){
+              alert(marker.name);
             })
           );
       
           bounds.extend(position);
         });
-      
+
        // this.map.fitBounds(bounds);  מרכז את המפה סביב הנקודות.
 
 			},
@@ -162,46 +163,76 @@ export class MapComponent implements AfterViewInit {
         
     }
 
+    findLatLang(address, geocoder, mainMap) {
+      return new Promise(function(resolve, reject) {
+          geocoder.geocode({'address': address}, function(results, status) {
+              if (status === 'OK') {
+                  resolve({lat : results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()});
+              } else {
+                  reject(new Error('Couldnt\'t find the location ' + address));
+              }
+      })
+      })
+  } 
+
     geocodeAddress(geocoder,resultsMap,garage) {
-      geocoder.geocode({'address':garage.location.country+','+garage.location.city+','+garage.location.street}, function(results, status) {
+      geocoder.geocode({'address':garage.location.street+', '+garage.location.city+', '+garage.location.country}, function(results, status) {
         if (status === 'OK') {
+           console.log(results);
            resultsMap.setCenter(results[0].geometry.location);
-           resultsMap.zoom=15;
+           garage.location.position = {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()};
+           console.log(garage.location);
+           resultsMap.zoom=30;
         } else {
           alert('Geocode was not successful for the following reason: ' + status);
         }
       });
-      garage.location.position=resultsMap.center;
-      
     }
    
     
 
-    AddGarage(garage:any)
+    async AddGarage(garage:any, garageService: GarageService, sharedService: SharedService, themap : google.maps.Map, loadAllMarkers : Function)
     {
        var geocoder = new google.maps.Geocoder();
-       this.geocodeAddress(geocoder,this.map,garage);
-       alert(garage.location.position);     
-       this.garageService.add(garage)
-        .pipe(first())
-         .subscribe(
-        data => {
-           //this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
-           //this.sharedService.sendAlertEvent(data);
-           this.loadAllMarkers(this.map);
-        },
-         error => {
-         //this.alertService.error(error);
-         this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
-        },
-        () => {
-         });
-
-
-
+       //this.geocodeAddress(geocoder, this.map, garage);
+       //garage.location.position = 
+       let locationData = [];
+       locationData.push(this.findLatLang(garage.location.street+', '+garage.location.city+', '+garage.location.country, geocoder, this.map))
+       Promise.all(locationData)     
+      .then(function(returnVals){
+        garage.location.position = returnVals[0]; 
+        garageService.add(garage)
+         .pipe(first())
+          .subscribe(
+         data => {
+            //this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
+            //loadAllMarkers(map);
+            sharedService.sendAlertEvent(data);
+            new google.maps.Marker({
+                position: garage.location.position,
+                map: themap,
+                title: garage.name,
+                icon:"https://img.icons8.com/dusk/40/000000/car-service.png",
+                animation: google.maps.Animation.DROP
+              }).addListener('click', function(){
+                alert(garage.name);
+              });
+           
+         },
+          error => {
+          //this.alertService.error(error);
+          sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
+         },
+         () => {
+          });
+      })
+      
     }
 
-    ChooseGarage(data:any){alert('ChooseGarage');}
+    ChooseGarage(garage:Garage){
+      this.map.setCenter(garage.location.position);
+      this.map.setZoom(15);
+  }
 
   }
 

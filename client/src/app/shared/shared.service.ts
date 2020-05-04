@@ -15,6 +15,8 @@ export class SharedService{
   selectState: BehaviorSubject<string>;
   selectStateObservable: Observable<string>;
 
+  
+
   constructor() {
     this.isLogged=false;
     this.loginState = new BehaviorSubject<any>('None');
@@ -57,5 +59,7 @@ export class SharedService{
     localStorage.removeItem('employeeData');
     this.isLogged=false;
   }
+
+
   
 }
