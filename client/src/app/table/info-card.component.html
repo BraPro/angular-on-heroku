@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="permission != 'None' && permission != 'New Employee'; else newEmployeeTemplate"> 
 
   <div class="row">
     <div class="card2" id="or-border2">
@@ -66,3 +66,52 @@
 
   
 </div>
+
+<ng-template #newEmployeeTemplate>
+  <div *ngIf="permission != 'None'; else noneTemplate">
+    <div class="container" style="height: 809px;">
+    <div class="row">
+      <div class="card2" id="or-border2">
+        <div class="card-header" id="or-header2">
+          Welcome New Employee!
+        </div>
+        <div class="card-main">
+          <i class="material-icons" id="or-color2">
+          home_work
+      </i>
+          <div class="main-description" id="or-color2">
+            Hi, {{this.user.firstname}}
+           <br> <strong>You need to be patient and wait for a manager to assign you a garage.</strong><br> Wefix company wishes you to have a great day!
+             </div>
+           </div>
+         </div>
+    </div> 
+  </div>
+
+  </div>
+</ng-template>
+
+
+<ng-template #noneTemplate>
+  <div class="container" style="height: 809px;">
+  <div class="row">
+    <div class="card2" id="or-border2">
+      <div class="card-header" id="or-header2">
+       Warning!
+      </div>
+      <div class="card-main">
+        <i class="material-icons" id="or-color2">
+        home_work
+    </i>
+        <div class="main-description" id="or-color2">
+          Hi, {{this.user.firstname}}
+         <br> <strong>Your account have been disabled you can contact us for more information.</strong><br> Wefix company wishes you to have a great day!
+           </div>
+         </div>
+       </div>
+      </div>
+  
+</div>
+
+  
+</ng-template>

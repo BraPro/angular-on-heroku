@@ -45,7 +45,7 @@
 
     <li *ngIf="checkpermission('welcome')" #menu (click)="Select('Welcome')">
         <a href="/main" [ngClass]="{'is-active ': selected=='Welcome'}" onclick="return false;">
-           <i class="fa fa-list fa-2x"  [ngClass]="{'is-active ': selected=='Welcome'}" #Users ></i>
+           <i class="fa fa-thumbs-o-up fa-2x"  [ngClass]="{'is-active ': selected=='Welcome'}" #Users ></i>
             <span class="nav-text">
                 Welcome
             </span>
@@ -54,7 +54,7 @@
 
     <li *ngIf="checkpermission('blocked')" #menu (click)="Select('Blocked')">
         <a href="/main" [ngClass]="{'is-active ': selected=='Blocked'}" onclick="return false;">
-           <i class="fa fa-list fa-2x"  [ngClass]="{'is-active ': selected=='Blocked'}" #Users ></i>
+           <i class="fa fa-ban fa-2x"  [ngClass]="{'is-active ': selected=='Blocked'}" #Users ></i>
             <span class="nav-text">
                 Blocked
             </span>

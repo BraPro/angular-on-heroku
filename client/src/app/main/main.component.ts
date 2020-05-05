@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { SharedService } from '../shared/shared.service';
 
 
@@ -13,8 +13,7 @@ export class MainComponent {
   selected:string = 'Income';
   constructor(private SelectService: SharedService) {
     this.SelectService.selectStateObservable.subscribe(res => {
-        this.selected = res;
-        
+        this.selected = res;   
     })
   }
 
