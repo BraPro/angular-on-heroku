@@ -241,9 +241,12 @@ module.exports = function (app, apiLocation) {
 	app.delete(apiLocation + '/:id', function(req, res) {
 		Garage.findByIdAndRemove(Number(req.params.id), (err, result) => {
 			if (err) return res.json({response : 'Error'});
-
 			if(result == null) return res.json({response : 'Error', msg : 'Garage doesnt exist'}); 
-			return res.json({response : 'Success', msg : 'Garage number ' + Number(req.params.id) + ' has been deleted'}); 
+
+			Employee.updateMany({garage: Number(req.params.id)}, { $set: { status: 'None', garage: null } }, (err, result) => {
+				if (err) return res.json({response : 'Error'});
+				return res.json({response : 'Success', msg : 'Garage number ' + Number(req.params.id) + ' has been deleted'}); 
+			});
 		});
 	});
 };
