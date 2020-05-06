@@ -19,7 +19,7 @@
   
 
 
-
+<div *ngIf="permission!='Admin';">
 <div class="row">
   <div class="card" id="or-border2">
     <div class="card-header" id="or-header2">
@@ -30,7 +30,7 @@
         supervisor_account
   </i>
       <div class="main-description" id="or-color2">
-         shlomi
+         {{data.manager.firstname}}
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
       build
   </i>
       <div class="main-description" id="or-color2">
-        AfulaCity
+        {{data.name}}
       </div>
     </div>
   </div>
@@ -58,12 +58,12 @@
       room
   </i>
       <div class="main-description" id="or-color2">
-        Sulamit 10
+        {{data.location.city}} , {{data.location.street}}
          </div>
        </div>
      </div>
   </div>
-
+</div>
   
 </div>
 

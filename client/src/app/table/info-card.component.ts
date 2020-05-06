@@ -21,13 +21,13 @@ export class InfoCardComponent implements OnInit {
     this._loginService.loginStateObservable.subscribe(res => {
       this.permission = res;
     });
-    this.getGarageReport();
+    if(this.permission == "Employee" || this.permission == "Manager" )
+       this.getGarageReport();
   }
 
 	ngOnInit() {
     this.getGarageReport();
   }
-
 
   getGarageReport() {
     
@@ -37,6 +37,8 @@ export class InfoCardComponent implements OnInit {
 			data => {
         //import to table
         this.data=data;
+       
+      
 			},
 			error => {
 				//this.alertService.error(error);
