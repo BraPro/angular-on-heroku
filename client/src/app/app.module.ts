@@ -17,6 +17,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card'
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -111,6 +112,7 @@ import { MapDialogBoxComponent } from './main/dialog-box/map-dialog-box.componen
     MatFormFieldModule,
     MatDialogModule,
     MatInputModule,
+    MatSelectModule,
   ],
   providers: [SharedService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

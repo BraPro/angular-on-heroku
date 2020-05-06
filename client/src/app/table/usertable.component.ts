@@ -57,7 +57,7 @@ export class UserTableComponent implements OnInit {
       }
       if(result.event == 'ResetPassword'){
         this.updateRowData(result.data);
-      }else if(result.event == 'Edit'){
+      }else if(result.event == 'Edit' || result.event == 'Permission'){
         this.updateRowData(result.data);
       }
     });

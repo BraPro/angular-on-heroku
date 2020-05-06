@@ -3,21 +3,44 @@
 
        <!--['id','firstname','lastname','garage','status','manager','email','action'] -->
   
-  <mat-form-field *ngIf="action != 'ResetPassword'; else elseTemplate">
+  <mat-form-field *ngIf="action != 'ResetPassword' && action != 'Permission' ; else PermissionTemplate">
     <input placeholder="{{action}} User Firstname" matInput [(ngModel)]="local_data.firstname">
   </mat-form-field>
 
-  <mat-form-field *ngIf="action != 'ResetPassword';">
+  <mat-form-field *ngIf="action != 'ResetPassword' && action != 'Permission' ;">
     <input placeholder="{{action}} User Lastname" matInput [(ngModel)]="local_data.lastname">
   </mat-form-field>
 
-  <mat-form-field *ngIf="action != 'ResetPassword';">
+  <mat-form-field *ngIf="action != 'ResetPassword' && action != 'Permission' ;">
     <input placeholder="{{action}} User Email" matInput [(ngModel)]="local_data.email">
   </mat-form-field>
 
+  <ng-template #PermissionTemplate>
+    <div *ngIf="action != 'ResetPassword'; else ResetPasswordTemplate">
+      <mat-form-field appearance="outline" >
+       <mat-label>Current Status:{{local_data.status}} </mat-label>
+         <mat-select [(value)]="selectedStatus"required>
+           <mat-option *ngFor="let status of statusList" [value]="status">
+            {{status}}
+           </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div *ngIf="selectedStatus == 'Employee' || selectedStatus == 'Manager' ">
+      <mat-form-field appearance="outline" >
+       <mat-label>Current Garage:{{local_data.garage}} </mat-label>
+         <mat-select [(value)]="selectedGarage"required>
+           <mat-option *ngFor="let garage of garageList" [value]="garage">
+            {{garage.name}}
+           </mat-option>
+        </mat-select>
+    </mat-form-field>
+    </div>
 
-  <ng-template #elseTemplate>
-    Are you sure to reset the current password of <b>{{local_data.firstname}}</b>?
+    </div>
+  </ng-template>
+
+  <ng-template #ResetPasswordTemplate>
+    Are you sure to reset the current password of <b>{{local_data.firstname}}</b>?<br>
     New pass: {{this.newPassword}}
   </ng-template>
 </div>
