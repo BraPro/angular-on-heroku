@@ -18,12 +18,14 @@ export class MapComponent implements AfterViewInit {
   @ViewChild("mapContainer", { static: false }) gmap: ElementRef;
   map: google.maps.Map;
   israel = {lat: 31.391959, lng: 35.217018};
-  selected = 'None';
   garages:Garage[];
   index:number;
- 
+  permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
 
   constructor(public dialog: MatDialog,private garageService:GarageService,private sharedService: SharedService){
+      this.sharedService.loginStateObservable.subscribe(res => {
+      this.permission = res;
+    })
   };
 
   openDialog(action,i) {
@@ -77,10 +79,10 @@ export class MapComponent implements AfterViewInit {
    this.map.controls[google.maps.ControlPosition.LEFT_TOP].push(select);
 
     //Adding markers
-    this.loadAllMarkers(this.map , this.markers);
+    this.loadAllMarkers(this.map , this.markers , this.permission );
   }
 
-  loadAllMarkers(themap: google.maps.Map, markers): void {
+  loadAllMarkers(themap: google.maps.Map, markers , permission): void {
 
     this.garageService.getAll()
 		.pipe(first())
@@ -99,9 +101,11 @@ export class MapComponent implements AfterViewInit {
               icon:"https://img.icons8.com/dusk/40/000000/car-service.png",
               animation: google.maps.Animation.DROP,
             });
+              if(permission == 'Admin'){
               check.addListener('click', function(){
                 control.openDialog("Edit",i);
              });
+            }
           markers.push(check);
           bounds.extend(position);
         });
@@ -122,9 +126,11 @@ export class MapComponent implements AfterViewInit {
     selectControl(controlDiv){
       // Set CSS for the control interior.
       var control=this;
+      var controlChoose = document.createElement('img');
+      if(this.permission == 'Admin'){
       var controlAdd = document.createElement('img');
       controlAdd.style.paddingLeft = '20px';
-      controlAdd.style.paddingRight = '10px';
+      controlAdd.style.paddingRight = '35px';
       controlAdd.srcset="https://img.icons8.com/emoji/50/000000/plus-emoji.png";
       controlAdd.title ="Add New Garage";
       controlDiv.appendChild(controlAdd);
@@ -134,10 +140,14 @@ export class MapComponent implements AfterViewInit {
 
       controlAdd.addEventListener('mouseleave', function() {
         controlAdd.style.cursor = "default"});
-  
-      var controlChoose = document.createElement('img');
-      controlAdd.style.paddingLeft = '20px';
-      controlAdd.style.paddingRight = '35px';
+
+      controlAdd.addEventListener('click', function() {
+          control.openDialog('Add' ,null);}); }
+      else{
+        controlChoose.style.paddingLeft = '20px';
+        controlChoose.style.paddingRight = '35px';
+      }
+      
       controlChoose.srcset="https://img.icons8.com/cotton/45/000000/filter--v2.png";
       controlChoose.title ="Choose A Garage";
       controlDiv.appendChild(controlChoose);
@@ -148,15 +158,8 @@ export class MapComponent implements AfterViewInit {
       controlChoose.addEventListener('mouseleave', function() {
         controlChoose.style.cursor = "default"});
         
-      // Setup the click event listeners.
-      controlAdd.addEventListener('click', function() {
-        control.openDialog('Add' ,null);
-
-	  });
-	  
 	    controlChoose.addEventListener('click', function() {
-        control.openDialog('Choose' ,null);
-	  });
+        control.openDialog('Choose' ,null);});
         
     }
 
@@ -187,7 +190,7 @@ export class MapComponent implements AfterViewInit {
          data => {
             sharedService.sendAlertEvent(data);
             this.RemoveAllmarkers();
-            this.loadAllMarkers(this.map , this.markers);
+            this.loadAllMarkers(this.map , this.markers , this.permission);
          },
           error => {
           //this.alertService.error(error);
@@ -215,7 +218,7 @@ export class MapComponent implements AfterViewInit {
        .subscribe(
       data => {
         this.RemoveAllmarkers();
-        this.loadAllMarkers(this.map , this.markers);
+        this.loadAllMarkers(this.map , this.markers , this.permission);
          this.sharedService.sendAlertEvent(data);    
       },
        error => {
@@ -233,7 +236,7 @@ export class MapComponent implements AfterViewInit {
        .subscribe(
       data => {
           this.RemoveAllmarkers();
-          this.loadAllMarkers(this.map , this.markers);
+          this.loadAllMarkers(this.map , this.markers , this.permission);
           this.sharedService.sendAlertEvent(data);
       },
        error => {
