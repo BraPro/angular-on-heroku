@@ -36,8 +36,8 @@ export class GarageService {
         return this.http.get<GarageReport>(`${environment.apiUrl}/garages/${id}/report`);
     }
 
-    getAllReports(id: number) {
-        return this.http.get<Manager>(`${environment.apiUrl}/garages/report`);
+    getAllReports() {
+        return this.http.get<GarageReport[]>(`${environment.apiUrl}/garages/report`);
     }
     ///////////////////////////////////
 
