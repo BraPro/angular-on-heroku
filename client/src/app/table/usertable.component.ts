@@ -69,11 +69,12 @@ export class UserTableComponent implements OnInit {
 		.subscribe(
 			data => {
         //import to table
+        this.sharedService.sendAlertEvent(data);
         this.refreshTable();
 			},
 			error => {
 				//this.alertService.error(error);
-				this.sharedService.sendAlertEvent(error);
+				//this.sharedService.sendAlertEvent(error);
 			},
 			() => {
 			});
