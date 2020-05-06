@@ -37,8 +37,7 @@ export class InfoCardComponent implements OnInit {
 			data => {
         //import to table
         this.data=data;
-       
-      
+        
 			},
 			error => {
 				//this.alertService.error(error);
