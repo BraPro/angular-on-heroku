@@ -25,7 +25,7 @@ module.exports = function (app, apiLocation) {
 					} else{
 						const gara =  await Garage.findById(element.garage);
 						element.garage = gara;
-						const mang = await Employee.findById(Number(element.garage.manager));
+						const mang = await Employee.findById(element.garage.manager);
 						element.manager = mang;
 					}	
 				}
