@@ -22,6 +22,7 @@ require('./api/employee')(app, '/api/employees');	//handle employees requests
 require('./api/manager')(app, '/api/managers');		//handle managers requests
 require('./api/treatment')(app, '/api/treatments');	//handle treatments requests
 require('./api/garage')(app, '/api/garages');		//handle garages requests
+require('./api/sync').appsync(app, '/api/sync');	//handle sync
 
 //init server => mongodb & port listen
 mongoose.connect(mongooseUrl,  {dbName: projectConfig.db.name, useCreateIndex: true, useNewUrlParser: true, useFindAndModify: false }).then(() => {

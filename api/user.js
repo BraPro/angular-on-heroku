@@ -4,6 +4,7 @@ const secret = require('../config').jwtSecret;
 const emailHandler = require('../extends/email');
 const Employee = require('../models/employee');
 const Counter = require('../models/counter');
+const syncUser = require('./sync').syncOff;
 
 module.exports = function (app, apiLocation) {
 
@@ -12,7 +13,7 @@ module.exports = function (app, apiLocation) {
 	counter.save(err => {
 		if(err) console.log('Counter of employees is already exists');
 	});
-	
+
 	//new employee
 	app.post(apiLocation + '/signup', function(req, res) {
 		//if(!checkEmailAndPassword(req.body.email, req.body.password)) return res.json({response : 'Error'}); //check signup mail&password like client
@@ -43,8 +44,6 @@ module.exports = function (app, apiLocation) {
 				});
 			});
 		});
-
-
 	});
 	
 	//forgotpassword
@@ -72,15 +71,13 @@ module.exports = function (app, apiLocation) {
 			const token = jwt.sign({ id: result._id }, secret);
 			delete result.password;
 			result.token = token;
+			syncOff(result._id);
 			return res.json({response : 'Success', msg : 'Login successful', data: result });
 		});
 	});
 	
 	//logout from system
 	app.post(apiLocation + '/logout', function(req, res) {
-		//if(!req.session.user) return res.json({response : 'Error'}); //block guests
-		
-		//req.session.user = null;
 		res.json({response : 'Success', msg : 'Logout successful'});
 	});
 };

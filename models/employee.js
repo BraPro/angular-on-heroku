@@ -8,7 +8,7 @@ const employeeSchema = new mongoose.Schema({
 	email: {type: String, required: true, lowercase: true, unique: true},
 	password: {type: String, required: true},
 	garage: { type: Number, ref: 'Garage' },
-	manager: { type: Number, ref: 'Employee'},
+	manager: { type: Number, ref: 'Employee', default: undefined},
 	status: {type: String, enum : ['New Employee','Employee', 'Manager', 'Admin', 'None'], default: 'New Employee', required: true},
 	//token
 });

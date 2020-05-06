@@ -1,10 +1,10 @@
 const Employee = require('../models/employee');
 const Counter = require('../models/counter');
 const Garage = require('../models/garage');
-const htmlspecialchars = require('htmlspecialchars');
+const syncUser = require('./sync').sync;
 
 module.exports = function (app, apiLocation) {
-  
+
 	//get all employees
 	app.get(apiLocation, function(req, res) {	
 		Employee.find({}, (err, result) => {
@@ -111,6 +111,7 @@ module.exports = function (app, apiLocation) {
 								updateEmployee.garage = null;
 								Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
 									if(err) return res.json({response : 'Error'});
+									syncUser(updateEmployee._id);
 									return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
 								});	
 							});
@@ -123,6 +124,7 @@ module.exports = function (app, apiLocation) {
 								if((err) || (result == null)) return res.json({response : 'Error'});
 								Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
 									if(err) return res.json({response : 'Error'});
+									syncUser(updateEmployee._id);
 									return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
 								});	
 							});
@@ -142,6 +144,7 @@ module.exports = function (app, apiLocation) {
 											if(err) return res.json({response : 'Error'});
 											Garage.findByIdAndUpdate(oldGarage, { $set: {manager: 1} }, (err, result) => {
 												if((err) || (result == null)) return res.json({response : 'Error'});
+												syncUser(updateEmployee._id);
 												return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
 											});
 										});	
@@ -159,6 +162,7 @@ module.exports = function (app, apiLocation) {
 						updateEmployee.garage = null;
 						Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
 							if((err) || (result == null)) return res.json({response : 'Error'});
+							syncUser(updateEmployee._id);
 							return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
 						});
 					} else if(updateEmployee.status == 'Employee') {
@@ -166,6 +170,7 @@ module.exports = function (app, apiLocation) {
 							if((err) || (result == null)) return res.json({response : 'Error'});
 							Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
 								if(err) return res.json({response : 'Error'});
+								syncUser(updateEmployee._id);
 								return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
 							});				
 						});		
@@ -178,6 +183,7 @@ module.exports = function (app, apiLocation) {
 									if((err) || (result == null)) return res.json({response : 'Error'});
 									Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
 										if(err) return res.json({response : 'Error'});
+										syncUser(updateEmployee._id);
 										return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
 									});	
 								});
@@ -197,6 +203,7 @@ module.exports = function (app, apiLocation) {
 			Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
 				if(err) return res.json({response : 'Error'});
 				if(result == null) return res.json({response : 'Error', msg : 'Employee doesnt exist'}); 
+				syncUser(updateEmployee._id);
 				return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
 			});
 		} else {

@@ -1,6 +1,5 @@
 const Treatment = require('../models/treatment');
 const Counter = require('../models/counter');
-const htmlspecialchars = require('htmlspecialchars');
 
 module.exports = function (app, pageLocation) {
    
@@ -25,9 +24,6 @@ module.exports = function (app, pageLocation) {
 			
 			req.body._id = result.seq;
 			var newTreatment = new Treatment(req.body);
-			//newTreatment.customer = htmlspecialchars(newTreatment.customer); //prevet html injection
-			//newTreatment.status = htmlspecialchars(newTreatment.status); //prevet html injection
-			//newTreatment.details = htmlspecialchars(newTreatment.details); //prevet html injection
 			newTreatment.save((err, result) => {
 				if(err) return res.json({response : 'Error'});
 				
@@ -40,10 +36,6 @@ module.exports = function (app, pageLocation) {
 	app.put(pageLocation + '/:id', function(req, res) {	
 		req.body._id = req.params.id;
 		var updateTreatment =  new Treatment(req.body);
-		//updateTreatment.customer = htmlspecialchars(updateTreatment.customer); //prevet html injection
-		//updateTreatment.status = htmlspecialchars(updateTreatment.status); //prevet html injection
-		//updateTreatment.details = htmlspecialchars(updateTreatment.details); //prevet html injection
-		//updateTreatment.date = Date.now();
 		Treatment.findByIdAndUpdate(updateTreatment, { $set: updateTreatment }, (err, result) => {
 			if(err) return res.json({response : 'Error'});
 			if(result == null) return res.json({response : 'Error', msg : 'Treatment doesnt exist'}); 

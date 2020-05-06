@@ -57,6 +57,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CarDialogBoxComponent } from './main/dialog-box/car-dialog-box.component';
 import { UserDialogBoxComponent } from './main/dialog-box/user-dialog-box.component';
 import { MapDialogBoxComponent } from './main/dialog-box/map-dialog-box.component';
+import { UpdateInterceptor } from './_helpers/update.interceptor';
 
 
   
@@ -113,6 +114,7 @@ import { MapDialogBoxComponent } from './main/dialog-box/map-dialog-box.componen
     MatSelectModule,
   ],
   providers: [SharedService,
+    { provide: HTTP_INTERCEPTORS, useClass: UpdateInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },],
   bootstrap: [AppComponent],

@@ -2,6 +2,7 @@ const Garage = require('../models/garage');
 const Counter = require('../models/counter');
 const Employee = require('../models/employee');
 const Treatment = require('../models/treatment');
+const syncUser = require('./sync').sync;
 
 module.exports = function (app, apiLocation) {
 
@@ -245,6 +246,10 @@ module.exports = function (app, apiLocation) {
 
 			Employee.updateMany({garage: Number(req.params.id)}, { $set: { status: 'None', garage: null } }, (err, result) => {
 				if (err) return res.json({response : 'Error'});
+				for(var el in result){
+					console.log(el);
+					syncUser(el._id);
+				}
 				return res.json({response : 'Success', msg : 'Garage number ' + Number(req.params.id) + ' has been deleted'}); 
 			});
 		});
