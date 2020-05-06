@@ -99,7 +99,6 @@ module.exports = function (app, apiLocation) {
 			Employee.findById(updateEmployee._id, (err, result) => {
 				if(err) return res.json({response : 'Error'});
 				if(result == null) return res.json({response : 'Error', msg : 'Employee doesnt exist'}); 
-
 				if(updateEmployee.status == 'Admin' || result.status == 'Admin') {
 					return res.json({response : 'Error', msg : 'Admin roles cannot be changed!'}); 
 				} else if(result.status == 'Manager') {
@@ -155,7 +154,7 @@ module.exports = function (app, apiLocation) {
 					} else {
 						return res.json({response : 'Error'});
 					}
-				} else if ((result.status == 'Employee') || (updateEmployee.status == 'None') || (updateEmployee.status == 'New Employee')) {
+				} else if ((result.status == 'Employee') || (result.status == 'None') || (result.status == 'New Employee')) {
 					if(updateEmployee.status == 'None' || updateEmployee.status == 'New Employee'){
 						updateEmployee.garage = null;
 						Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {

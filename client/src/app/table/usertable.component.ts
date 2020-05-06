@@ -49,12 +49,11 @@ export class UserTableComponent implements OnInit {
     });
  
     dialogRef.afterClosed().subscribe(result => {
-      if(result.data.garage != null){
+
+      if((result.data.garage != null) && !(result.data.garage as number)){
         result.data.garage = result.data.garage._id;
       }
-      if(result.data.manager != null){
-        result.data.manager = result.data.manager._id;
-      }
+      
       if(result.event == 'ResetPassword'){
         this.updateRowData(result.data);
       }else if(result.event == 'Edit' || result.event == 'Permission'){

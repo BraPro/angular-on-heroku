@@ -42,8 +42,6 @@ export class UserDialogBoxComponent {
     if(this.action == 'Permission'){
       this.local_data.status = this.selectedStatus;
       this.local_data.garage = this.selectedGarage._id;
-      //alert(this.local_data.status+" and "+this.local_data.garage);
-
     }
 
     this.dialogRef.close({event:this.action,data:this.local_data});
