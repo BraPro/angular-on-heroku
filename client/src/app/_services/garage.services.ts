@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Garage, Response, Employee, Treatment, Manager} from '../_models'
+import {Garage, GarageReport, Response, Employee, Treatment, Manager} from '../_models'
 import {environment} from '@environments/environment'
 
 @Injectable({ providedIn: 'root' })
@@ -33,7 +33,7 @@ export class GarageService {
     }
 
     getReportById(id: number) {
-        return this.http.get<Manager>(`${environment.apiUrl}/garages/${id}/report`);
+        return this.http.get<GarageReport>(`${environment.apiUrl}/garages/${id}/report`);
     }
 
     getAllReports(id: number) {

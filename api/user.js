@@ -30,7 +30,6 @@ module.exports = function (app, apiLocation) {
 				newEmployee.status = 'New Employee';
 				if(Number(result.seq) == 1)
 					newEmployee.status = 'Admin';
-				delete newEmployee.manager
 				newEmployee.save(err => {
 					if(err){
 						if(err.code == 11000)

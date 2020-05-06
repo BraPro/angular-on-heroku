@@ -37,7 +37,9 @@ export class EmployeeService {
         return this.http.put<Response>(`${environment.apiUrl}/employees/${emp._id}`, emp);
     }
 
+    /*
     delete(id: number) {
         return this.http.delete<Response>(`${environment.apiUrl}/employees/${id}`);
     }
+    */
 }
