@@ -95,7 +95,7 @@ module.exports = function (app, apiLocation) {
 	app.put(apiLocation + '/:id', function(req, res) {
 		var updateEmployee =  new Employee(req.body);
 		updateEmployee._id = Number(req.params._id);
-		if(req.params.action == 'SetRole') {
+		if(req.params.action == 'Permission') {
 			Employee.findById(updateEmployee._id, (err, result) => {
 				if(err) return res.json({response : 'Error'});
 				if(result == null) return res.json({response : 'Error', msg : 'Employee doesnt exist'}); 
