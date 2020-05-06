@@ -47,26 +47,22 @@ module.exports = function (app, apiLocation) {
 								{
 									$project: {
 										id: "$garage",
-										year: {$year: "$date"},
-										month: {$month: "$date"},
-										day: {$dayOfMonth: "$date"},
+										datemy: {$dateFromParts: {'year' : {$year: "$date"}, 'month' : {$month: "$date"}}},
 										cost: "$cost"
 									}
 								},
 								{
 									$group: {
-										_id: {
-											month: "$month",
-											year: "$year"
-										},
+										_id : "$datemy",
 										count: {
 											$sum: { "$sum" : 1 } ,
 										},
 										cost: {
 											$sum: { "$sum" : "$cost" } ,
 										}
-									}	
-								}
+									},
+								},
+								{ $sort : {_id: 1}}
 					]);
 					fullGarage.report = trtms;
 					af.push(fullGarage);
@@ -128,26 +124,22 @@ module.exports = function (app, apiLocation) {
 						{
 							$project: {
 								id: "$garage",
-								year: {$year: "$date"},
-								month: {$month: "$date"},
-								day: {$dayOfMonth: "$date"},
+								datemy: {$dateFromParts: {'year' : {$year: "$date"}, 'month' : {$month: "$date"}}},
 								cost: "$cost"
 							}
 						},
 						{
 							$group: {
-								_id: {
-									month: "$month",
-									year: "$year"
-								},
+								_id : "$datemy",
 								count: {
 									$sum: { "$sum" : 1 } ,
 								},
 								cost: {
 									$sum: { "$sum" : "$cost" } ,
 								}
-							}	
-						}
+							},
+						},
+						{ $sort : {_id: 1}}
 					],  (err, result) => {
 						if(err) return res.json({response : 'Error'});
 						fullGarage.report = result;

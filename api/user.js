@@ -71,7 +71,7 @@ module.exports = function (app, apiLocation) {
 			const token = jwt.sign({ id: result._id }, secret);
 			delete result.password;
 			result.token = token;
-			syncOff(result._id);
+			syncUser(result._id);
 			return res.json({response : 'Success', msg : 'Login successful', data: result });
 		});
 	});
