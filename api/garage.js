@@ -233,7 +233,7 @@ module.exports = function (app, apiLocation) {
 		Garage.findByIdAndUpdate(Number(req.params.id), { $set: updateGarage }, (err, result) => {
 			if(err) return res.json({response : 'Error'});
 			if(result == null) return res.json({response : 'Error', msg : 'Garage doesnt exist'}); 
-			return res.json({response : 'Success', msg : 'Garage number ' + updateGarage._id + ' was updated'}); 
+			return res.json({response : 'Success', msg : 'Garage number ' + updateGarage._id + ' has been updated'}); 
 		});
 	});
 	
@@ -243,7 +243,7 @@ module.exports = function (app, apiLocation) {
 			if (err) return res.json({response : 'Error'});
 
 			if(result == null) return res.json({response : 'Error', msg : 'Garage doesnt exist'}); 
-			return res.json({response : 'Success', msg : 'Garage number ' + Number(req.params.id) + ' was deleted'}); 
+			return res.json({response : 'Success', msg : 'Garage number ' + Number(req.params.id) + ' has been deleted'}); 
 		});
 	});
 };

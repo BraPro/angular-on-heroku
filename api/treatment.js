@@ -47,7 +47,7 @@ module.exports = function (app, pageLocation) {
 		Treatment.findByIdAndUpdate(updateTreatment, { $set: updateTreatment }, (err, result) => {
 			if(err) return res.json({response : 'Error'});
 			if(result == null) return res.json({response : 'Error', msg : 'Treatment doesnt exist'}); 
-			return res.json({response : 'Success', msg : 'Treatment number ' + updateTreatment._id + ' was updated'}); 
+			return res.json({response : 'Success', msg : 'Treatment number ' + updateTreatment._id + ' has been updated'}); 
 		});
 	});
 	
@@ -57,7 +57,7 @@ module.exports = function (app, pageLocation) {
 			if (err) return res.json({response : 'Error'});
 			
 			if(result == null) return res.json({response : 'Error', msg : 'Treatment doesnt exist'}); 
-			return res.json({response : 'Success', msg : 'Treatment number ' + Number(req.params.id) + ' was deleted'}); 
+			return res.json({response : 'Success', msg : 'Treatment number ' + Number(req.params.id) + ' has been deleted'}); 
 		});
 	});
 };

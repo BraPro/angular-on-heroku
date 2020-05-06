@@ -95,8 +95,6 @@ module.exports = function (app, apiLocation) {
 	app.put(apiLocation + '/:id', function(req, res) {
 		var updateEmployee =  new Employee(req.body);
 		updateEmployee._id = Number(req.params._id);
-
-		/*
 		if(req.params.action == 'SetRole') {
 			Employee.findById(updateEmployee._id, (err, result) => {
 				if(err) return res.json({response : 'Error'});
@@ -104,68 +102,107 @@ module.exports = function (app, apiLocation) {
 
 				if(updateEmployee.status == 'Admin' || result.status == 'Admin') {
 					return res.json({response : 'Error', msg : 'Admin roles cannot be changed!'}); 
-				}
-
-				if(updateEmployee.status == 'Manager') {
-
-					return res.json({response : 'Error', msg : 'Admin roles cannot be changed!'}); 
-				}
-
-				if(updateEmployee.status == 'Employee'){
-					//if(result.status == 'None' || result.status == 'New Employee')
-					//updateEmployee.manager = 1;
-					if(result.status == 'Manager'){
-						Garage.findById(updateEmployee.garage, (err, result) => {
-							if(err) return res.json({response : 'Error'});
-							if(result == null) return res.json({response : 'Error', msg : 'Garage doesnt exist'}); 
-							if(garage.manager == 1){
-								garage.manager = updateEmployee._id;
-								Garage.findByIdAndUpdate(garage._id, { $set: garage }, (err, result) => {
+				} else if(result.status == 'Manager') {
+					if(updateEmployee.status == 'None' || updateEmployee.status == 'New Employee'){
+						Garage.findById(result.garage, (err, result) => {
+							if((err) || (result == null)) return res.json({response : 'Error'});
+							result.manager = 1;
+							Garage.findByIdAndUpdate(result._id, { $set: result }, (err, result) => {
+								if((err) || (result == null)) return res.json({response : 'Error'});
+								updateEmployee.garage = null;
+								Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
 									if(err) return res.json({response : 'Error'});
-									if(result == null) return res.json({response : 'Error', msg : 'Garage doesnt exist'}); 
-									return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' was updated'}); 
+									return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
+								});	
+							});
+						});
+					} else if(updateEmployee.status == 'Employee') {
+						Garage.findById(result.garage, (err, result) => {
+							if((err) || (result == null)) return res.json({response : 'Error'});
+							result.manager = 1;
+							Garage.findByIdAndUpdate(result._id, { $set: result }, (err, result) => {
+								if((err) || (result == null)) return res.json({response : 'Error'});
+								Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
+									if(err) return res.json({response : 'Error'});
+									return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
+								});	
+							});
+						});
+					} else if(updateEmployee.status == 'Manager'){
+						if(result.garage == updateEmployee.garage){
+							return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
+						} else {
+							const oldGarage = result.garage;
+							Garage.findById(updateEmployee.garage, (err, result) => {
+								if((err) || (result == null)) return res.json({response : 'Error'});
+								if(result.manager == 1){
+									result.manager = updateEmployee._id;
+									Garage.findByIdAndUpdate(result._id, { $set: result }, (err, result) => {
+										if((err) || (result == null)) return res.json({response : 'Error'});
+										Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
+											if(err) return res.json({response : 'Error'});
+											Garage.findByIdAndUpdate(oldGarage, { $set: {manager: 1} }, (err, result) => {
+												if((err) || (result == null)) return res.json({response : 'Error'});
+												return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
+											});
+										});	
+									});
+								} else {
+									return res.json({response : 'Error', msg : result.name + ' garage manager has already been defined'}); 
+								}
+							});		
+						}
+					} else {
+						return res.json({response : 'Error'});
+					}
+				} else if ((result.status == 'Employee') || (updateEmployee.status == 'None') || (updateEmployee.status == 'New Employee')) {
+					if(updateEmployee.status == 'None' || updateEmployee.status == 'New Employee'){
+						updateEmployee.garage = null;
+						Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
+							if((err) || (result == null)) return res.json({response : 'Error'});
+							return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
+						});
+					} else if(updateEmployee.status == 'Employee') {
+						Garage.findById(updateEmployee.garage, (err, result) => {
+							if((err) || (result == null)) return res.json({response : 'Error'});
+							Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
+								if(err) return res.json({response : 'Error'});
+								return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
+							});				
+						});		
+					} else if(updateEmployee.status == 'Manager'){
+						Garage.findById(updateEmployee.garage, (err, result) => {
+							if((err) || (result == null)) return res.json({response : 'Error'});
+							if(result.manager == 1){
+								result.manager = updateEmployee._id;
+								Garage.findByIdAndUpdate(result._id, { $set: result }, (err, result) => {
+									if((err) || (result == null)) return res.json({response : 'Error'});
+									Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
+										if(err) return res.json({response : 'Error'});
+										return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
+									});	
 								});
+							} else {
+								return res.json({response : 'Error', msg : result.name + ' garage manager has already been defined'}); 
 							}
 						});
+					} else {
+						return res.json({response : 'Error'});
 					}
+				}  else {
+					return res.json({response : 'Error'});
 				}
-
-				if(updateEmployee.status == 'None' || updateEmployee.status == 'New Employee'){
-					//if(result.status == 'None' || result.status == 'New Employee')
-					//updateEmployee.manager = 1;
-					if(result.status == 'Manager'){
-						Garage.findById(updateEmployee.garage, (err, result) => {
-							if(err) return res.json({response : 'Error'});
-							if(result == null) return res.json({response : 'Error', msg : 'Garage doesnt exist'}); 
-							if(garage.manager == 1){
-								garage.manager = updateEmployee._id;
-								Garage.findByIdAndUpdate(garage._id, { $set: garage }, (err, result) => {
-									if(err) return res.json({response : 'Error'});
-									if(result == null) return res.json({response : 'Error', msg : 'Garage doesnt exist'}); 
-									return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' was updated'}); 
-								});
-							}
-						});
-					}
-				}
-
-				Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
-					if(err) return res.json({response : 'Error'});
-					if(result == null) return res.json({response : 'Error', msg : 'Employee doesnt exist'}); 
-					return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' was updated'}); 
-				});
-
-				//return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' was updated'}); 
 			});
-		} else {
-			//if(req.params.action == 'Edit' || req.params.action == 'ResetPassword')
+		} else if(req.params.action == 'Edit' || req.params.action == 'ResetPassword') {
+			//if
 			Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
 				if(err) return res.json({response : 'Error'});
 				if(result == null) return res.json({response : 'Error', msg : 'Employee doesnt exist'}); 
-				return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' was updated'}); 
+				return res.json({response : 'Success', msg : 'Employee number ' + updateEmployee._id + ' has been updated'}); 
 			});
+		} else {
+			return res.json({response : 'Error'});
 		}
-		*/
 	});
 	
 	/*
@@ -174,7 +211,7 @@ module.exports = function (app, apiLocation) {
 		Employee.findByIdAndUpdate(Number(req.params._id), (err, result) => {
 			if (err) return res.json({response : 'Error'});
 			if(result == null) return res.json({response : 'Error', msg : 'Employee doesnt exist'}); 
-			return res.json({response : 'Success', msg : 'Employee number ' + Number(req.params._id) + ' was deleted'}); 
+			return res.json({response : 'Success', msg : 'Employee number ' + Number(req.params._id) + ' has been deleted'}); 
 		});
 	});
 	*/
