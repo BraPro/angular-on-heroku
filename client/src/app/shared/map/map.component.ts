@@ -94,19 +94,20 @@ export class MapComponent implements AfterViewInit {
         var bounds = new google.maps.LatLngBounds();
         data.forEach(function (marker,i) {
           var position = new google.maps.LatLng(marker.location.position.lat, marker.location.position.lng);
-          var check = new google.maps.Marker({
+          var mark = new google.maps.Marker({
               position: position,
               map: themap,
               title: marker.name,
               icon:"https://img.icons8.com/dusk/40/000000/car-service.png",
               animation: google.maps.Animation.DROP,
             });
-              if(permission == 'Admin'){
-              check.addListener('click', function(){
-                control.openDialog("Edit",i);
+               if(permission == 'Admin'){
+               mark.addListener('click', function(){
+               control.openDialog("Edit",i);
              });
             }
-          markers.push(check);
+            
+          markers.push(mark);
           bounds.extend(position);
         });
 

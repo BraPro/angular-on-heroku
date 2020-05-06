@@ -13,7 +13,7 @@ import * as Highcharts from 'highcharts';
 })
 export class BrandchartComponent {
  
-  title = 'myHighchart';
+ 
    
   data = [{
           name: 'Afula-Shlomi',
