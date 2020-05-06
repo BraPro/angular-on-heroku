@@ -34,7 +34,6 @@ import { AlertHeaderComponent } from './shared/alert/alert-header.component';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { ContactusComponent } from './contactus/contactus.component';
 import { MainComponent } from './main/main.component';
 import { AccountComponent } from './account/account.component'
 import { FooterComponent } from './shared/footer/footer.component';
@@ -67,7 +66,6 @@ import { MapDialogBoxComponent } from './main/dialog-box/map-dialog-box.componen
 		AppComponent,
     LoginComponent,
     RegisterComponent,
-    ContactusComponent,
     MainComponent,
     AccountComponent,
     AlertComponent,
