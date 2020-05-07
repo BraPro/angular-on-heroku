@@ -44,9 +44,7 @@ export class MapComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result.event == 'Add'){
         // AddGarage(garage:any, garageService: GarageService, sharedService: SharedService, map : google.maps.Map, loadAllMarkers : Function)
-        this.AddGarage(result.data, this.garageService, this.sharedService, this.map,  this.garages ,this.markers,this.RemoveAllmarkers ,this.loadAllMarkers);
-      }else if(result.event == 'Choose'){
-        this.ChooseGarage(result.data);
+        this.AddGarage(result.data, this.garageService, this.sharedService);
       }else if(result.event == 'Edit'){
         this.EditGarage(result.data);
       }else if(result.event == 'Delete'){
@@ -127,7 +125,6 @@ export class MapComponent implements AfterViewInit {
     selectControl(controlDiv){
       // Set CSS for the control interior.
       var control=this;
-      var controlChoose = document.createElement('img');
       if(this.permission == 'Admin'){
       var controlAdd = document.createElement('img');
       controlAdd.style.paddingLeft = '20px';
@@ -144,24 +141,7 @@ export class MapComponent implements AfterViewInit {
 
       controlAdd.addEventListener('click', function() {
           control.openDialog('Add' ,null);}); }
-      else{
-        controlChoose.style.paddingLeft = '20px';
-        controlChoose.style.paddingRight = '35px';
-      }
-      
-      controlChoose.srcset="https://img.icons8.com/cotton/45/000000/filter--v2.png";
-      controlChoose.title ="Choose A Garage";
-      controlDiv.appendChild(controlChoose);
-       
-      controlChoose.addEventListener('mouseenter', function() {
-        controlChoose.style.cursor = "pointer"});
-
-      controlChoose.addEventListener('mouseleave', function() {
-        controlChoose.style.cursor = "default"});
-        
-	    controlChoose.addEventListener('click', function() {
-        control.openDialog('Choose' ,null);});
-        
+     
     }
 
     findLatLang(address, geocoder) {
@@ -177,7 +157,7 @@ export class MapComponent implements AfterViewInit {
   } 
    
 
-    async AddGarage(garage:any, garageService: GarageService, sharedService: SharedService, themap : google.maps.Map, garagearray : any ,markers , RemoveAllmarkers,loadAllMarkers)
+    async AddGarage(garage:any, garageService: GarageService, sharedService: SharedService)
     {
        var geocoder = new google.maps.Geocoder();
        let locationData = [];
@@ -200,34 +180,32 @@ export class MapComponent implements AfterViewInit {
          () => {
           });
       }.bind(this))
-      
-        
-      
 
      
       
     }
 
-    ChooseGarage(garage:Garage){
-      this.map.setCenter(garage.location.position);
-      this.map.setZoom(15);
-  }
+   
 
     EditGarage(garage:Garage){
+      var geocoder = new google.maps.Geocoder();
+      let locationData = [];
+      locationData.push(this.findLatLang(garage.location.street+', '+garage.location.city+', '+garage.location.country, geocoder))
+      Promise.all(locationData)     
+     .then(function(returnVals){
+      garage.location.position = returnVals[0]; 
       this.garageService.update(garage)
       .pipe(first())
        .subscribe(
       data => {
+        this.sharedService.sendAlertEvent(data);  
         this.RemoveAllmarkers();
-        this.loadAllMarkers(this.map , this.markers , this.permission);
-         this.sharedService.sendAlertEvent(data);    
+        this.loadAllMarkers(this.map , this.markers , this.permission);   
       },
        error => {
         //this.alertService.error(error);
        this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
-      },
-      () => {
-       });
+      });}.bind(this))
 
     }
    

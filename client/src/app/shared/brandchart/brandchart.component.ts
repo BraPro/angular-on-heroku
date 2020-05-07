@@ -1,8 +1,10 @@
 import { Component, ɵConsole } from '@angular/core';
 import { SharedService } from './../shared.service';
-import * as Highcharts from 'highcharts';
+import * as Highcharts from "highcharts";
 import { GarageService } from '@app/_services';
 import { first } from 'rxjs/operators';
+
+
 
 @Component({
   selector: 'app-brandchart',
@@ -10,10 +12,13 @@ import { first } from 'rxjs/operators';
   styleUrls: ['./brandchart.component.css']
 })
 export class BrandchartComponent {
-  updateFlag = false;
+
+  updateFromInput = false;
   permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
-  highcharts = Highcharts;
- 
+  Highcharts = Highcharts;
+  chart;
+  chartConstructor = "chart";
+  chartCallback;
   chartOptions = {   
     chart: {
        type: "spline"
@@ -32,11 +37,11 @@ export class BrandchartComponent {
     tooltip: {
       pointFormat: '<span style="color:{series.color}">{series.name}</span>: Income=<b>{point.y}</b>, Value=<b>{point.amount}<b> <br/>',
       split: true
+  } ,
+  series:[],
+  exporting: {
+    enabled: true
   },
-    series: [],
-    exporting: {
-      enabled: true
-    },
     
   };
 
@@ -44,6 +49,12 @@ export class BrandchartComponent {
 	constructor(private sharedService:SharedService,private garageService:GarageService) {
     this.sharedService.loginStateObservable.subscribe(res => {
       this.permission = res;
+      const self = this;
+      // saving chart reference using chart callback
+      this.chartCallback = chart => {
+        self.chart = chart;
+      };
+    
       if(this.permission=="Admin")
         this.adminChart();
       else
@@ -57,25 +68,17 @@ export class BrandchartComponent {
     .pipe(first())
      .subscribe(
     data => {
-      this.chartOptions.series = [];
+      var newseries = [];
       data.forEach(function (garage) {
           var temp = this.datafillfunc(garage);
-          var element = [{name:garage.name,data:temp,keys: ['y', 'x', 'amount']}];
-          this.chartOptions.series.push(element);
+          var element = [garage.name,temp,['y', 'x', 'amount']];
+          newseries.push(element);
           //console.log(this.data);
       }.bind(this));
+      this.onInitChart(newseries);
 
-      //this.chartOptions.series=this.data;
-      console.log("asD");
-      this.updateFlag = true;
-      this.chartOptions.series= [{
-        name: 'Afula-Shlomi',
-        data: [[500,1,10], [500,2,9], [500,3,8], [500,4,7], [500,5,10], [500,6,210]],
-        keys: ['y', 'x', 'amount']
-     }];
-     console.log("as2D");
-     console.log(this.chartOptions.series);
-      this.updateFlag = true;
+  
+  
     },
      error => {
       //this.alertService.error(error);
@@ -122,10 +125,27 @@ export class BrandchartComponent {
     return col;
   }
 
+  onInitChart(newseries) {
+    const self = this,
+      chart = this.chart;
+
+    chart.showLoading();
+    setTimeout(() => {
+      chart.hideLoading();
+
+      self.chartOptions.series =newseries;
+
+      self.updateFromInput = true;
+    }, 2000);
+  }
 
 
-
-  
-
-  
 }
+
+
+
+
+  
+
+  
+

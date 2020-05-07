@@ -28,6 +28,10 @@ export class SharedService{
   loginUser(data:Employee) {
     this.employeeData=data;
     this.isLogged=true;
+
+    /*
+      MULTIPLE SESSION!!!
+    */
     localStorage.setItem('employeeData',JSON.stringify(data));
     localStorage.setItem('isLogged',JSON.stringify(this.isLogged));
     console.log(this.employeeData.status);

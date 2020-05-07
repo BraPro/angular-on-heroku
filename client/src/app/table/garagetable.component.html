@@ -7,6 +7,18 @@
 <input (keyup)="applyFilter($event)" placeholder="Search">
 <span class="example-fill-remaining-space"></span>
 
+<div *ngIf="permission == 'Admin';">
+  <mat-form-field>
+   <mat-label>Choose Garage</mat-label>
+     <mat-select [(value)]="selectedGarage" (selectionChange)="loadGarage()" required>
+       <mat-option *ngFor="let garage of garageList" [value]="garage">
+        {{garage.name}}
+       </mat-option>
+    </mat-select>
+</mat-form-field>
+</div>
+
+
 <div class="wrapper"><ul>
 <li class="pluslogo"><a (click)="openDialog('Add',{})" ><i class="fa fa-plus fa-lg" aria-hidden="true"></i></a></li></ul>
 </div>

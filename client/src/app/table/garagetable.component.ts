@@ -8,7 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { GarageService , UserService ,TreatmentService } from '../_services';
 import { first } from 'rxjs/operators';
-import { Treatment } from '@app/_models';
+import { Treatment , Garage } from '@app/_models';
 import { SharedService } from '@app/shared/shared.service';
 
 
@@ -22,7 +22,10 @@ import { SharedService } from '@app/shared/shared.service';
 export class GarageTableComponent implements OnInit {
   displayedColumns: string[] = ['date','id','carid','cost','status','details','action'];
   dataSource = new MatTableDataSource<Treatment>();
-  
+  permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
+  garageList :Garage[];
+  selectedGarage:Garage;
+
 
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -30,9 +33,10 @@ export class GarageTableComponent implements OnInit {
   
 
   ngOnInit() {
-    this.refreshTable();
-	  this.dataSource.sort = this.sort;
-	  this.dataSource.paginator = this.paginator;
+    if(this.permission == "Admin")
+     this.getGarages();
+    else
+      this.refreshTable();
 	}
  
   constructor(public dialog: MatDialog,
@@ -40,6 +44,9 @@ export class GarageTableComponent implements OnInit {
     private userService : UserService,
     private treatmentService:TreatmentService,
     private sharedService: SharedService){
+      this.sharedService.loginStateObservable.subscribe(res => {
+        this.permission = res;
+      })
     }
 
  
@@ -142,22 +149,52 @@ export class GarageTableComponent implements OnInit {
   }
   
   private refreshTable() {
-    this.garageService.getTreatmentsById(Number(this.userService.currentUserValue.garage))
+    var garageId;
+    if(this.permission=="Admin")
+      garageId=this.selectedGarage._id;
+    else
+      garageId=Number(this.userService.currentUserValue.garage);
+    this.garageService.getTreatmentsById(garageId)
 		.pipe(first())
 		.subscribe(
 			data => {
         //import to table
         this.dataSource.data=data;
+       
 			},
 			error => {
 				//this.alertService.error(error);
 				this.sharedService.sendAlertEvent(error);
 			},
 			() => {
-			});
-    this.dataSource.paginator = this.paginator;
+      });
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      
 }
- 
- 
+
+   getGarages(){
+
+    this.garageService.getAll()
+   .pipe(first())
+   .subscribe(
+      data => {
+        this.garageList=data;
+      },
+      error => {
+        //this.alertService.error(error);
+        this.sharedService.sendAlertEvent(error);
+      },
+      () => {
+      });
+
+  }
+
+  public loadGarage(){
+    this.refreshTable();
+  }
+
+
+
 }
  

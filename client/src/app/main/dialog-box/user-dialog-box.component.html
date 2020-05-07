@@ -18,7 +18,7 @@
   <ng-template #PermissionTemplate>
     <div *ngIf="action != 'ResetPassword'; else ResetPasswordTemplate">
       <mat-form-field appearance="outline" >
-       <mat-label>Current Status:{{local_data.status}} </mat-label>
+       <mat-label>Choose Status</mat-label>
          <mat-select [(value)]="selectedStatus"required>
            <mat-option *ngFor="let status of statusList" [value]="status">
             {{status}}
@@ -27,7 +27,7 @@
     </mat-form-field>
     <div *ngIf="selectedStatus == 'Employee' || selectedStatus == 'Manager' ">
       <mat-form-field appearance="outline" >
-       <mat-label>Current Garage:{{local_data.garage}} </mat-label>
+       <mat-label>Choose Garage </mat-label>
          <mat-select [(value)]="selectedGarage"required>
            <mat-option *ngFor="let garage of garageList" [value]="garage">
             {{garage.name}}
