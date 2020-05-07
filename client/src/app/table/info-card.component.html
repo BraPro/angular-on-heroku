@@ -19,7 +19,7 @@
   
 
 
-<div *ngIf="permission!='Admin';">
+<div *ngIf="permission!='Admin'; else adminTemplate">
 <div class="row">
   <div class="card" id="or-border2">
     <div class="card-header" id="or-header2">
@@ -64,6 +64,54 @@
      </div>
   </div>
 </div>
+
+
+<ng-template #adminTemplate>
+  <div class="row">
+    <div class="card" id="or-border2">
+      <div class="card-header" id="or-header2">
+        N.Employees
+      </div>
+      <div class="card-main">
+        <i class="material-icons" id="or-color2">
+          supervisor_account
+    </i>
+        <div class="main-description" id="or-color2">
+           {{usersNum}}
+        </div>
+      </div>
+    </div>
+  
+    <div class="card" id="or-border2">
+      <div class="card-header" id="or-header2">
+        N.Garages
+      </div>
+      <div class="card-main">
+        <i class="material-icons" id="or-color2">
+        build
+    </i>
+        <div class="main-description" id="or-color2">
+          {{garagesNum}}
+        </div>
+      </div>
+    </div>
+  
+    <div class="card" id="or-border2">
+      <div class="card-header" id="or-header2">
+        M.Income
+      </div>
+      <div class="card-main">
+        <i class="material-icons" id="or-color2">
+        euro_symbol
+    </i>
+        <div class="main-description" id="or-color2">
+          {{monthIncome}}
+           </div>
+         </div>
+       </div>
+    </div>
+
+</ng-template>
   
 </div>
 

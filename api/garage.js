@@ -98,7 +98,7 @@ module.exports = function (app, apiLocation) {
 			var fullGarage = result.toJSON();
 			Employee.findById(result.manager, (err, result) => {
 				if(err) return res.json({response : 'Error'});
-				if(result == null){
+				if(result){
 					result = result.toJSON();
 					delete result.password;
 					fullGarage.manager = result;

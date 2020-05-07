@@ -26,7 +26,7 @@ export class MapComponent implements AfterViewInit {
       this.sharedService.loginStateObservable.subscribe(res => {
       this.permission = res;
     })
-  };
+  }
 
   openDialog(action,i) {
     if(action == "Edit"){
