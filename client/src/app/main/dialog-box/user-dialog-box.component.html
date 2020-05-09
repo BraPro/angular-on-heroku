@@ -1,8 +1,6 @@
 <h1 mat-dialog-title><strong>{{action}} User</strong></h1>
 <div mat-dialog-content>
 
-       <!--['id','firstname','lastname','garage','status','manager','email','action'] -->
-  
   <mat-form-field *ngIf="action != 'ResetPassword' && action != 'Permission' ; else PermissionTemplate">
     <input placeholder="{{action}} User Firstname" matInput [(ngModel)]="local_data.firstname">
   </mat-form-field>
@@ -41,7 +39,7 @@
 
   <ng-template #ResetPasswordTemplate>
     Are you sure to reset the current password of <b>{{local_data.firstname}}</b>?<br>
-    New pass: {{this.newPassword}}
+    New password: <b>{{this.newPassword}}</b>
   </ng-template>
 </div>
 <div mat-dialog-actions style="padding-left:20px">

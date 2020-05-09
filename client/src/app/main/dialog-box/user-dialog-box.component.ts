@@ -3,14 +3,14 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Employee, Garage } from '../../_models'
 import { first } from 'rxjs/operators';
-import { GarageService } from '@app/_services';
-import { SharedService } from '@app/shared/shared.service';
+import { GarageService, UserService } from '@app/_services';
 
 @Component({
   selector: 'app-user-dialog-box',
   templateUrl: './user-dialog-box.component.html',
   styleUrls: ['./user-dialog-box.component.css']
 })
+
 export class UserDialogBoxComponent {
   action:string;
   local_data:any;
@@ -20,15 +20,25 @@ export class UserDialogBoxComponent {
   garageList:Garage[];
   selectedGarage: Garage;
 
-  constructor(
-    public dialogRef: MatDialogRef<UserDialogBoxComponent>,private garageService:GarageService,private sharedService: SharedService,
+  constructor(private dialogRef: MatDialogRef<UserDialogBoxComponent>,
+    private garageService:GarageService,
+    private userService: UserService,
     //@Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: Employee) {
     this.local_data = {...data};
     this.action = this.local_data.action;
     if(this.action == 'Permission'){
-      this.statusList = ['New Employee','Employee', 'Manager', 'None'];
-      this.getGarages();
+      switch(String(this.userService.getUserPermission())){
+        case 'Admin':
+          this.statusList = ['New Employee','Employee', 'Manager', 'None'];
+          this.getGarages();
+          break;
+        case 'Manager':
+          this.statusList = ['New Employee', 'None'];
+          break;
+        default:
+          break;
+      }
     }
     this.newPassword = this.createPassword();
   }
