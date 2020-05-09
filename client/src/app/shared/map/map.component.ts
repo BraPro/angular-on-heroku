@@ -172,6 +172,7 @@ export class MapComponent implements AfterViewInit {
             sharedService.sendAlertEvent(data);
             this.RemoveAllmarkers();
             this.loadAllMarkers(this.map , this.markers , this.permission);
+            this.map.panTo(returnVals[0]);
          },
           error => {
           //this.alertService.error(error);
