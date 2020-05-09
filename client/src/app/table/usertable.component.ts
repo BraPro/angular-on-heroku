@@ -37,8 +37,10 @@ export class UserTableComponent implements OnInit {
     switch(String(this.userService.getUserPermission())){
       case 'Admin':
         this.displayedColumns = ['id','firstname','lastname','garage','status','manager','email','action'];
+        break;
       case 'Manager':
         this.displayedColumns = ['id','firstname','lastname','status','email','action'];
+        break;
       default:
         break;
     }

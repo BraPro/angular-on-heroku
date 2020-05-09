@@ -12,7 +12,6 @@ import { SharedService } from '@app/shared/shared.service';
   styleUrls: ['./user-dialog-box.component.css']
 })
 export class UserDialogBoxComponent {
- 
   action:string;
   local_data:any;
   newPassword : string;
@@ -28,8 +27,8 @@ export class UserDialogBoxComponent {
     this.local_data = {...data};
     this.action = this.local_data.action;
     if(this.action == 'Permission'){
-    this.statusList = ['New Employee','Employee', 'Manager', 'None'];
-    this.getGarages();
+      this.statusList = ['New Employee','Employee', 'Manager', 'None'];
+      this.getGarages();
     }
     this.newPassword = this.createPassword();
   }
@@ -41,11 +40,13 @@ export class UserDialogBoxComponent {
 
     if(this.action == 'Permission'){
       this.local_data.status = this.selectedStatus;
-      if(this.selectedStatus!='None' && this.selectedStatus!='New Employee')
-      this.local_data.garage = this.selectedGarage._id;
+      if(this.selectedStatus != 'None' && this.selectedStatus != 'New Employee')
+        this.local_data.garage = this.selectedGarage._id;
+      else
+        this.local_data.garage = null;
     }
 
-    this.dialogRef.close({event:this.action,data:this.local_data});
+    this.dialogRef.close({event: this.action, data: this.local_data});
   }
  
   closeDialog(){
