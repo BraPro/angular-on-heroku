@@ -22,7 +22,6 @@ import { SharedService } from '@app/shared/shared.service';
 export class GarageTableComponent implements OnInit {
   displayedColumns: string[] = ['date','id','carid','cost','status','details','action'];
   dataSource = new MatTableDataSource<Treatment>();
-  permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
   garageList :Garage[];
   selectedGarage:Garage;
 
@@ -33,7 +32,7 @@ export class GarageTableComponent implements OnInit {
   
 
   ngOnInit() {
-    if(this.permission == "Admin")
+    if(this.allGaragesPermission())
      this.getGarages();
     else
       this.refreshTable();
@@ -44,13 +43,19 @@ export class GarageTableComponent implements OnInit {
     private userService : UserService,
     private treatmentService:TreatmentService,
     private sharedService: SharedService){
-      this.sharedService.getSelectMenuEvent().subscribe(res => {
-        this.permission = res;
-      })
     }
 
- 
- 
+    allGaragesPermission(){
+      return String(this.userService.currentUserValue.status) == 'Admin';
+    }
+  
+    getGarageId(){
+      if(this.allGaragesPermission())
+        return this.selectedGarage._id;
+      else
+        return this.userService.currentUserValue.garage._id;
+    }
+
   openDialog(action,obj) {
     obj.action = action;
     const dialogRef = this.dialog.open(CarDialogBoxComponent, {
@@ -70,7 +75,7 @@ export class GarageTableComponent implements OnInit {
   }
  
   addRowData(row_obj){
-    row_obj.garage = this.userService.currentUserValue.garage;
+    row_obj.garage = this.getGarageId();
     this.treatmentService.add(row_obj)
 		.pipe(first())
 		.subscribe(
@@ -150,14 +155,8 @@ export class GarageTableComponent implements OnInit {
   }
   
   private refreshTable() {
-    var garageId;
-    if(this.permission=="Admin")
-      garageId=this.selectedGarage._id;
-    else
-      garageId=Number(this.userService.currentUserValue.garage);
-    
-    console.log(this.userService.currentUserValue);
-    this.garageService.getTreatmentsById(garageId)
+
+    this.garageService.getTreatmentsById(this.getGarageId())
 		.pipe(first())
 		.subscribe(
 			data => {

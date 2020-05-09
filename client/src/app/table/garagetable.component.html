@@ -7,7 +7,7 @@
 <input (keyup)="applyFilter($event)" placeholder="Search">
 <span class="example-fill-remaining-space"></span>
 
-<div *ngIf="permission == 'Admin';">
+<div *ngIf="allGaragesPermission()">
   <mat-form-field>
    <mat-label>Choose Garage</mat-label>
      <mat-select [(value)]="selectedGarage" (selectionChange)="loadGarage()" required>
