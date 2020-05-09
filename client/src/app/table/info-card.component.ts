@@ -27,21 +27,17 @@ export class InfoCardComponent implements OnInit {
 
 	ngOnInit() {
     this.user = this.userService.currentUserValue;
-    console.log(this.user);
     switch(String(this.user.status)){
       case 'Admin':
         this.getAdminReport(); 
         break;
       case 'Employee':
-        console.log('asd');
         this.getGarageReport();
         break;
       case 'Manager':
-        console.log('asd');
         this.getGarageReport();
       break;
       default:
-        console.log('asd2');
         break;
     }
   }
@@ -64,8 +60,6 @@ export class InfoCardComponent implements OnInit {
 	  .pipe(first())
 	  .subscribe(
 			data => {
-        //import to table
-        console.log(data);
         this.data=data;
         this.garagesNum=this.data.length 
         this.usersNum=0;

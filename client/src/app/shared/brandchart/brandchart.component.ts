@@ -76,15 +76,10 @@ export class BrandchartComponent {
             keys: ['y', 'x', 'amount'],
             data: temp};
             newseries.push(element);
-           
-          //console.log(this.data);
       }.bind(this));
 
       this.chartOptions.series=newseries;
       this.highcharts.chart('container',this.chartOptions);
-       //alert(this.chartOptions.series[0]);
-      //alert(this.option2.series);
-      
     });
 
   }
