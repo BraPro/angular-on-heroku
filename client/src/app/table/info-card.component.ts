@@ -24,7 +24,7 @@ export class InfoCardComponent implements OnInit {
 
   constructor(private userService : UserService ,private garageService : GarageService, private _loginService: SharedService) {
     this.user = this.userService.currentUserValue;
-    this._loginService.loginStateObservable.subscribe(res => {
+    this._loginService.getSelectMenuEvent().subscribe(res => {
       this.permission = res;
       if(this.permission == "Employee" || this.permission == "Manager")
       this.getGarageReport();

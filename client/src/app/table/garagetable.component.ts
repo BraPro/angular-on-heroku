@@ -44,7 +44,7 @@ export class GarageTableComponent implements OnInit {
     private userService : UserService,
     private treatmentService:TreatmentService,
     private sharedService: SharedService){
-      this.sharedService.loginStateObservable.subscribe(res => {
+      this.sharedService.getSelectMenuEvent().subscribe(res => {
         this.permission = res;
       })
     }

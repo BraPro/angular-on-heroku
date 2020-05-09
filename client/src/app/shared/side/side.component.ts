@@ -16,18 +16,15 @@ export class SideComponent implements OnInit {
   permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
   selected:string;  //'Income','Treatment','Map','Users','Welcome','Blocked'
   subscription: Subscription;
-  public _router: Router;
-  router: any;
-  sharedService: any;
+  public router: Router;
 
-  constructor(private _loginService: SharedService, private userService : UserService) {
-    this._loginService.loginStateObservable.subscribe(res => {
+  constructor(private userService : UserService, private sharedService : SharedService) {
+    
+    this.sharedService.getLoginState().subscribe(res => {
         this.permission = res;
-        if(this.permission =='New Employee')
-           this.selected='Welcome';
-        if(this.permission =='None')   
-           this.selected='Blocked'; 
+        this.putselect(); 
     })
+    
   }
 
   putselect()
@@ -43,7 +40,7 @@ export class SideComponent implements OnInit {
   Select(element:string){
    if(this.selected==element){return};
    this.selected=element;
-   this._loginService.selectMenu(element);
+   this.sharedService.sendSelectMenu(element);
   }
 
   endsession(){
@@ -51,11 +48,9 @@ export class SideComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this._loginService.logoutUser();
           this.router.navigate(['/']); //need to delete!!
         },
         error => {
-          //this.alertService.error(error);
           this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
         }); 
   }
@@ -83,9 +78,11 @@ export class SideComponent implements OnInit {
   }
 
   ngOnInit(){
-    this._loginService.WebRefreshed();
+    if(this.userService.isLoggin()){
+        this.sharedService.sendLoginState(String(this.userService.currentUserValue.status));
+    }
     this.putselect();
-    this._loginService.selectMenu(this.selected);
+    this.sharedService.sendSelectMenu(this.selected);
   }
 
   

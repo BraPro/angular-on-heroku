@@ -12,7 +12,7 @@ export class MainComponent {
 
   selected:string = 'Income';
   constructor(private SelectService: SharedService) {
-    this.SelectService.selectStateObservable.subscribe(res => {
+    this.SelectService.getSelectMenuEvent().subscribe(res => {
         this.selected = res;   
     })
   }

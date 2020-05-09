@@ -88,7 +88,7 @@ export class BrandchartComponent {
 
 
 	constructor(private sharedService:SharedService,private garageService:GarageService) {
-    this.sharedService.loginStateObservable.subscribe(res => {
+    this.sharedService.getSelectMenuEvent().subscribe(res => {
       this.permission = res;
       const self = this;
       // saving chart reference using chart callback

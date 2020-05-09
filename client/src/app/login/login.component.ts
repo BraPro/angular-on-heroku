@@ -114,7 +114,9 @@ export class LoginComponent implements OnInit {
 			data => {
 				this.sharedService.sendAlertEvent(data);
 				if(data.response == 'Success'){
-					this.sharedService.loginUser(data.data);
+					if(this.userService.isLoggin()){
+						this.sharedService.sendLoginState(String(this.userService.currentUserValue.status));
+					}
 					setTimeout(() => {  this.router.navigate(['/main']); }, 1000);
 				}
 			},

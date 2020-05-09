@@ -23,7 +23,7 @@ export class MapComponent implements AfterViewInit {
   permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
 
   constructor(public dialog: MatDialog,private garageService:GarageService,private sharedService: SharedService){
-      this.sharedService.loginStateObservable.subscribe(res => {
+      this.sharedService.getSelectMenuEvent().subscribe(res => {
       this.permission = res;
     })
   }
