@@ -2,7 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { MapDialogBoxComponent } from '../../main/dialog-box/map-dialog-box.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Garage, Location } from '../../_models'
-import { GarageService } from '../../_services';
+import { GarageService, UserService } from '../../_services';
 import { SharedService } from '@app/shared/shared.service';
 import { first } from 'rxjs/operators';
 
@@ -20,12 +20,9 @@ export class MapComponent implements AfterViewInit {
   israel = {lat: 31.391959, lng: 35.217018};
   garages:Garage[];
   index:number;
-  permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
 
-  constructor(public dialog: MatDialog,private garageService:GarageService,private sharedService: SharedService){
-      this.sharedService.getSelectMenuEvent().subscribe(res => {
-      this.permission = res;
-    })
+  constructor(public dialog: MatDialog,private garageService:GarageService,private sharedService: SharedService,
+    private userService : UserService){
   }
 
   openDialog(action,i) {
@@ -77,7 +74,7 @@ export class MapComponent implements AfterViewInit {
    this.map.controls[google.maps.ControlPosition.LEFT_TOP].push(select);
 
     //Adding markers
-    this.loadAllMarkers(this.map , this.markers , this.permission );
+    this.loadAllMarkers(this.map , this.markers , this.userService.getUserPermission() );
   }
 
   loadAllMarkers(themap: google.maps.Map, markers , permission): void {
@@ -117,7 +114,7 @@ export class MapComponent implements AfterViewInit {
     selectControl(controlDiv){
       // Set CSS for the control interior.
       var control=this;
-      if(this.permission == 'Admin'){
+      if(this.userService.getUserPermission() == 'Admin'){
       var controlAdd = document.createElement('img');
       controlAdd.style.paddingLeft = '20px';
       controlAdd.style.paddingRight = '35px';
@@ -163,7 +160,7 @@ export class MapComponent implements AfterViewInit {
          data => {
             sharedService.sendAlertEvent(data);
             this.RemoveAllmarkers();
-            this.loadAllMarkers(this.map , this.markers , this.permission);
+            this.loadAllMarkers(this.map , this.markers , this.userService.getUserPermission());
             this.map.panTo(returnVals[0]);
          });
       }.bind(this));
@@ -184,7 +181,7 @@ export class MapComponent implements AfterViewInit {
       data => {
         this.sharedService.sendAlertEvent(data);  
         this.RemoveAllmarkers();
-        this.loadAllMarkers(this.map , this.markers , this.permission);   
+        this.loadAllMarkers(this.map , this.markers , this.userService.getUserPermission());   
       });}.bind(this))
 
     }
@@ -195,7 +192,7 @@ export class MapComponent implements AfterViewInit {
        .subscribe(
       data => {
           this.RemoveAllmarkers();
-          this.loadAllMarkers(this.map , this.markers , this.permission);
+          this.loadAllMarkers(this.map , this.markers , this.userService.getUserPermission());
           this.sharedService.sendAlertEvent(data);
       });
 

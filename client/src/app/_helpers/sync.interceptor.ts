@@ -17,21 +17,17 @@ export class SyncInterceptor implements HttpInterceptor {
             return next.handle(request);
         }
     
-        this.syncRequest();
-        
-        return next.handle(request);
-    }
-
-    syncRequest(){
         this.http.get<Variable>(`${environment.apiUrl}/sync/${this.userService.currentUserValue._id}`, { headers: new HttpHeaders({ 'None': 'true'})})
 		.pipe(first())
 		.subscribe(
 			data => {
                 if(data['update']){
                     this.userService.refreshData().subscribe(()=>{
-                        this.sharedService.sendLoginState(String(this.userService.currentUserValue.status));
+                        this.sharedService.sendLoginState(this.userService.getUserPermission());
                     });
                 }
         });
+        
+        return next.handle(request);
     }
 }

@@ -3,6 +3,9 @@ import { UserService, GarageService } from '@app/_services';
 import { Employee } from '@app/_models';
 import { SharedService } from '@app/shared/shared.service';
 import { first } from 'rxjs/operators';
+import { environment } from '@environments/environment';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { Variable } from '@angular/compiler/src/render3/r3_ast';
 
 
 @Component({
@@ -12,7 +15,6 @@ import { first } from 'rxjs/operators';
 })
 export class InfoCardComponent implements OnInit {
   user: Employee; 
-  permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
   data:any;
   managerName:string;
   garageName:string;
@@ -22,7 +24,10 @@ export class InfoCardComponent implements OnInit {
   monthIncome:number;
 
 
-  constructor(private sharedService : SharedService, private userService : UserService ,private garageService : GarageService) {
+  constructor(private sharedService : SharedService,
+    private userService : UserService,
+    private garageService : GarageService,
+    private http: HttpClient) {
   }
 
 	ngOnInit() {
@@ -38,15 +43,25 @@ export class InfoCardComponent implements OnInit {
         this.getGarageReport();
       break;
       default:
+        this.http.get<Variable>(`${environment.apiUrl}/sync/${this.userService.currentUserValue._id}`, { headers: new HttpHeaders({ 'None': 'true'})})
+        .pipe(first())
+        .subscribe(data => {
+          if(data['update']){
+            this.userService.refreshData().subscribe(()=>{
+              this.sharedService.sendLoginState(this.userService.getUserPermission());
+            });
+        }});
         break;
     }
   }
 
+  getUserPermission(){
+    return this.userService.getUserPermission()
+  }
+
   getGarageReport() {
     this.garageService.getReportById(Number(this.user.garage))
-		.pipe(first())
-		.subscribe(
-			data => {
+		.pipe(first()).subscribe(data => {
         //import to table
         this.managerName = data.manager.firstname + ' ' + data.manager.lastname; 
         this.garageName = data.name;
@@ -67,7 +82,7 @@ export class InfoCardComponent implements OnInit {
         data.forEach(function (garageReport) {
          this.usersNum+=garageReport.employees;
          if(garageReport.report.length)
-         this.monthIncome+=garageReport.report[garageReport.report.length-1].cost;
+          this.monthIncome+=garageReport.report[garageReport.report.length-1].cost;
           //garageReport.report.lastIndexOf;
         }.bind(this));
 			});

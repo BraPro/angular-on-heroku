@@ -1,4 +1,4 @@
-<div class="container" *ngIf="permission != 'None' && permission != 'New Employee'; else newEmployeeTemplate"> 
+<div class="container" *ngIf="getUserPermission() != 'None' && getUserPermission() != 'New Employee'; else newEmployeeTemplate"> 
 
   <div class="row">
     <div class="card2" id="or-border2">
@@ -19,7 +19,7 @@
   
 
 
-<div *ngIf="permission!='Admin'; else adminTemplate">
+<div *ngIf="getUserPermission() != 'Admin'; else adminTemplate">
 <div class="row">
   <div class="card" id="or-border2">
     <div class="card-header" id="or-header2">
@@ -116,7 +116,7 @@
 </div>
 
 <ng-template #newEmployeeTemplate>
-  <div *ngIf="permission != 'None'; else noneTemplate">
+  <div *ngIf="getUserPermission() != 'None'; else noneTemplate">
     <div class="container" style="height: 809px;">
     <div class="row">
       <div class="card2" id="or-border2">

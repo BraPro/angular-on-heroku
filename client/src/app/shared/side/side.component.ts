@@ -66,7 +66,7 @@ export class SideComponent implements OnInit {
 
   ngOnInit(){
     if(this.userService.isLoggin()){
-        this.sharedService.sendLoginState(String(this.userService.currentUserValue.status));
+        this.sharedService.sendLoginState(this.userService.getUserPermission());
     }
     this.putselect();
     this.sharedService.sendSelectMenu(this.selected);

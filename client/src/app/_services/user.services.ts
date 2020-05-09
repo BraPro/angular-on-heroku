@@ -15,12 +15,18 @@ export class UserService {
         this.currentUser = this.currentUserSubject.asObservable();
     }
 
-    public isLoggin() : boolean{
+    isLoggin() : boolean{
         return this.currentUserValue != null;
     }
 
-    public get currentUserValue(): Employee {
+    get currentUserValue(): Employee {
         return this.currentUserSubject.value;
+    }
+
+    getUserPermission() : string{
+        if(this.isLoggin())
+          return String(this.currentUserValue.status);
+        return '';
     }
 
     signup(e : Employee) {
@@ -58,5 +64,4 @@ export class UserService {
         this.currentUserSubject.next(null);
         return this.http.post<Response>(`${environment.apiUrl}/users/logout`, '');
     }
-
 }
