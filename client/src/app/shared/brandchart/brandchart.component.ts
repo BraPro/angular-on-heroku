@@ -110,11 +110,11 @@ export class BrandchartComponent {
           newseries.push(element);
           this.chartOptions.series=newseries;
           //this.highcharts.chart('container',this.chartOptions);
-          this.highcharts.chart('container',this.option2);
+         // this.highcharts.chart('container',this.option2);
           //console.log(this.data);
       }.bind(this));
 
-      alert(this.chartOptions.series[0]);
+       //alert(this.chartOptions.series[0]);
       //alert(this.option2.series);
       
     },
