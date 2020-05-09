@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService, GarageService } from '@app/_services';
 import { Employee } from '@app/_models';
 import { SharedService } from '@app/shared/shared.service';
@@ -7,12 +7,12 @@ import { environment } from '@environments/environment';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
 
-
 @Component({
   selector: 'app-info-card',
   templateUrl: './info-card.component.html',
   styleUrls: ['./info-card.component.css'],
 })
+
 export class InfoCardComponent implements OnInit {
   user: Employee; 
   data:any;
@@ -44,8 +44,7 @@ export class InfoCardComponent implements OnInit {
       break;
       default:
         this.http.get<Variable>(`${environment.apiUrl}/sync/${this.userService.currentUserValue._id}`, { headers: new HttpHeaders({ 'None': 'true'})})
-        .pipe(first())
-        .subscribe(data => {
+        .pipe(first()).subscribe(data => {
           if(data['update']){
             this.userService.refreshData().subscribe(()=>{
               this.sharedService.sendLoginState(this.userService.getUserPermission());
@@ -60,21 +59,19 @@ export class InfoCardComponent implements OnInit {
   }
 
   getGarageReport() {
-    this.garageService.getReportById(Number(this.user.garage))
-		.pipe(first()).subscribe(data => {
+    this.garageService.getReportById(Number(this.user.garage)).pipe(first())
+    .subscribe(data => {
         //import to table
         this.managerName = data.manager.firstname + ' ' + data.manager.lastname; 
         this.garageName = data.name;
         this.garageAddress = data.location.country + ', ' + data.location.city +', '+ data.location.street;
-			});
-     }
+		});
+  }
     
 
   getAdminReport(){
-    this.garageService.getAllReports()
-	  .pipe(first())
-	  .subscribe(
-			data => {
+    this.garageService.getAllReports().pipe(first())
+	  .subscribe(data => {
         this.data=data;
         this.garagesNum=this.data.length 
         this.usersNum=0;
@@ -86,9 +83,6 @@ export class InfoCardComponent implements OnInit {
           //garageReport.report.lastIndexOf;
         }.bind(this));
 			});
-
-     }
-
-
+  }
 }
 

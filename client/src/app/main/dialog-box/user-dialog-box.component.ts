@@ -64,15 +64,10 @@ export class UserDialogBoxComponent {
   }
 
   getGarages(){
-
-    this.garageService.getAll()
-		.pipe(first())
-		.subscribe(
-			data => {
+    this.garageService.getAll().pipe(first())
+		.subscribe(data => {
         this.garageList=data;
-			});
-    
-
+		});
   }
 
 }
