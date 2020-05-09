@@ -27,7 +27,7 @@ module.exports = function (app, apiLocation) {
 						delete fullGarage.manager.password;
 					const emps = await Employee.find({garage: fullGarage._id});
 					fullGarage.employees = emps.length;
-					const trtms = getGarageReport(element._id);
+					const trtms = await getGarageReport(element._id);
 					fullGarage.report = trtms;
 					af.push(fullGarage);
 				}
@@ -67,10 +67,10 @@ module.exports = function (app, apiLocation) {
 					delete result.password;
 					fullGarage.manager = result;
 				}
-				Employee.find({garage: fullGarage._id}, (err, result) => {
+				Employee.find({garage: fullGarage._id}, async (err, result) => {
 					if(err) return res.json({response : 'Error'});
 					fullGarage.employees = result.length;
-					const report = getGarageReport(req.params.id);
+					const report = await getGarageReport(req.params.id);
 					fullGarage.report = report;
 					return res.json(fullGarage);
 				});
@@ -216,5 +216,7 @@ async function getGarageReport(garageid){
 			},
 		},
 		{ $sort : {_id: 1}}
-	]);
+	], (err, result) => {
+		return result;
+	});
 }

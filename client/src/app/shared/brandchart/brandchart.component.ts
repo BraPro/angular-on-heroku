@@ -3,6 +3,7 @@ import { SharedService } from './../shared.service';
 import * as Highcharts from "highcharts";
 import { GarageService, UserService } from '@app/_services';
 import { first } from 'rxjs/operators';
+import { GarageReport } from '@app/_models';
 
 @Component({
   selector: 'app-brandchart',
@@ -71,8 +72,8 @@ export class BrandchartComponent implements OnInit {
     this.garageService.getAllReports().pipe(first())
     .subscribe(data => {
       var newseries = [];
-      data.forEach(function (garage) {
-          var temp = this.datafillfunc(garage);
+      data.forEach(function (garage : GarageReport) {
+          var temp = this.datafillfunc(garage.report);
           var element={
             name: garage.name,
             keys: ['y', 'x', 'amount'],
@@ -89,7 +90,7 @@ export class BrandchartComponent implements OnInit {
     this.garageService.getReportById(Number(this.userService.currentUserValue.garage)).pipe(first())
     .subscribe(data => {
       var newseries = [];
-      var temp = this.datafillfunc(data);
+      var temp = this.datafillfunc(data.report);
       var element={
         name: data.name,
         keys: ['y', 'x', 'amount'],
@@ -112,7 +113,6 @@ export class BrandchartComponent implements OnInit {
   }
 
   datafillfunc(reportlist){
-
     var col = new Array();
     var ndate = new Date(Date.now());
     var sdate = new Date(ndate.getFullYear(), ndate.getMonth(), 1);
@@ -123,8 +123,9 @@ export class BrandchartComponent implements OnInit {
     }
 
     for(let i = 0; i < reportlist.length; i++){
-      var mindex = reportlist[i]._id.getMonth() - sdate.getMonth() +
-                    (12 * (reportlist[i]._id.getFullYear() - sdate.getFullYear()));
+      var rdate = new Date(reportlist[i]._id);
+      var mindex = rdate.getMonth() - sdate.getMonth() +
+                    (12 * (rdate.getFullYear() - sdate.getFullYear()));
       col[mindex] = [reportlist[i].cost, mindex, reportlist[i].count];
     }
 
