@@ -17,6 +17,12 @@ export class SyncInterceptor implements HttpInterceptor {
             return next.handle(request);
         }
     
+        this.syncRequest();
+        
+        return next.handle(request);
+    }
+
+    syncRequest(){
         this.http.get<Variable>(`${environment.apiUrl}/sync/${this.userService.currentUserValue._id}`, { headers: new HttpHeaders({ 'None': 'true'})})
 		.pipe(first())
 		.subscribe(
@@ -26,8 +32,6 @@ export class SyncInterceptor implements HttpInterceptor {
                         this.sharedService.sendLoginState(String(this.userService.currentUserValue.status));
                     });
                 }
-            });
-        
-        return next.handle(request);
+        });
     }
 }
