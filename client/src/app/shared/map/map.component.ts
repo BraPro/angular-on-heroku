@@ -12,8 +12,6 @@ import { first } from 'rxjs/operators';
   styleUrls: ['./map.component.css']
 })
 
-
-
 export class MapComponent implements AfterViewInit {
   @ViewChild("mapContainer", { static: false }) gmap: ElementRef;
   map: google.maps.Map;
@@ -21,14 +19,16 @@ export class MapComponent implements AfterViewInit {
   garages:Garage[];
   index:number;
 
-  constructor(public dialog: MatDialog,private garageService:GarageService,private sharedService: SharedService,
+  constructor(public dialog: MatDialog,
+    private garageService:GarageService,
+    private sharedService: SharedService,
     private userService : UserService){
   }
 
-  openDialog(action,i) {
-    if(action == "Edit"){
-    var Sendmarkers = [this.garages,action,i]; 
-    this.index=i;
+  openDialog(action, i) {
+    if((action == "Edit") || (action == "View")){
+      var Sendmarkers = [this.garages,action,i]; 
+      this.index=i;
     }
     else
     var Sendmarkers = [this.garages,action];
@@ -40,7 +40,6 @@ export class MapComponent implements AfterViewInit {
  
     dialogRef.afterClosed().subscribe(result => {
       if(result.event == 'Add'){
-        // AddGarage(garage:any, garageService: GarageService, sharedService: SharedService, map : google.maps.Map, loadAllMarkers : Function)
         this.AddGarage(result.data, this.garageService, this.sharedService);
       }else if(result.event == 'Edit'){
         this.EditGarage(result.data);
@@ -50,8 +49,6 @@ export class MapComponent implements AfterViewInit {
     });
   }
   
-  
-
   //Coordinates to set the center of the map
  // coordinates = new google.maps.LatLng(this.lat, this.lng);
 
@@ -79,10 +76,8 @@ export class MapComponent implements AfterViewInit {
 
   loadAllMarkers(themap: google.maps.Map, markers , permission): void {
 
-    this.garageService.getAll()
-		.pipe(first())
-		.subscribe(
-			data => {
+    this.garageService.getAll().pipe(first())
+		.subscribe(data => {
         this.garages=data;
         //import marks to map
         var control=this;
@@ -95,13 +90,19 @@ export class MapComponent implements AfterViewInit {
               title: marker.name,
               icon:"https://img.icons8.com/dusk/40/000000/car-service.png",
               animation: google.maps.Animation.DROP,
+          });
+
+          
+          if(permission == 'Admin'){
+            mark.addListener('click', function(){
+              control.openDialog("Edit",i);
             });
-               if(permission == 'Admin'){
-               mark.addListener('click', function(){
-               control.openDialog("Edit",i);
-             });
-            }
-            
+          } else {
+            mark.addListener('click', function(){
+              control.openDialog("View",i);
+            }); 
+          }
+
           markers.push(mark);
           bounds.extend(position);
         });
@@ -129,7 +130,8 @@ export class MapComponent implements AfterViewInit {
         controlAdd.style.cursor = "default"});
 
       controlAdd.addEventListener('click', function() {
-          control.openDialog('Add' ,null);}); }
+        control.openDialog('Add' ,null);});
+      }
      
     }
 
