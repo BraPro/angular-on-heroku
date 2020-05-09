@@ -14,6 +14,9 @@ export class InfoCardComponent implements OnInit {
   user: Employee; 
   permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
   data:any;
+  managerName:string;
+  garageName:string;
+  garageAddress:string;
   garagesNum:number;
   usersNum:number;
   monthIncome:number;
@@ -23,16 +26,15 @@ export class InfoCardComponent implements OnInit {
     this.user = this.userService.currentUserValue;
     this._loginService.loginStateObservable.subscribe(res => {
       this.permission = res;
+      if(this.permission == "Employee" || this.permission == "Manager")
+      this.getGarageReport();
+      if(this.permission == "Admin") 
+      this.getAdminReport();  
     });
-    if(this.permission == "Employee" || this.permission == "Manager")
-       this.getGarageReport();
-    if(this.permission == "Admin") 
-       this.getAdminReport();  
+   
   }
 
-	ngOnInit() {
-    this.getGarageReport();
-  }
+	ngOnInit() {}
 
   getGarageReport() {
     this.garageService.getReportById(<any>this.user.garage)
@@ -40,7 +42,9 @@ export class InfoCardComponent implements OnInit {
 		.subscribe(
 			data => {
         //import to table
-        this.data=data;  
+        this.managerName=data.manager.firstname; 
+        this.garageName=data.name;
+        this.garageAddress=data.location.city +', '+ data.location.street;
 			},
 			error => {
 				//this.alertService.error(error);

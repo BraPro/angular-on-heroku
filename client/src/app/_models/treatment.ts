@@ -6,6 +6,6 @@ export class Treatment {
     carid: number;
 	status: {type: string, enum : ['Waiting','In process', 'Done']};
     details: string;
-    coast: number;
+    cost: number;
 	date: Date;
 }

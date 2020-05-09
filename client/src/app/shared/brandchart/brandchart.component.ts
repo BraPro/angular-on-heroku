@@ -1,4 +1,4 @@
-import { Component, ɵConsole } from '@angular/core';
+import { Component } from '@angular/core';
 import { SharedService } from './../shared.service';
 import * as Highcharts from "highcharts";
 import { GarageService } from '@app/_services';
@@ -15,8 +15,8 @@ export class BrandchartComponent {
 
   updateFromInput = false;
   permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
-  Highcharts = Highcharts;
-  chart;
+  highcharts = Highcharts;
+  chart = this.highcharts.chart;
   chartConstructor = "chart";
   chartCallback;
   chartOptions = {   
@@ -42,8 +42,43 @@ export class BrandchartComponent {
   exporting: {
     enabled: true
   },
-    
+   
   };
+
+  option2= {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Monthly Average Temperature'
+    },
+    subtitle: {
+        text: 'Source: WorldClimate.com'
+    },
+    xAxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    },
+    yAxis: {
+        title: {
+            text: 'Temperature (°C)'
+        }
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
+        }
+    },
+    series: [{
+        name: 'Tokyo',
+        data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+    }, {
+        name: 'London',
+        data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+    }]
+}
 
 
 	constructor(private sharedService:SharedService,private garageService:GarageService) {
@@ -71,14 +106,17 @@ export class BrandchartComponent {
       var newseries = [];
       data.forEach(function (garage) {
           var temp = this.datafillfunc(garage);
-          var element = [garage.name,temp,['y', 'x', 'amount']];
+          var element = [[garage.name],[temp],['y', 'x', 'amount']];
           newseries.push(element);
+          this.chartOptions.series=newseries;
+          //this.highcharts.chart('container',this.chartOptions);
+          this.highcharts.chart('container',this.option2);
           //console.log(this.data);
       }.bind(this));
-      this.onInitChart(newseries);
 
-  
-  
+      alert(this.chartOptions.series[0]);
+      //alert(this.option2.series);
+      
     },
      error => {
       //this.alertService.error(error);
@@ -91,7 +129,6 @@ export class BrandchartComponent {
 
 
   userChart(){
-   
   }
 
   Datefunc(){
@@ -123,20 +160,6 @@ export class BrandchartComponent {
     }
 
     return col;
-  }
-
-  onInitChart(newseries) {
-    const self = this,
-      chart = this.chart;
-
-    chart.showLoading();
-    setTimeout(() => {
-      chart.hideLoading();
-
-      self.chartOptions.series =newseries;
-
-      self.updateFromInput = true;
-    }, 2000);
   }
 
 
