@@ -27,20 +27,19 @@ export class BrandchartComponent implements OnInit {
     xAxis:{
        categories:this.Datefunc()
     },
-    yAxis: {          
-       title:{
-          text:"Incomes"
-       } 
+    yAxis: {        
+      title:{
+        text:"Incomes"
+      }
     },
     tooltip: {
-      pointFormat: '<span style="color:{series.color}">{series.name}</span>: Income=<b>{point.y}</b>, Value=<b>{point.amount}<b> <br/>',
+      pointFormat: '<span style="color:{series.color}">{series.name}</span>:<br>M.Income=<b>{point.y}</b><br>Treatments=<b>{point.amount}<b>',
       split: true
-  } ,
-  series:[],
-  exporting: {
-    enabled: true
-  },
-   
+    },
+    series:[],
+    exporting: {
+      enabled: true
+    }
   };
 
   constructor(private sharedService : SharedService,
@@ -80,6 +79,11 @@ export class BrandchartComponent implements OnInit {
             data: temp};
           newseries.push(element);
       }.bind(this));
+      Highcharts.setOptions({
+        lang: {
+          thousandsSep: ','
+        }
+      });
       this.chartOptions.series=newseries;
       this.highcharts.chart('container',this.chartOptions);
     });
@@ -96,6 +100,11 @@ export class BrandchartComponent implements OnInit {
         keys: ['y', 'x', 'amount'],
         data: temp};
       newseries.push(element);
+      Highcharts.setOptions({
+        lang: {
+          thousandsSep: ','
+        }
+      });
       this.chartOptions.series=newseries;
       this.highcharts.chart('container',this.chartOptions);
     });
