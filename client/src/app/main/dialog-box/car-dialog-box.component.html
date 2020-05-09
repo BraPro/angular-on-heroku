@@ -1,19 +1,19 @@
 <h1 mat-dialog-title><strong>{{action}} Treatment</strong></h1>
 <div mat-dialog-content>                                                  <!-- ['date','id','carid','cost','status','details','action'];-->
   <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
-    <input placeholder="{{action}} Car-Id" matInput [(ngModel)]="local_data.carid">
+    <input placeholder="Car-Id" matInput [(ngModel)]="local_data.carid">
   </mat-form-field>
 
   <mat-form-field *ngIf="action != 'Delete';">
-    <input placeholder="{{action}} Cost" matInput [(ngModel)]="local_data.cost">
+    <input placeholder="Cost" matInput [(ngModel)]="local_data.cost">
   </mat-form-field>
 
   <mat-form-field *ngIf="action != 'Delete';">
-    <input placeholder="{{action}} Details" matInput [(ngModel)]="local_data.details">
+    <input placeholder="Details" matInput [(ngModel)]="local_data.details">
   </mat-form-field>
 
   <mat-form-field *ngIf="action == 'Edit';">
-    <input placeholder="{{action}} Status" matInput [(ngModel)]="local_data.status">
+    <input placeholder="Status" matInput [(ngModel)]="local_data.status">
   </mat-form-field>
 
   <ng-template #elseTemplate>

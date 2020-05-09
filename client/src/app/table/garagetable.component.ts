@@ -49,6 +49,13 @@ export class GarageTableComponent implements OnInit {
       return this.userService.getUserPermission() == 'Admin';
     }
   
+    isSelectedGarage(){
+      if(this.allGaragesPermission())
+        return this.selectedGarage != null;
+      else
+        return true;
+    }
+
     getGarageId(){
       if(this.allGaragesPermission())
         return this.selectedGarage._id;
