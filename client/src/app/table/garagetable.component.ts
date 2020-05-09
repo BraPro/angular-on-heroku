@@ -1,5 +1,4 @@
 import { Component,OnInit, ViewChild } from '@angular/core';
- 
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { CarDialogBoxComponent } from '../main/dialog-box/car-dialog-box.component';
@@ -11,14 +10,12 @@ import { first } from 'rxjs/operators';
 import { Treatment , Garage } from '@app/_models';
 import { SharedService } from '@app/shared/shared.service';
 
-
- 
-
 @Component({
   selector: 'app-garagetable',
   templateUrl: './garagetable.component.html',
   styleUrls: ['./garagetable.component.css']
 })
+
 export class GarageTableComponent implements OnInit {
   displayedColumns: string[] = ['date','id','carid','cost','status','details','action'];
   dataSource = new MatTableDataSource<Treatment>();
@@ -29,7 +26,11 @@ export class GarageTableComponent implements OnInit {
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  
+  constructor(public dialog: MatDialog,
+    private garageService : GarageService,
+    private userService : UserService,
+    private treatmentService:TreatmentService){
+  }
 
   ngOnInit() {
     if(this.allGaragesPermission())
@@ -37,31 +38,24 @@ export class GarageTableComponent implements OnInit {
     else
       this.refreshTable();
 	}
- 
-  constructor(public dialog: MatDialog,
-    private garageService : GarageService,
-    private userService : UserService,
-    private treatmentService:TreatmentService,
-    private sharedService: SharedService){
-    }
 
-    allGaragesPermission(){
-      return this.userService.getUserPermission() == 'Admin';
-    }
+  allGaragesPermission(){
+    return this.userService.getUserPermission() == 'Admin';
+  }
   
-    isSelectedGarage(){
-      if(this.allGaragesPermission())
-        return this.selectedGarage != null;
-      else
-        return true;
-    }
+  isSelectedGarage(){
+    if(this.allGaragesPermission())
+      return this.selectedGarage != null;
+    else
+      return true;
+  }
 
-    getGarageId(){
-      if(this.allGaragesPermission())
-        return this.selectedGarage._id;
-      else
-        return Number(this.userService.currentUserValue.garage);
-    }
+  getGarageId(){
+    if(this.allGaragesPermission())
+      return this.selectedGarage._id;
+    else
+      return Number(this.userService.currentUserValue.garage);
+  }
 
   openDialog(action,obj) {
     obj.action = action;
@@ -83,26 +77,15 @@ export class GarageTableComponent implements OnInit {
  
   addRowData(row_obj){
     row_obj.garage = this.getGarageId();
-    this.treatmentService.add(row_obj)
-		.pipe(first())
-		.subscribe(
-			data => {
+    this.treatmentService.add(row_obj).pipe(first())
+		.subscribe(data => {
         //import to table
         this.refreshTable();
-			});
-   /* var d = new Date();
-    this.dataSource.data.push({
-      id:d.getTime(),
-      carid:row_obj.car,
-      customer:row_obj.customer,
-      details:row_obj.details,
-      status:row_obj.status,
-    });
-    this.table.renderRows();
-    this.refreshTable();*/
-    
+		});
   }
+
   updateRowData(row_obj){
+    row_obj.garage = this.getGarageId();
     this.treatmentService.update(row_obj)
 		.pipe(first())
 		.subscribe(
@@ -111,7 +94,9 @@ export class GarageTableComponent implements OnInit {
         this.refreshTable();
 			});  
   }
+
   deleteRowData(row_obj){
+    row_obj.garage = this.getGarageId();
     this.treatmentService.delete(row_obj._id)
 		.pipe(first())
 		.subscribe(
@@ -127,35 +112,23 @@ export class GarageTableComponent implements OnInit {
   }
   
   private refreshTable() {
-    this.garageService.getTreatmentsById(this.getGarageId())
-		.pipe(first())
-		.subscribe(
-			data => {
-        //import to table
+    this.garageService.getTreatmentsById(this.getGarageId()).pipe(first())
+		.subscribe(data => {
         this.dataSource.data=data;
-       
-			});
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      
-}
+		});
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;  
+  }
 
-   getGarages(){
-
-    this.garageService.getAll()
-   .pipe(first())
-   .subscribe(
-      data => {
+  getGarages(){
+    this.garageService.getAll().pipe(first())
+    .subscribe(data => {
         this.garageList=data;
-      });
-
+    });
   }
 
   public loadGarage(){
     this.refreshTable();
   }
-
-
-
 }
  

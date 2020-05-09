@@ -9,8 +9,8 @@ import { UserService } from '@app/_services';
   templateUrl: './car-dialog-box.component.html',
   styleUrls: ['./car-dialog-box.component.css']
 })
+
 export class CarDialogBoxComponent {
- 
   action:string;
   local_data:any;
  
@@ -23,7 +23,6 @@ export class CarDialogBoxComponent {
     this.action = this.local_data.action;
   }
  
-
   doAction(){
     this.local_data.garage = Number(this.userService.currentUserValue.garage)
     this.dialogRef.close({event:this.action,data:this.local_data});
@@ -32,5 +31,4 @@ export class CarDialogBoxComponent {
   closeDialog(){
     this.dialogRef.close({event:'Cancel'});
   }
- 
 }
