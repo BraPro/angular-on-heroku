@@ -5,11 +5,12 @@ import { environment } from '@environments/environment';
 import { first } from 'rxjs/operators';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
 import { UserService } from '@app/_services';
+import { SharedService } from '@app/shared/shared.service';
 
 @Injectable()
 export class SyncInterceptor implements HttpInterceptor {
 
-    constructor(private userService: UserService, private http: HttpClient) { }
+    constructor(private userService: UserService, private http: HttpClient, private sharedService : SharedService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if(request.headers.has('None') || !this.userService.isLoggin()){
@@ -21,24 +22,12 @@ export class SyncInterceptor implements HttpInterceptor {
 		.subscribe(
 			data => {
                 if(data['update']){
-                    console.log('a');
-                    
+                    this.userService.refreshData().subscribe(()=>{
+                        this.sharedService.sendLoginState(String(this.userService.currentUserValue.status));
+                    });
                 }
             });
         
         return next.handle(request);
-        /*
-        return request.handle(
-        return next.handle(request).pipe(catchError(err => {
-            if (err.status === 401) {
-                // auto logout if 401 response returned from api
-                this.userService.logout();
-                location.reload(true);
-            }
-
-            const error = err.error.message || err.statusText;
-            return throwError(error);
-        }))
-        */
     }
 }

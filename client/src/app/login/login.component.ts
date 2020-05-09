@@ -97,8 +97,6 @@ export class LoginComponent implements OnInit {
 	onSubmit() {
 		this.submitted = true;
 		
-
-        // stop here if form is invalid
         if (this.loginForm.invalid) {
             return;
 		}
@@ -106,7 +104,6 @@ export class LoginComponent implements OnInit {
 			return;
 		}
 
-		//this.validateAllFormFields(this.loginForm);
 		this.loading = true;
 		this.userService.login(this.loginForm.value)
 		.pipe(first())
@@ -121,26 +118,12 @@ export class LoginComponent implements OnInit {
 				}
 			},
 			error => {
-				//this.alertService.error(error);
 				this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
 				
 			},
 			() => {
 				this.loading = false;
 			});
-		/*
-        this.authenticationService.login(this.f.username.value, this.f.password.value)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    this.router.navigate([this.returnUrl]);
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-				});
-				
-		*/
 	}
 	
 	validateAllFormFields(formGroup: FormGroup) {
@@ -158,6 +141,6 @@ export class LoginComponent implements OnInit {
 	reset() {
 		this.loginForm.reset();
 		this.submitted = false;
-	  }
+	}
 
 }

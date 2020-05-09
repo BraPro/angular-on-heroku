@@ -16,15 +16,13 @@ export class SideComponent implements OnInit {
   permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
   selected:string;  //'Income','Treatment','Map','Users','Welcome','Blocked'
   subscription: Subscription;
-  public router: Router;
+  router: Router;
 
   constructor(private userService : UserService, private sharedService : SharedService) {
-    
-    this.sharedService.getLoginState().subscribe(res => {
+    this.sharedService.getLoginStateEvent().subscribe(res => {
         this.permission = res;
         this.putselect(); 
     })
-    
   }
 
   putselect()
@@ -57,21 +55,13 @@ export class SideComponent implements OnInit {
 
   checkpermission(element:string){
     if(element=="active"){
-      if(this.permission =='Admin'||this.permission =='Manager'||this.permission =='Employee')
-      return true;
-      else return false;
+      return (this.permission =='Admin'||this.permission =='Manager'||this.permission =='Employee');
     }else if(element=="users"){
-      if(this.permission =='Admin'||this.permission =='Manager')
-      return true;
-      else return false;
+      return (this.permission =='Admin'||this.permission =='Manager');
     }else if(element=="welcome"){
-      if(this.permission =='New Employee')
-       return true
-       else return false;
+      return (this.permission =='New Employee');
     }else if(element=="blocked"){
-      if(this.permission =='None')
-      return true
-      else return false;
+      return (this.permission =='None');
     }
 
     return false;

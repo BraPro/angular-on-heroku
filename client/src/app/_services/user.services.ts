@@ -7,8 +7,8 @@ import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-    private currentUserSubject: BehaviorSubject<Employee>;
-    public currentUser: Observable<Employee>;
+    currentUserSubject: BehaviorSubject<Employee>;
+    currentUser: Observable<Employee>;
 
     constructor(private http: HttpClient) {
         this.currentUserSubject = new BehaviorSubject<Employee>(JSON.parse(localStorage.getItem('currentUser')));
@@ -40,6 +40,16 @@ export class UserService {
                 this.currentUserSubject.next(response.data);
             }
             return response;
+        }));
+    }
+
+    refreshData() {
+        return this.http.get<Employee>(`${environment.apiUrl}/employees/${this.currentUserValue._id}`).pipe(map(response => {
+            if(response){
+                response.token = this.currentUserValue.token;
+                localStorage.setItem('currentUser', JSON.stringify(response));
+                this.currentUserSubject.next(response);
+            }
         }));
     }
 

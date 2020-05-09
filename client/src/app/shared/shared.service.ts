@@ -8,30 +8,16 @@ import { Employee } from '../_models/employee'
 
 export class SharedService{
   alertMessage = new Subject<any>();
-  //loginState: BehaviorSubject<any>;
-  //loginStateObservable: Observable<string>;
-  //selectState: BehaviorSubject<string>;
-  //selectStateObservable: Observable<string>;
   loginState = new Subject<string>();
-  //loginStateObservable: Observable<string>;
   selectState = new Subject<string>();
-  //selectStateObservable: Observable<string>;
   constructor() {
-    /*
-
-    this.loginState = new BehaviorSubject<any>('None');
-    this.loginStateObservable = this.loginState.asObservable();
-    this.selectState = new BehaviorSubject<string>('main');
-    this.selectStateObservable = this.selectState.asObservable();
-    */
-   
   }
 
   sendLoginState(status : string){
     this.loginState.next(status);
   }
 
-  getLoginState(): Observable<string>{ 
+  getLoginStateEvent(): Observable<string>{ 
     return this.loginState.asObservable();
   }
 
