@@ -19,7 +19,7 @@ export class BrandchartComponent {
   chart = this.highcharts.chart;
   chartConstructor = "chart";
   chartCallback;
- /* chartOptions = {   
+  chartOptions = {   
     chart: {
        type: "spline"
     },
@@ -43,49 +43,7 @@ export class BrandchartComponent {
     enabled: true
   },
    
-  };*/
-
-  chartOptions= {
-    chart: {
-        type: 'line'
-    },
-    title: {
-        text: 'Monthly Average Temperature'
-    },
-    subtitle: {
-        text: 'Source: WorldClimate.com'
-    },
-    xAxis: {
-        categories: this.Datefunc()
-    },
-    yAxis: {
-        title: {
-            text: 'Temperature (°C)'
-        }
-    },
-    plotOptions: {
-        line: {
-            dataLabels: {
-                enabled: true
-            },
-            enableMouseTracking: true
-        }
-    },
-    tooltip: {
-      pointFormat: '<span style="color:{series.color}">{series.name}</span>: Income=<b>{point.y}</b>, Value=<b>{series.amount}<b> <br/>',
-      split: true
-    } ,
-    series: [{
-        name: 'Tokyo',
-        data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
-        amount:[1,2,3,4,5,6,7,8,9,10,11,12],
-    }, {
-        name: 'London',
-        data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8],
-        amount:[1,2,3,4,5,6,7,8,9,10,11,12],
-    }]
-}
-
+  };
 
 	constructor(private sharedService:SharedService,private garageService:GarageService) {
     this.sharedService.getSelectMenuEvent().subscribe(res => {
@@ -95,12 +53,13 @@ export class BrandchartComponent {
       this.chartCallback = chart => {
         self.chart = chart;
       };
-    
       if(this.permission=="Admin")
-        this.adminChart();
+      this.adminChart();
       else
-        this.userChart();
+      this.userChart();
     });
+
+    this.adminChart();
     
   }
 
@@ -112,16 +71,17 @@ export class BrandchartComponent {
       var newseries = [];
       data.forEach(function (garage) {
           var temp = this.datafillfunc(garage);
-          var element = [[garage.name],[temp],['y', 'x', 'amount']];
-          newseries.push(element);
-          this.chartOptions.series=newseries;
-        
+          var element={
+            name: garage.name,
+            keys: ['y', 'x', 'amount'],
+            data: temp};
+            newseries.push(element);
+           
           //console.log(this.data);
       }.bind(this));
 
-     
-  
-     // this.highcharts.chart('container',this.chartOptions);
+      this.chartOptions.series=newseries;
+      this.highcharts.chart('container',this.chartOptions);
        //alert(this.chartOptions.series[0]);
       //alert(this.option2.series);
       
