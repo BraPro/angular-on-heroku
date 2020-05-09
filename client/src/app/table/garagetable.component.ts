@@ -70,6 +70,7 @@ export class GarageTableComponent implements OnInit {
   }
  
   addRowData(row_obj){
+    row_obj.garage = this.userService.currentUserValue.garage;
     this.treatmentService.add(row_obj)
 		.pipe(first())
 		.subscribe(
@@ -154,6 +155,8 @@ export class GarageTableComponent implements OnInit {
       garageId=this.selectedGarage._id;
     else
       garageId=Number(this.userService.currentUserValue.garage);
+    
+    console.log(this.userService.currentUserValue);
     this.garageService.getTreatmentsById(garageId)
 		.pipe(first())
 		.subscribe(
