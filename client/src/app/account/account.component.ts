@@ -58,7 +58,7 @@ export class AccountComponent implements OnInit {
 
 	  isFieldValid(field: string) {
 		return (
-			(!this.accountForm.get(field).valid && this.accountForm.get(field).touched) ||
+			//(!this.accountForm.get(field).valid && this.accountForm.get(field).touched) ||
 			(this.accountForm.get(field).untouched && this.submitted)
 		);
 	  }
