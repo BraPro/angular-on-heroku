@@ -27,43 +27,7 @@ module.exports = function (app, apiLocation) {
 						delete fullGarage.manager.password;
 					const emps = await Employee.find({garage: fullGarage._id});
 					fullGarage.employees = emps.length;
-					var lastyear = new Date(Date.now());
-					lastyear.setMonth(lastyear.getMonth() - 12);
-					var now = new Date(Date.now());
-					const trtms = await Treatment.aggregate([
-								{
-									$match: {
-										garage: Number(element._id),
-									},
-								},
-								{
-									$match: {
-										date: {
-											$gte: lastyear,
-											$lte: now
-										}
-									},
-								},
-								{
-									$project: {
-										id: "$garage",
-										datemy: {$dateFromParts: {'year' : {$year: "$date"}, 'month' : {$month: "$date"}}},
-										cost: "$cost"
-									}
-								},
-								{
-									$group: {
-										_id : "$datemy",
-										count: {
-											$sum: { "$sum" : 1 } ,
-										},
-										cost: {
-											$sum: { "$sum" : "$cost" } ,
-										}
-									},
-								},
-								{ $sort : {_id: 1}}
-					]);
+					const trtms = getGarageReport(element._id);
 					fullGarage.report = trtms;
 					af.push(fullGarage);
 				}
@@ -106,47 +70,9 @@ module.exports = function (app, apiLocation) {
 				Employee.find({garage: fullGarage._id}, (err, result) => {
 					if(err) return res.json({response : 'Error'});
 					fullGarage.employees = result.length;
-					var lastyear = new Date(Date.now());
-					lastyear.setMonth(lastyear.getMonth() - 12);
-					var now = new Date(Date.now());
-					Treatment.aggregate([
-						{
-							$match: {
-								garage: Number(req.params.id),
-							},
-						},
-						{
-							$match: {
-								date: {
-									$gte: lastyear,
-									$lte: now
-								}
-							},
-						},
-						{
-							$project: {
-								id: "$garage",
-								datemy: {$dateFromParts: {'year' : {$year: "$date"}, 'month' : {$month: "$date"}}},
-								cost: "$cost"
-							}
-						},
-						{
-							$group: {
-								_id : "$datemy",
-								count: {
-									$sum: { "$sum" : 1 } ,
-								},
-								cost: {
-									$sum: { "$sum" : "$cost" } ,
-								}
-							},
-						},
-						{ $sort : {_id: 1}}
-					],  (err, result) => {
-						if(err) return res.json({response : 'Error'});
-						fullGarage.report = result;
-						return res.json(fullGarage);
-					 });
+					const report = getGarageReport(req.params.id);
+					fullGarage.report = report;
+					return res.json(fullGarage);
 				});
 			});
 		});
@@ -238,14 +164,57 @@ module.exports = function (app, apiLocation) {
 			if (err) return res.json({response : 'Error'});
 			if(result == null) return res.json({response : 'Error', msg : 'Garage doesnt exist'}); 
 
-			Employee.updateMany({garage: Number(req.params.id)}, { $set: { status: 'None', garage: null } }, (err, result) => {
+			Employee.find({garage: Number(req.params.id)}, (err, result) => {
 				if (err) return res.json({response : 'Error'});
-				for(var el in result){
-					console.log(el);
-					syncUser(el._id);
-				}
-				return res.json({response : 'Success', msg : 'Garage number ' + Number(req.params.id) + ' has been deleted'}); 
+				async function processItems(result){
+					for(element of result) {
+						await element.updateOne({ $set: { status: 'None', garage: null }});
+						syncUser(element._id);
+					}
+					return res.json({response : 'Success', msg : 'Garage number ' + Number(req.params.id) + ' has been deleted'}); 
+				};
+				processItems(result);
 			});
 		});
 	});
 };
+
+async function getGarageReport(garageid){
+	var lastyear = new Date(Date.now());
+	lastyear.setMonth(lastyear.getMonth() - 12);
+	var now = new Date(Date.now());
+	return await Treatment.aggregate([
+		{
+			$match: {
+				garage: Number(garageid),
+			},
+		},
+		{
+			$match: {
+				date: {
+					$gte: lastyear,
+					$lte: now
+				}
+			},
+		},
+		{
+			$project: {
+				id: "$garage",
+				datemy: {$dateFromParts: {'year' : {$year: "$date"}, 'month' : {$month: "$date"}}},
+				cost: "$cost"
+			}
+		},
+		{
+			$group: {
+				_id : "$datemy",
+				count: {
+					$sum: { "$sum" : 1 } ,
+				},
+				cost: {
+					$sum: { "$sum" : "$cost" } ,
+				}
+			},
+		},
+		{ $sort : {_id: 1}}
+	]);
+}
