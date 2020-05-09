@@ -24,13 +24,10 @@ export class MapDialogBoxComponent {
     this.local_data=data[0];
     this.action_data = new Garage();
     this.action_data.location = new Location();
-    this.index=data[2];
-    this.action_data = this.local_data[this.index];
-
-    //if(this.action == "View"){
-    //  this.index=data[2];
-    //  this.action_data = this.local_data[this.index];
-   // }
+    if((this.action == "Edit") || (this.action == "View")){
+      this.index=data[2];
+      this.action_data = this.local_data[this.index];
+    }
   }
  
   canEdit(){
