@@ -1,20 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SharedService } from './../shared.service';
 import * as Highcharts from "highcharts";
-import { GarageService } from '@app/_services';
+import { GarageService, UserService } from '@app/_services';
 import { first } from 'rxjs/operators';
-
-
 
 @Component({
   selector: 'app-brandchart',
   templateUrl: './brandchart.component.html',
   styleUrls: ['./brandchart.component.css']
 })
-export class BrandchartComponent {
 
+export class BrandchartComponent implements OnInit {
   updateFromInput = false;
-  permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
   highcharts = Highcharts;
   chart = this.highcharts.chart;
   chartConstructor = "chart";
@@ -45,29 +42,34 @@ export class BrandchartComponent {
    
   };
 
-	constructor(private sharedService:SharedService,private garageService:GarageService) {
-    this.sharedService.getSelectMenuEvent().subscribe(res => {
-      this.permission = res;
+  constructor(private sharedService : SharedService,
+    private garageService:GarageService,
+    private userService : UserService) {
       const self = this;
-      // saving chart reference using chart callback
       this.chartCallback = chart => {
-        self.chart = chart;
+        const self = chart;
       };
-      if(this.permission=="Admin")
-      this.adminChart();
-      else
-      this.userChart();
-    });
+  }
 
-    this.adminChart();
-    
+  ngOnInit() {
+    switch(String(this.userService.getUserPermission())){
+      case 'Admin':
+        this.adminChart();
+        break;
+      case 'Employee':
+        this.userChart();
+        break;
+      case 'Manager':
+        this.userChart();
+      break;
+      default:
+        break;
+    }
   }
 
   adminChart(){
-    this.garageService.getAllReports()
-    .pipe(first())
-     .subscribe(
-    data => {
+    this.garageService.getAllReports().pipe(first())
+    .subscribe(data => {
       var newseries = [];
       data.forEach(function (garage) {
           var temp = this.datafillfunc(garage);
@@ -75,17 +77,27 @@ export class BrandchartComponent {
             name: garage.name,
             keys: ['y', 'x', 'amount'],
             data: temp};
-            newseries.push(element);
+          newseries.push(element);
       }.bind(this));
-
       this.chartOptions.series=newseries;
       this.highcharts.chart('container',this.chartOptions);
     });
-
   }
 
 
   userChart(){
+    this.garageService.getReportById(Number(this.userService.currentUserValue.garage)).pipe(first())
+    .subscribe(data => {
+      var newseries = [];
+      var temp = this.datafillfunc(data);
+      var element={
+        name: data.name,
+        keys: ['y', 'x', 'amount'],
+        data: temp};
+      newseries.push(element);
+      this.chartOptions.series=newseries;
+      this.highcharts.chart('container',this.chartOptions);
+    });
   }
 
   Datefunc(){
@@ -118,8 +130,6 @@ export class BrandchartComponent {
 
     return col;
   }
-
-
 }
 
 
