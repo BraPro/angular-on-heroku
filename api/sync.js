@@ -3,12 +3,10 @@ var syncUsers = {};
 module.exports = {appsync, sync, syncOff}
 
 function sync(id){
-    console.log("updated " + id + " to " + true);
     syncUsers[id] = true;
 }
 
 function syncOff(id){
-    console.log("updated " + id + " to " + false);
     syncUsers[id] = false;
 }
 
