@@ -53,7 +53,7 @@ export class GarageTableComponent implements OnInit {
       if(this.allGaragesPermission())
         return this.selectedGarage._id;
       else
-        return this.userService.currentUserValue.garage._id;
+        return Number(this.userService.currentUserValue.garage);
     }
 
   openDialog(action,obj) {
@@ -82,12 +82,6 @@ export class GarageTableComponent implements OnInit {
 			data => {
         //import to table
         this.refreshTable();
-			},
-			error => {
-				//this.alertService.error(error);
-				this.sharedService.sendAlertEvent(error);
-			},
-			() => {
 			});
    /* var d = new Date();
     this.dataSource.data.push({
@@ -108,25 +102,7 @@ export class GarageTableComponent implements OnInit {
 			data => {
         //import to table
         this.refreshTable();
-			},
-			error => {
-				//this.alertService.error(error);
-				this.sharedService.sendAlertEvent(error);
-			},
-			() => {
-			});
-    /*this.dataSource.data = this.dataSource.data.filter((value,key)=>{
-      if(value.id == row_obj.id){
-        value.carid = row_obj.car;
-        value.customer = row_obj.customer;
-        value.details = row_obj.details;
-        value.status = row_obj.status;
-      }
-      this.refreshTable();
-      return true;
-    });*/
-  
-    
+			});  
   }
   deleteRowData(row_obj){
     this.treatmentService.delete(row_obj._id)
@@ -135,18 +111,7 @@ export class GarageTableComponent implements OnInit {
 			data => {
         //import to table
         this.refreshTable();
-			},
-			error => {
-				//this.alertService.error(error);
-				this.sharedService.sendAlertEvent(error);
-			},
-			() => {
-      });
-      
-    /*this.dataSource.data = this.dataSource.data.filter((value,key)=>{
-      return value.id != row_obj.id;
-    });
-    this.refreshTable();*/
+			});
   }
 
   applyFilter(event: Event) {
@@ -155,7 +120,6 @@ export class GarageTableComponent implements OnInit {
   }
   
   private refreshTable() {
-
     this.garageService.getTreatmentsById(this.getGarageId())
 		.pipe(first())
 		.subscribe(
@@ -163,13 +127,7 @@ export class GarageTableComponent implements OnInit {
         //import to table
         this.dataSource.data=data;
        
-			},
-			error => {
-				//this.alertService.error(error);
-				this.sharedService.sendAlertEvent(error);
-			},
-			() => {
-      });
+			});
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       
@@ -182,12 +140,6 @@ export class GarageTableComponent implements OnInit {
    .subscribe(
       data => {
         this.garageList=data;
-      },
-      error => {
-        //this.alertService.error(error);
-        this.sharedService.sendAlertEvent(error);
-      },
-      () => {
       });
 
   }

@@ -22,34 +22,40 @@ export class InfoCardComponent implements OnInit {
   monthIncome:number;
 
 
-  constructor(private userService : UserService ,private garageService : GarageService, private _loginService: SharedService) {
-    this.user = this.userService.currentUserValue;
-    this._loginService.getSelectMenuEvent().subscribe(res => {
-      this.permission = res;
-      if(this.permission == "Employee" || this.permission == "Manager")
-      this.getGarageReport();
-      if(this.permission == "Admin") 
-      this.getAdminReport();  
-    });
-   
+  constructor(private sharedService : SharedService, private userService : UserService ,private garageService : GarageService) {
   }
 
-	ngOnInit() {}
+	ngOnInit() {
+    this.user = this.userService.currentUserValue;
+    console.log(this.user);
+    switch(String(this.user.status)){
+      case 'Admin':
+        this.getAdminReport(); 
+        break;
+      case 'Employee':
+        console.log('asd');
+        this.getGarageReport();
+        break;
+      case 'Manager':
+        console.log('asd');
+        this.getGarageReport();
+      break;
+      default:
+        console.log('asd2');
+        break;
+    }
+  }
 
   getGarageReport() {
-    this.garageService.getReportById(<any>this.user.garage)
+    this.garageService.getReportById(Number(this.user.garage))
 		.pipe(first())
 		.subscribe(
 			data => {
         //import to table
-        this.managerName=data.manager.firstname; 
-        this.garageName=data.name;
-        this.garageAddress=data.location.city +', '+ data.location.street;
-			},
-			error => {
-				//this.alertService.error(error);
-				this._loginService.sendAlertEvent(error);
-			},);
+        this.managerName = data.manager.firstname + ' ' + data.manager.lastname; 
+        this.garageName = data.name;
+        this.garageAddress = data.location.country + ', ' + data.location.city +', '+ data.location.street;
+			});
      }
     
 
@@ -59,6 +65,7 @@ export class InfoCardComponent implements OnInit {
 	  .subscribe(
 			data => {
         //import to table
+        console.log(data);
         this.data=data;
         this.garagesNum=this.data.length 
         this.usersNum=0;
@@ -69,11 +76,7 @@ export class InfoCardComponent implements OnInit {
          this.monthIncome+=garageReport.report[garageReport.report.length-1].cost;
           //garageReport.report.lastIndexOf;
         }.bind(this));
-			},
-			error => {
-				//this.alertService.error(error);
-				this._loginService.sendAlertEvent(error);
-			},);
+			});
 
      }
 

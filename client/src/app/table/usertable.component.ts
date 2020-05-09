@@ -70,12 +70,6 @@ export class UserTableComponent implements OnInit {
         //import to table
         this.sharedService.sendAlertEvent(data);
         this.refreshTable();
-			},
-			error => {
-				//this.alertService.error(error);
-				//this.sharedService.sendAlertEvent(error);
-			},
-			() => {
 			});
   }
   
@@ -99,12 +93,6 @@ export class UserTableComponent implements OnInit {
 			data => {
         //import to table
         this.dataSource.data=data;
-			},
-			error => {
-				//this.alertService.error(error);
-				this.sharedService.sendAlertEvent(error);
-			},
-			() => {
 			});
     this.dataSource.paginator = this.paginator;
 }

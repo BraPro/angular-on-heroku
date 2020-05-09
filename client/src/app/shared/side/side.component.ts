@@ -47,9 +47,6 @@ export class SideComponent implements OnInit {
       .subscribe(
         data => {
           this.router.navigate(['/']); //need to delete!!
-        },
-        error => {
-          this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
         }); 
   }
 

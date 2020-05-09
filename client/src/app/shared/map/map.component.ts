@@ -111,15 +111,7 @@ export class MapComponent implements AfterViewInit {
 
        // this.map.fitBounds(bounds);  מרכז את המפה סביב הנקודות.
 
-			},
-			error => {
-				//this.alertService.error(error);
-				this.sharedService.sendAlertEvent(error);
-			},
-			() => {
 			});
-    
-    
     } 
 
     selectControl(controlDiv){
@@ -173,17 +165,8 @@ export class MapComponent implements AfterViewInit {
             this.RemoveAllmarkers();
             this.loadAllMarkers(this.map , this.markers , this.permission);
             this.map.panTo(returnVals[0]);
-         },
-          error => {
-          //this.alertService.error(error);
-          sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
-         },
-         () => {
-          });
-      }.bind(this))
-
-     
-      
+         });
+      }.bind(this));
     }
 
    
@@ -202,10 +185,6 @@ export class MapComponent implements AfterViewInit {
         this.sharedService.sendAlertEvent(data);  
         this.RemoveAllmarkers();
         this.loadAllMarkers(this.map , this.markers , this.permission);   
-      },
-       error => {
-        //this.alertService.error(error);
-       this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
       });}.bind(this))
 
     }
@@ -218,13 +197,7 @@ export class MapComponent implements AfterViewInit {
           this.RemoveAllmarkers();
           this.loadAllMarkers(this.map , this.markers , this.permission);
           this.sharedService.sendAlertEvent(data);
-      },
-       error => {
-        //this.alertService.error(error);
-       this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
-      },
-      () => {
-       });
+      });
 
     }
 

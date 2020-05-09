@@ -116,13 +116,6 @@ export class LoginComponent implements OnInit {
 					}
 					setTimeout(() => {  this.router.navigate(['/main']); }, 1000);
 				}
-			},
-			error => {
-				this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
-				
-			},
-			() => {
-				this.loading = false;
 			});
 	}
 	

@@ -125,13 +125,7 @@ export class BrandchartComponent {
        //alert(this.chartOptions.series[0]);
       //alert(this.option2.series);
       
-    },
-     error => {
-      //this.alertService.error(error);
-     this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
-    },
-    () => {
-     });
+    });
 
   }
 

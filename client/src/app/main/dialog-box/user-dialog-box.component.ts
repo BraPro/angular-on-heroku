@@ -70,12 +70,6 @@ export class UserDialogBoxComponent {
 		.subscribe(
 			data => {
         this.garageList=data;
-			},
-			error => {
-				//this.alertService.error(error);
-				this.sharedService.sendAlertEvent(error);
-			},
-			() => {
 			});
     
 

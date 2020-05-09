@@ -124,13 +124,6 @@ export class AccountComponent implements OnInit {
 				//if(data.response == 'Success'){
 					//setTimeout(() => {  this.router.navigate(['/login']); }, 1000);
 				//}
-			},
-			error => {
-				//this.alertService.error(error);
-				this.sharedService.sendAlertEvent({response: 'Error', msg: 'Check your internet connection'});
-			},
-			() => {
-				this.loading = false;
 			});
 	}
 	
