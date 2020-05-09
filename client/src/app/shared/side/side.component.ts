@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ViewContainerRef, ComponentFactoryResolver, ComponentFactory, ComponentRef, ViewChild } from '@angular/core';
+import { ViewChild } from '@angular/core';
 import { SharedService } from './../shared.service';
 import { Subscription}  from 'rxjs';
 import { Router } from '@angular/router';
@@ -11,56 +11,79 @@ import { first } from 'rxjs/operators';
   templateUrl: './side.component.html',
   styleUrls: ['./side.component.css']
 })
+
 export class SideComponent implements OnInit {
   @ViewChild('menu') menu;
-  permission: string;  //'New Employee','Employee', 'Manager', 'Admin', 'None'
   selected:string;  //'Income','Treatment','Map','Users','Welcome','Blocked'
   subscription: Subscription;
   router: Router;
 
   constructor(private userService : UserService, private sharedService : SharedService) {
-    this.sharedService.getLoginStateEvent().subscribe(res => {
-        this.permission = res;
-        this.putselect(); 
-    })
+    this.sharedService.getLoginStateEvent().subscribe(res=> {
+      if (res =='Admin' || res =='Manager') {
+        
+      }else if (res =='Employee'){
+        if(this.selected == 'Users'){
+          this.firstPage();
+          this.sharedService.sendSelectMenu(this.selected); 
+        }
+      }else if (res =='New Employee'){
+        this.firstPage();
+        this.sharedService.sendSelectMenu(this.selected); 
+      }else if (res =='None'){
+        this.firstPage();
+        this.sharedService.sendSelectMenu(this.selected);
+      }
+    });
   }
 
-  putselect()
-  {
-    if(this.permission =='New Employee')
-    this.selected='Welcome';
-    else if(this.permission =='None')   
-    this.selected='Blocked';
-    else 
-    this.selected='Income';
+  firstPage() {
+    switch(String(this.userService.getUserPermission())){
+      case 'New Employee':
+        this.selected = 'Welcome';
+        break;
+      case 'None':
+        this.selected = 'Blocked';
+        break;
+      case 'Admin':
+        this.selected='Income';
+        break;
+      case 'Employee':
+        this.selected='Income';
+        break;
+      case 'Manager':
+        this.selected='Income';
+        break;
+      default:
+        this.selected = 'Blocked';
+        break;
+    }
   }
 
   Select(element:string){
-   if(this.selected==element){return};
+   if(this.selected == element){return};
    this.selected=element;
    this.sharedService.sendSelectMenu(element);
   }
 
   endsession(){
-      this.userService.logout()
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.router.navigate(['/']); //need to delete!!
-        }); 
+    this.userService.logout().pipe(first())
+    .subscribe(data => {
+        this.router.navigate(['/']); //need to delete!!
+    }); 
   }
 
   checkpermission(element:string){
+    const permission = this.userService.getUserPermission();
     if(element=="active"){
-      return (this.permission =='Admin'||this.permission =='Manager'||this.permission =='Employee');
+      return (permission =='Admin' || permission =='Manager' || permission =='Employee');
     }else if(element=="users"){
-      return (this.permission =='Admin'||this.permission =='Manager');
+      return (permission =='Admin' || permission =='Manager');
     }else if(element=="welcome"){
-      return (this.permission =='New Employee');
+      return (permission =='New Employee');
     }else if(element=="blocked"){
-      return (this.permission =='None');
+      return (permission =='None');
     }
-
     return false;
   }
 
@@ -68,12 +91,9 @@ export class SideComponent implements OnInit {
     if(this.userService.isLoggin()){
         this.sharedService.sendLoginState(this.userService.getUserPermission());
     }
-    this.putselect();
+    this.firstPage();
     this.sharedService.sendSelectMenu(this.selected);
   }
-
-  
-
 }
 
  
