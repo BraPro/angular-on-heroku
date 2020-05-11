@@ -1,9 +1,9 @@
-import { Component, OnInit ,NgModule,Input  } from '@angular/core';
+import { Component, OnInit ,NgModule,Input, Inject  } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl, ControlContainer } from '@angular/forms';
 import { PassValidator } from '../validators/pass-validators'
 import { PassMatchValidator } from '../validators/passmatch-validators'
-
+import { trigger, transition, animate, style, state } from '@angular/animations'
 import { first } from 'rxjs/operators';
 import { UserService } from '../_services';
 import { SharedService } from './../shared/shared.service';
@@ -13,23 +13,45 @@ import { EmployeeService } from '@app/_services/employee.services';
 @Component({
 	selector: 'app-account',
 	templateUrl: './account.component.html',
-	styleUrls: ['./account.component.css']
+	styleUrls: ['./account.component.css'],
+	animations: [
+        trigger('openClose', [
+            state('open', style({
+                height: '*',
+                opacity: 0.75,
+            })),
+            state('closed', style({
+                height: '0',
+                opacity: 0
+            })),
+            transition('open => closed', [
+                animate('0.35s')
+            ]),
+            transition('closed => open', [
+                animate('0.35s')
+            ]),
+        ]),
+    ]
 })
 
 export class AccountComponent implements OnInit {
 	title = 'account';
 	accountForm: FormGroup;
+	passwordForm: FormGroup;
 	user: Employee;
 	loading = false;
 	submitted = false;
 	check = false;
+	visible :boolean = false;
+	showCardBody = false;
+
 	constructor(
     private formBuilder: FormBuilder,
         //private route: ActivatedRoute,
 		private router: Router,
 		private userService : UserService,
 		private employeeService : EmployeeService,
-		private sharedService:SharedService
+		private sharedService:SharedService,
         //private authenticationService: AuthenticationService,
         //private alertService: AlertService
     ) {
@@ -46,10 +68,13 @@ export class AccountComponent implements OnInit {
 			_id: ['', {validators: [ Validators.required], updateOn:'change'}],
 			firstname: ['', {validators: [ Validators.required], updateOn:'change'}],
 			lastname: ['', {validators: [ Validators.required], updateOn:'change'}],
-			email: ['', {validators: [ Validators.required,Validators.email], updateOn:'change'}]
-			//password: ['', {validators: [ Validators.required,PassValidator.patternValidator], updateOn:'change'}],
-			//cpassword:['', {validators: [ Validators.required], updateOn:'change'}]},{ 
-		    //validator: PassMatchValidator.passwordMatchValidator('password','cpassword',)
+			email: ['', {validators: [ Validators.required,Validators.email], updateOn:'change'}],
+		});
+		
+		this.passwordForm = this.formBuilder.group({
+			password: ['', {validators: [ Validators.required,PassValidator.patternValidator], updateOn:'change'}],
+			cpassword:['', {validators: [ Validators.required], updateOn:'change'}]},{ 
+		    validator: PassMatchValidator.passwordMatchValidator('password','cpassword',)
 	    });
 		// get return url from route parameters or default to '/'
 		//this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -57,17 +82,26 @@ export class AccountComponent implements OnInit {
 
 
 	  isFieldValid(field: string) {
-		return (
-			//(!this.accountForm.get(field).valid && this.accountForm.get(field).touched) ||
-			(this.accountForm.get(field).untouched && this.submitted)
-		);
+		  if(!this.showCardBody)
+			return ((this.accountForm.get(field).untouched && this.submitted));
+		  else
+		  return ((this.passwordForm.get(field).untouched && this.submitted));
 	  }
 	
 	  displayFieldCss(field: string) {
 		  //return true;
-		if ((this.accountForm.get(field)) && (this.accountForm.get(field).pristine || this.accountForm.get(field).untouched)){
-			return;
+		if(!this.showCardBody){
+			if ((this.accountForm.get(field)) && (this.accountForm.get(field).pristine || this.accountForm.get(field).untouched)){
+				return;
+			}
 		}
+
+		if(this.showCardBody){
+			if ((this.passwordForm.get(field)) && (this.passwordForm.get(field).pristine || this.passwordForm.get(field).untouched)){
+				return;
+			}
+		}
+
 
 		this.check = this.isFieldValid(field);
 		return {
@@ -78,24 +112,24 @@ export class AccountComponent implements OnInit {
 	}
 	
 	geterror(field: string) {
-        if(field =='cpassword' && this.accountForm.get(field).touched){
-			if(this.accountForm.controls['cpassword'].hasError('NoPassswordMatch')){
+        if(field =='cpassword' && this.passwordForm.get(field).touched){
+			if(this.passwordForm.controls['cpassword'].hasError('NoPassswordMatch')){
 				return "Password does't match!";
 			}
 			
 			return "Please valid password";
 		}
 
-		if(field =='password' && this.accountForm.get(field).touched){
-			if(this.accountForm.controls['password'].hasError('minlength')){
+		if(field =='password' && this.passwordForm.get(field).touched){
+			if(this.passwordForm.controls['password'].hasError('minlength')){
 				return "Minimun length is 6!";
-			}else if(this.accountForm.controls['password'].hasError('NoUppercaseCharacter')){
+			}else if(this.passwordForm.controls['password'].hasError('NoUppercaseCharacter')){
 				return "Enter Upper case Character!";
-			}else if(this.accountForm.controls['password'].hasError('NoLowercaseCharacter')){
+			}else if(this.passwordForm.controls['password'].hasError('NoLowercaseCharacter')){
 				return "Enter Lower case Character!";
-			}else if(this.accountForm.controls['password'].hasError('NoNumberCharacter')){
+			}else if(this.passwordForm.controls['password'].hasError('NoNumberCharacter')){
 				return "Enter Number case Character!";
-			}else if(this.accountForm.controls['password'].hasError('NoSpecialCharacter')){
+			}else if(this.passwordForm.controls['password'].hasError('NoSpecialCharacter')){
 				return "Enter Special case Character!";
 			}}
 
@@ -104,11 +138,14 @@ export class AccountComponent implements OnInit {
 
 	onSubmit() {
         this.submitted = true;
-
+		
+		
         // stop here if form is invalid
-        if (this.accountForm.invalid) {
+        if (!this.showCardBody && this.accountForm.invalid) {
             return;
-        }
+        }else if(this.showCardBody && this.passwordForm.invalid){
+			return;
+		}
 		if(this.loading){
 			return;
 		}
@@ -142,5 +179,14 @@ export class AccountComponent implements OnInit {
 	reset() {
 		this.accountForm.reset();
 		this.submitted = false;
+	  }
+
+	visibleChange(){
+		this.showCardBody = !this.showCardBody;
+		if(this.showCardBody)
+			this.visible=false;
+		else
+		this.visible=true;
+		
 	  }
 }
