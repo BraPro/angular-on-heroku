@@ -75,7 +75,8 @@ export class AccountComponent implements OnInit {
 			password: ['', {validators: [ Validators.required,PassValidator.patternValidator], updateOn:'change'}],
 			cpassword:['', {validators: [ Validators.required], updateOn:'change'}]},{ 
 		    validator: PassMatchValidator.passwordMatchValidator('password','cpassword',)
-	    });
+		});
+
 		// get return url from route parameters or default to '/'
 		//this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 	}
@@ -137,9 +138,6 @@ export class AccountComponent implements OnInit {
 	}
 
 	onSubmit() {
-        this.submitted = true;
-		
-		
         // stop here if form is invalid
         if (!this.showCardBody && this.accountForm.invalid) {
             return;
@@ -150,9 +148,17 @@ export class AccountComponent implements OnInit {
 			return;
 		}
 
+		if(this.showCardBody)
+			this.user.password=this.passwordForm.get('password').value;
+
+		this.user.firstname = this.accountForm.get('firstname').value;
+		this.user.lastname = this.accountForm.get('lastname').value;
+		this.user.email = this.accountForm.get('email').value;
+		
 		//this.validateAllFormFields(this.registerForm);
 		this.loading = true;
-		this.employeeService.update(this.accountForm.value)
+		
+		this.employeeService.update(this.user)
 		.pipe(first())
 		.subscribe(
 			data => {
