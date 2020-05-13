@@ -131,3 +131,10 @@
   text-shadow: 0 0 10px green;
   transition: all 0.5s ease;
 }
+
+
+mat-cell > span.truncate-text {
+    text-overflow: ellipsis; 
+    overflow: hidden; 
+    white-space: nowrap;
+}
