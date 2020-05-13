@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { TreatmentDialogBoxComponent } from '../dialog-box/treatment-dialog-box.component';
 import { GarageService , UserService ,TreatmentService } from '@app/_services';
 import { Treatment , Garage } from '@app/_models';
+import { SharedService } from '@app/shared/shared.service';
 
 @Component({
   selector: 'app-treatments',
@@ -17,16 +18,17 @@ import { Treatment , Garage } from '@app/_models';
 export class TreatmentsComponent implements OnInit {
   displayedColumns: string[] = ['date','id','carid','cost','status','details','action'];
   dataSource = new MatTableDataSource<Treatment>();
-  garageList :Garage[];
-  selectedGarage:Garage;
+  garageList : Garage[];
+  selectedGarage : Garage;
 
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  constructor(public dialog: MatDialog,
+  constructor(private dialog: MatDialog,
+    private sharedService : SharedService,
     private garageService : GarageService,
     private userService : UserService,
-    private treatmentService:TreatmentService){
+    private treatmentService : TreatmentService){
   }
 
   ngOnInit() {
@@ -76,29 +78,25 @@ export class TreatmentsComponent implements OnInit {
     row_obj.garage = this.getGarageId();
     this.treatmentService.add(row_obj).pipe(first())
 		.subscribe(data => {
-        //import to table
+        this.sharedService.sendAlertEvent(data);
         this.refreshTable();
 		});
   }
 
   updateRowData(row_obj){
     row_obj.garage = this.getGarageId();
-    this.treatmentService.update(row_obj)
-		.pipe(first())
-		.subscribe(
-			data => {
-        //import to table
+    this.treatmentService.update(row_obj).pipe(first())
+		.subscribe(data => {
+        this.sharedService.sendAlertEvent(data);
         this.refreshTable();
 			});  
   }
 
   deleteRowData(row_obj){
     row_obj.garage = this.getGarageId();
-    this.treatmentService.delete(row_obj._id)
-		.pipe(first())
-		.subscribe(
-			data => {
-        //import to table
+    this.treatmentService.delete(row_obj._id).pipe(first())
+		.subscribe(data => {
+        this.sharedService.sendAlertEvent(data);
         this.refreshTable();
 			});
   }
