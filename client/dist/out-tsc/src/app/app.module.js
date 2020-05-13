@@ -32,7 +32,7 @@ import { MainComponent } from './main/main.component';
 import { AccountComponent } from './account/account.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
-import { SideComponent } from './shared/side/side.component';
+import { SideComponent } from './main/shared/side/side.component';
 import { AlertComponent } from './shared/alert/alert.component';
 import { FieldErrorDisplayComponent } from './shared/field-error-display/field-error-display.component';
 import { PassValidator } from './validators/pass-validators';

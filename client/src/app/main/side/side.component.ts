@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
-import { SharedService } from './../shared.service';
 import { Subscription}  from 'rxjs';
 import { Router } from '@angular/router';
-import { UserService } from '@app/_services';
+import { SharedService } from '../../shared/shared.service';
+import { UserService } from '../../_services';
 import { first } from 'rxjs/operators';
 
 @Component({
