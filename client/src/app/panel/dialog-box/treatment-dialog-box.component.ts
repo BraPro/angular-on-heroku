@@ -1,7 +1,7 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Treatment } from '../../_models'
+import { Treatment } from '@app/_models'
 import { UserService } from '@app/_services';
  
 @Component({
@@ -14,8 +14,7 @@ export class TreatmentDialogBoxComponent {
   action:string;
   local_data:any;
  
-  constructor(
-    public dialogRef: MatDialogRef<TreatmentDialogBoxComponent>, 
+  constructor(private dialogRef: MatDialogRef<TreatmentDialogBoxComponent>, 
     private userService : UserService,
     //@Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: Treatment) {

@@ -19,15 +19,12 @@
     <mat-label>Street</mat-label>
     <input matInput [(ngModel)]="action_data.location.street">
   </mat-form-field>
-
-
-  
 </div>
+
 <div *ngIf="canEdit()" mat-dialog-actions style="padding-left:25px">
   <button mat-button (click)="doAction()" mat-flat-button color="primary">{{action}}</button>
   <button mat-button (click)="closeDialog()" mat-flat-button color="accent" >Cancel</button>
   <div style="padding-top:5px">
     <button mat-button (click)="deleteAction()" mat-flat-button color="warn" *ngIf="action == 'Edit'" style="width:147px">Delete</button>
   </div>
-    
 </div>

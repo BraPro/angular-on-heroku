@@ -25,13 +25,13 @@
   <ng-template #showTemplate>
     <textarea readonly matInput cdkTextareaAutosize cdkAutosizeMinRows="10" cdkAutosizeMaxRows="10" >{{local_data.details}}</textarea>
   </ng-template>
-
 </div>
+
 <div mat-dialog-actions *ngIf="action!='Show';" style="padding-left:20px">
   <button  mat-button (click)="doAction()" mat-flat-button color="primary">{{action}}</button>
   <button  mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
 </div>
+
 <div style="padding-top:5px" style="padding-left:25px">
   <button *ngIf="action=='Show';" mat-button (click)="closeDialog()" mat-flat-button color="warn" style="width:150px">Back</button>
 </div>
-

@@ -1,8 +1,8 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Employee, Garage } from '../../_models'
 import { first } from 'rxjs/operators';
+import { Employee, Garage } from '@app/_models'
 import { GarageService, UserService } from '@app/_services';
 
 @Component({
@@ -80,5 +80,4 @@ export class UserDialogBoxComponent {
         this.garageList=data;
 		});
   }
-
 }

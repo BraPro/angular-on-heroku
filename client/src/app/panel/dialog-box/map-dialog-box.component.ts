@@ -1,7 +1,7 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Garage , Location } from '../../_models'
+import { Garage , Location } from '@app/_models'
 import { UserService } from '@app/_services';
 
 @Component({
@@ -16,7 +16,6 @@ export class MapDialogBoxComponent {
   action_data: Garage;
   index: number;
   
-  //@Optional() is used to prevent error if no data is passed
   constructor(private dialogRef: MatDialogRef<MapDialogBoxComponent>,
     private userService : UserService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {  
