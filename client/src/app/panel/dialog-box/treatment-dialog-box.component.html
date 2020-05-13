@@ -9,11 +9,17 @@
   </mat-form-field>
 
   <mat-form-field *ngIf="action != 'Delete' && action!='Show';">
-    <input placeholder="Details" matInput [(ngModel)]="local_data.details">
+    <!-- <input placeholder="Details" matInput [(ngModel)]="local_data.details"> -->
+    <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="10" placeholder="Details" [(ngModel)]="local_data.details"></textarea>
   </mat-form-field>
 
   <mat-form-field *ngIf="action == 'Edit';">
-    <input placeholder="Status" matInput [(ngModel)]="local_data.status">
+   <!-- <input placeholder="Status" matInput [(ngModel)]="local_data.status"> -->
+    <mat-select [(value)]="local_data.status" [(ngModel)]="local_data.status" placeholder={{local_data.status}}>
+      <mat-option value="Waiting">Waiting</mat-option>
+      <mat-option value="In process">In process</mat-option>
+      <mat-option value="Done">Done</mat-option>
+   </mat-select>
   </mat-form-field>
 
   <ng-template #deleteTemplate>
