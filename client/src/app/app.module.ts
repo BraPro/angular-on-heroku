@@ -8,8 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { ModalModule } from './_modal';
 
-
-  //Mat_Modules
+//Mat_Modules
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -29,12 +28,16 @@ import { HighchartsChartModule } from 'highcharts-angular';
 
 
 //Components
-import { AlertHeaderComponent } from './shared/alert/alert-header.component';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { PanelComponent } from './panel/panel.component';
 import { AccountComponent } from './account/account.component'
+import { WelcomeComponent } from './panel/welcome/welcome.component';
+import { TreatmentsComponent } from './panel/treatments/treatments.component';
+import { UsersComponent } from './panel/users/users.component';
+import { BrandchartComponent } from './panel/welcome/brandchart/brandchart.component'
+import { AlertHeaderComponent } from './shared/alert/alert-header.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { SideComponent } from './panel/shared/side/side.component';
@@ -43,16 +46,13 @@ import { FieldErrorDisplayComponent } from './shared/field-error-display/field-e
 import { PassValidator } from './validators/pass-validators'
 import { PassMatchValidator } from './validators/passmatch-validators'
 import { ForgotPasswordComponent } from './login/forgotpassword.component';
-import { InfoCardComponent } from './panel/welcome/info-card.component';
-import { TreatmentsComponent } from './panel/treatments/treatments.component';
-import { UsersComponent } from './panel/users/users.component';
-import { BrandchartComponent } from './panel/welcome/brandchart/brandchart.component'
 import { MapComponent } from './panel/map/map.component'
 
 
 //services
 import { SharedService } from './shared/shared.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+//dialog-box
 import { TreatmentDialogBoxComponent } from './panel/dialog-box/treatment-dialog-box.component';
 import { UserDialogBoxComponent } from './panel/dialog-box/user-dialog-box.component';
 import { MapDialogBoxComponent } from './panel/dialog-box/map-dialog-box.component';
@@ -79,7 +79,7 @@ import { JwtInterceptor, ErrorInterceptor, SyncInterceptor } from './_helpers';
     PassValidator,
     PassMatchValidator,
     ForgotPasswordComponent,
-    InfoCardComponent,
+    WelcomeComponent,
     UsersComponent,
     BrandchartComponent,
     TreatmentsComponent,
@@ -95,7 +95,6 @@ import { JwtInterceptor, ErrorInterceptor, SyncInterceptor } from './_helpers';
     ReactiveFormsModule,
     HttpClientModule,
     ModalModule,
-    BrowserAnimationsModule,
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,

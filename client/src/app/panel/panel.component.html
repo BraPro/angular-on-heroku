@@ -5,9 +5,9 @@
       <app-side></app-side>
     </div>
     <div class="col-*-11" style="padding-left:60px;">
-      <app-info-card *ngIf="checkselected('Income')"></app-info-card>
-      <app-info-card *ngIf="checkselected('Welcome')"></app-info-card>
-      <app-info-card *ngIf="checkselected('Blocked')"></app-info-card>
+      <app-welcome *ngIf="checkselected('Income')"></app-welcome>
+      <app-welcome *ngIf="checkselected('Welcome')"></app-welcome>
+      <app-welcome *ngIf="checkselected('Blocked')"></app-welcome>
       <app-brandchart *ngIf="checkselected('Income')"></app-brandchart>
       <app-treatments *ngIf="checkselected('Treatment')"></app-treatments>
       <app-map *ngIf="checkselected('Map')"></app-map>
