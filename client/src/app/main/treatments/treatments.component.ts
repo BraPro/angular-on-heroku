@@ -1,22 +1,20 @@
 import { Component,OnInit, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
 import { CarDialogBoxComponent } from '../dialog-box/car-dialog-box.component';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTable } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { GarageService , UserService ,TreatmentService } from '../../_services';
 import { first } from 'rxjs/operators';
 import { Treatment , Garage } from '@app/_models';
-import { SharedService } from '@app/shared/shared.service';
 
 @Component({
-  selector: 'app-garagetable',
-  templateUrl: './garagetable.component.html',
-  styleUrls: ['./garagetable.component.css']
+  selector: 'app-treatments',
+  templateUrl: './treatments.component.html',
+  styleUrls: ['./treatments.component.css']
 })
 
-export class GarageTableComponent implements OnInit {
+export class TreatmentsComponent implements OnInit {
   displayedColumns: string[] = ['date','id','carid','cost','status','details','action'];
   dataSource = new MatTableDataSource<Treatment>();
   garageList :Garage[];
