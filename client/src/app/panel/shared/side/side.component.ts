@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
-import { SharedService } from '../../../shared/shared.service';
+import { first } from 'rxjs/operators';
 import { Subscription}  from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from '@app/_services';
-import { first } from 'rxjs/operators';
+import { SharedService } from '@app/shared/shared.service';
 
 @Component({
   selector: 'app-side',
@@ -37,6 +37,14 @@ export class SideComponent implements OnInit {
     });
   }
 
+  ngOnInit(){
+    if(this.userService.isLoggin()){
+        this.sharedService.sendLoginState(this.userService.getUserPermission());
+    }
+    this.firstPage();
+    this.sharedService.sendSelectMenu(this.selected);
+  }
+  
   firstPage() {
     switch(String(this.userService.getUserPermission())){
       case 'New Employee':
@@ -85,14 +93,4 @@ export class SideComponent implements OnInit {
     }
     return false;
   }
-
-  ngOnInit(){
-    if(this.userService.isLoggin()){
-        this.sharedService.sendLoginState(this.userService.getUserPermission());
-    }
-    this.firstPage();
-    this.sharedService.sendSelectMenu(this.selected);
-  }
 }
-
- 
