@@ -12,7 +12,6 @@ import { EmployeeService } from '@app/_services/employee.services';
 
 
 
-
  class UserEvent extends Employee {
 	action: string; 
  }
@@ -71,18 +70,20 @@ export class AccountComponent implements OnInit {
 	
 	ngOnInit() {
 		
+	
 		this.accountForm = this.formBuilder.group({
 			_id: ['', {validators: [ Validators.required], updateOn:'change'}],
 			firstname: ['', {validators: [ Validators.required], updateOn:'change'}],
 			lastname: ['', {validators: [ Validators.required], updateOn:'change'}],
 			email: ['', {validators: [ Validators.required,Validators.email], updateOn:'change'}],
 		});
-		
+	    
 		this.passwordForm = this.formBuilder.group({
 			password: ['', {validators: [ Validators.required,PassValidator.patternValidator], updateOn:'change'}],
 			cpassword:['', {validators: [ Validators.required], updateOn:'change'}]},{ 
 		    validator: PassMatchValidator.passwordMatchValidator('password','cpassword',)
 		});
+			
 
 		this.user =this.userService.currentUserValue;
 

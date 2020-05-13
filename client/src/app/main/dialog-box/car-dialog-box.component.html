@@ -1,11 +1,11 @@
 <h1 mat-dialog-title><strong>{{action}} Treatment</strong></h1>
 <div mat-dialog-content>                                                  <!-- ['date','id','carid','cost','status','details','action'];-->
   <mat-form-field *ngIf="action != 'Delete' && action!='Show'; else deleteTemplate">
-    <input placeholder="Car-Id" matInput [(ngModel)]="local_data.carid" type="number" pattern="\d{4,8}">
+    <input placeholder="Car-Id" matInput [(ngModel)]="local_data.carid" pattern="\d{4,8}">
   </mat-form-field>
 
   <mat-form-field *ngIf="action != 'Delete' && action!='Show';">
-    <input placeholder="Cost" matInput [(ngModel)]="local_data.cost" type="number" pattern="\d{1,8}">
+    <input placeholder="Cost" matInput [(ngModel)]="local_data.cost" pattern="\d{1,8}">
   </mat-form-field>
 
   <mat-form-field *ngIf="action != 'Delete' && action!='Show';">
