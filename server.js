@@ -1,8 +1,8 @@
 const express = require('express');
-const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const jwt = require('./jwt');
+const cors = require('cors');
 const errorHandler = require('./errorHandler');
 
 const projectConfig = require('./config');
@@ -15,7 +15,6 @@ app.use(bodyParser.json());							// support json encoded bodies
 app.use(cors());
 app.use(jwt());
 app.use(errorHandler);
-//app.use(session({secret: projectConfig.jwtSecret, resave:false, saveUninitialized:true}));
 
 require('./api/user')(app, '/api/users');			//handle users requests
 require('./api/employee')(app, '/api/employees');	//handle employees requests
