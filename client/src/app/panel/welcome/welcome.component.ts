@@ -81,6 +81,6 @@ export class WelcomeComponent implements OnInit {
           this.monthIncome+=garageReport.report[garageReport.report.length-1].cost;
         }.bind(this));
         this.sharedService.sendGarageReport(data);
-			});
+		});
   }
 }

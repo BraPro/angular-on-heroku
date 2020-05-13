@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { PassValidator } from '@app/shared/validators/pass-validators'
-import { PassMatchValidator } from '@app/shared/validators/passmatch-validators'
+import { PassValidator, PassMatchValidator } from '@app/shared/validators'
 import { UserService } from '@app/_services';
 import { SharedService } from '@app/shared/shared.service';
 

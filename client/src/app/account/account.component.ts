@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { PassValidator } from '@app/shared/validators/pass-validators'
-import { PassMatchValidator } from '@app/shared/validators/passmatch-validators'
+import { PassValidator, PassMatchValidator } from '@app/shared/validators'
 import { trigger, transition, animate, style, state } from '@angular/animations'
 import { EmployeeService, UserService } from '@app/_services';
 import { SharedService } from './../shared/shared.service';

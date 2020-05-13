@@ -1,5 +1,5 @@
 import { NG_VALIDATORS,Validator,ValidationErrors, ValidatorFn, AbstractControl,FormControl } from '@angular/forms';
-import { Directive, forwardRef } from '@angular/core';
+import { Directive } from '@angular/core';
 
 @Directive({
   selector: '[validpassword]',
@@ -9,14 +9,11 @@ import { Directive, forwardRef } from '@angular/core';
 })
 
 export class PassValidator implements Validator {
-
   validate(c: FormControl): ValidationErrors | null {
-  
     return PassValidator.patternValidator(c);
   }
 
   static patternValidator(control: AbstractControl): { [key: string]: boolean } | null {
-     
     if(control.value.match(/^$/)){                                                      //must not be empty 
       return {minlength: false}
     } else if(control.value.length<6){                                                 //Must have an minimum of 6 characters                                                     
@@ -32,6 +29,4 @@ export class PassValidator implements Validator {
     }
     return null;
   }
-
- 
 }

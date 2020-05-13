@@ -2,7 +2,7 @@ import { Component, OnInit, ViewContainerRef, ComponentFactoryResolver, Componen
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { PassValidator } from '@app/shared/validators/pass-validators'
+import { PassValidator } from '@app/shared/validators'
 import { ForgotPasswordComponent } from './forgotpassword.component';
 import { ModalService } from '@app/_modal';
 import { UserService } from '@app/_services';
