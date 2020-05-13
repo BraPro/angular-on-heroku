@@ -49,4 +49,8 @@ export class MapDialogBoxComponent {
   onSelection(e, v){
     this.action_data = e.option.value;
   }
+
+  checkpermission(){
+    return (this.userService.getUserPermission());
+  }
 }
