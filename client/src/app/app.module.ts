@@ -43,9 +43,9 @@ import { FieldErrorDisplayComponent } from './shared/field-error-display/field-e
 import { PassValidator } from './validators/pass-validators'
 import { PassMatchValidator } from './validators/passmatch-validators'
 import { ForgotPasswordComponent } from './login/forgotpassword.component';
-import { InfoCardComponent } from './table/info-card.component';
-import { GarageTableComponent } from './table/garagetable.component';
-import { UserTableComponent } from './table/usertable.component';
+import { InfoCardComponent } from './main/table/info-card.component';
+import { GarageTableComponent } from './main/table/garagetable.component';
+import { UserTableComponent } from './main/table/usertable.component';
 import { BrandchartComponent } from './main/brandchart/brandchart.component'
 import { MapComponent } from './main/map/map.component'
 

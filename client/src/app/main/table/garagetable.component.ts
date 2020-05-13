@@ -1,11 +1,11 @@
 import { Component,OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { CarDialogBoxComponent } from '../main/dialog-box/car-dialog-box.component';
+import { CarDialogBoxComponent } from '../dialog-box/car-dialog-box.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { GarageService , UserService ,TreatmentService } from '../_services';
+import { GarageService , UserService ,TreatmentService } from '../../_services';
 import { first } from 'rxjs/operators';
 import { Treatment , Garage } from '@app/_models';
 import { SharedService } from '@app/shared/shared.service';

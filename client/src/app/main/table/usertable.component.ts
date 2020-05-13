@@ -1,12 +1,12 @@
 import { Component,OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { UserDialogBoxComponent } from '../main/dialog-box/user-dialog-box.component';
+import { UserDialogBoxComponent } from '../dialog-box/user-dialog-box.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Employee, GarageReport } from '@app/_models';
-import { GarageService , UserService ,TreatmentService } from '../_services';
+import { GarageService , UserService ,TreatmentService } from '../../_services';
 import { SharedService } from '@app/shared/shared.service';
 import { first } from 'rxjs/operators';
 import { EmployeeService } from '@app/_services/employee.services';
