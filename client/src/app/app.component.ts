@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 
@@ -9,7 +9,5 @@ import { Router } from '@angular/router';
 })
 
 export class AppComponent  {
-  title: any;
-
   constructor(public _router: Router){}
 }

@@ -46,8 +46,8 @@ import { ForgotPasswordComponent } from './login/forgotpassword.component';
 import { InfoCardComponent } from './table/info-card.component';
 import { GarageTableComponent } from './table/garagetable.component';
 import { UserTableComponent } from './table/usertable.component';
-import { BrandchartComponent } from './shared/brandchart/brandchart.component'
-import { MapComponent } from './shared/map/map.component'
+import { BrandchartComponent } from './main/brandchart/brandchart.component'
+import { MapComponent } from './main/map/map.component'
 
 
 //services

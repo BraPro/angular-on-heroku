@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { MapDialogBoxComponent } from '../../main/dialog-box/map-dialog-box.component';
+import { MapDialogBoxComponent } from '../dialog-box/map-dialog-box.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Garage, Location } from '../../_models'
 import { GarageService, UserService } from '../../_services';
