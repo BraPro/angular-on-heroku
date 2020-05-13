@@ -20,7 +20,7 @@
 								  <span class="input-group-addon">
 									<span class="glyphicon glyphicon-user"></span>
 								  </span>
-									<input type="text" formControlName="_id" class="form-control" id="_id" placeholder="Enter ID" [ngModel]="this.user._id" disabled required/>
+									<input type="text" formControlName="_id" class="form-control" id="_id" placeholder="Enter ID" [ngModel]="this.user._id" [attr.disabled]="true" required/>
 								</div>
 						</div>
 						<div id="FirstNameGroup" class="form-group" [ngClass]="displayFieldCss('firstname')">

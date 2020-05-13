@@ -7,10 +7,6 @@ import { EmployeeService, UserService } from '@app/_services';
 import { SharedService } from './../shared/shared.service';
 import { Employee } from '@app/_models';
 
- class UserEvent extends Employee {
-	action: string; 
- }
-
 @Component({
 	selector: 'app-account',
 	templateUrl: './account.component.html',
@@ -40,7 +36,6 @@ export class AccountComponent implements OnInit {
 	accountForm: FormGroup;
 	passwordForm: FormGroup;
 	user: Employee;
-	userevent:UserEvent;
 	loading = false;
 	submitted = false;
 	check = false;
@@ -67,15 +62,16 @@ export class AccountComponent implements OnInit {
 			cpassword:['', {validators: [ Validators.required], updateOn:'change'}]},{ 
 		    validator: PassMatchValidator.passwordMatchValidator('password','cpassword',)
 		});
-		this.user = this.userService.currentUserValue;
+		this.user = { ...this.userService.currentUserValue};
+		delete this.user.token;
 	}
 
 
 	isFieldValid(field: string) {
 		if(!this.showCardBody)
-			return ((this.accountForm.get(field).untouched && this.submitted));
+			return ((!this.accountForm.get(field).valid && this.accountForm.get(field).touched)||(this.accountForm.get(field).untouched && this.submitted));
 		else
-		  return ((this.passwordForm.get(field).untouched && this.submitted));
+		  return ((!this.passwordForm.get(field).valid && this.passwordForm.get(field).touched)||(this.passwordForm.get(field).untouched && this.submitted));
 	}
 	
 	displayFieldCss(field: string) {
@@ -86,6 +82,7 @@ export class AccountComponent implements OnInit {
 		}
 
 		if(this.showCardBody){
+		
 			if ((this.passwordForm.get(field)) && (this.passwordForm.get(field).pristine || this.passwordForm.get(field).untouched)){
 				return;
 			}
@@ -104,10 +101,9 @@ export class AccountComponent implements OnInit {
 			if(this.passwordForm.controls['cpassword'].hasError('NoPassswordMatch')){
 				return "Password does't match!";
 			}
-			
 			return "Please valid password";
 		}
-
+		
 		if(field =='password' && this.passwordForm.get(field).touched){
 			if(this.passwordForm.controls['password'].hasError('minlength')){
 				return "Minimun length is 6!";
@@ -134,21 +130,20 @@ export class AccountComponent implements OnInit {
 			return;
 		}
 
-		if(this.showCardBody)
+		if(this.showCardBody){
 			this.user.password=this.passwordForm.get('password').value;
-
-		this.user.firstname = this.accountForm.get('firstname').value;
-		this.user.lastname = this.accountForm.get('lastname').value;
-		this.user.email = this.accountForm.get('email').value;
-		this.userevent = new UserEvent();
-		this.userevent = { ...this.user, action: 'Edit'};
-
+			var userevent = { ...this.user, action: 'Edit'};
+		}else{
+			this.user.firstname = this.accountForm.get('firstname').value;
+			this.user.lastname = this.accountForm.get('lastname').value;
+			this.user.email = this.accountForm.get('email').value;
+			var userevent = { ...this.user, action: 'Edit'};
+		}
+		
 		this.loading = true;
-		this.employeeService.update(this.userevent)
-		.pipe(first())
-		.subscribe(
-			data => {
-				this.sharedService.sendAlertEvent(data);
+		this.employeeService.update(userevent).pipe(first())
+		.subscribe(data => {
+			this.sharedService.sendAlertEvent(data);
 		});
 		this.loading = false;
 	}
@@ -175,5 +170,7 @@ export class AccountComponent implements OnInit {
 			this.visible=false;
 		else
 			this.visible=true;
+
+		this.ngOnInit();
 	  }
 }
