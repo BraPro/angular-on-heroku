@@ -1,8 +1,9 @@
-const nodemailer = require('nodemailer')
-const projectConfigEmail = require('../config').email
+const nodemailer = require('nodemailer');
+const ejs = require("ejs");
+const projectConfigEmail = require('../config').email;
 
 //define gmail login user and password to nodemailer
-const transporter = nodemailer.createTransport({
+var transporter = nodemailer.createTransport({
 	service: 'gmail',
 	host: 'smtp.gmail.com',
     port: 465,
@@ -11,14 +12,24 @@ const transporter = nodemailer.createTransport({
 });
 
 //test mail sender
-function sendMail(to, subject, text){
-	var mailOptions = {to: to, subject: subject, text: text};
-	transporter.sendMail(mailOptions, function(error, info){
-		if (error) {
-			console.log(error);
-		} else {
-			console.log('Email sent: ' + info.response + ' to ' + mailOptions.to);
-		}
+function sendMail(to, subject, mname, mtext){
+	ejs.renderFile(__dirname + "/emailTemplate.ejs", { name: mname, message: mtext }, function (err, data) {
+		if (err) {
+			console.log(err);
+		} else {
+			var mailOptions = {
+				to: to,
+				subject: subject,
+				html: data
+			};
+			transporter.sendMail(mailOptions, function(error, info){
+				if (error) {
+					console.log(error);
+				} else {
+					console.log('Email sent: ' + info.response + ' to ' + mailOptions.to);
+				}
+			});
+			}
 	});
 }
 
