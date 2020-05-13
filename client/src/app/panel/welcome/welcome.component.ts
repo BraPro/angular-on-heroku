@@ -8,12 +8,12 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
 
 @Component({
-  selector: 'app-info-card',
-  templateUrl: './info-card.component.html',
-  styleUrls: ['./info-card.component.css'],
+  selector: 'app-welcome',
+  templateUrl: './welcome.component.html',
+  styleUrls: ['./welcome.component.css'],
 })
 
-export class InfoCardComponent implements OnInit {
+export class WelcomeComponent implements OnInit {
   user: Employee; 
   data:any;
   managerName:string;
