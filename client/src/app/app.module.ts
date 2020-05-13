@@ -42,8 +42,8 @@ import { HeaderComponent } from './shared/header/header.component';
 import { SideComponent } from './panel/shared/side/side.component';
 import { AlertComponent } from './shared/alert/alert.component';
 import { FieldErrorDisplayComponent } from './shared/field-error-display/field-error-display.component';
-import { PassValidator } from './validators/pass-validators';
-import { PassMatchValidator } from './validators/passmatch-validators';
+import { PassValidator } from './shared/validators/pass-validators';
+import { PassMatchValidator } from './shared/validators/passmatch-validators';
 import { ForgotPasswordComponent } from './login/forgotpassword.component';
 import { BrandchartComponent } from './panel/welcome/brandchart/brandchart.component';
 

@@ -1,8 +1,8 @@
 import { Component, OnInit ,NgModule,Input  } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl, ControlContainer } from '@angular/forms';
-import { PassValidator } from '../validators/pass-validators'
-import { PassMatchValidator } from '../validators/passmatch-validators'
+import { PassValidator } from '../shared/validators/pass-validators'
+import { PassMatchValidator } from '../shared/validators/passmatch-validators'
 
 import { first } from 'rxjs/operators';
 import { UserService } from '../_services';
