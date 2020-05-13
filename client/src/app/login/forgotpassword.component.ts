@@ -1,11 +1,9 @@
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Component, OnDestroy, OnInit, Input, EventEmitter, Output, ElementRef } from '@angular/core';
-//import { trigger, style, animate, transition, state } from '@angular/animations';
-
+import { Component, OnInit, Input, EventEmitter, Output, ElementRef } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { UserService } from '../_services';
-import { SharedService } from './../shared/shared.service';
+import { UserService } from '@app/_services';
+import { SharedService } from '@app/shared/shared.service';
 
 @Component({
 	templateUrl: './forgotpassword.component.html',
@@ -25,34 +23,19 @@ export class ForgotPasswordComponent implements OnInit {
 	@Input() id: string;
     private element: any;
 
-	constructor(
-		private host: ElementRef<HTMLElement>,
-        private formBuilder: FormBuilder,
-        //private route: ActivatedRoute,
+	constructor(private formBuilder: FormBuilder,
 		private router: Router,
 		private el: ElementRef,
 		private userService : UserService,
 		private sharedService:SharedService
-        //private authenticationService: AuthenticationService,
-        //private alertService: AlertService
     ) {
-        // redirect to home if already logged in
-        //if (this.authenticationService.currentUserValue) { 
-        //    this.router.navigate(['/']);
-		//}
 		this.element = el.nativeElement;
-		//console.log(viewContainerRef);
 	}
 
 	ngOnInit() {
-		let modal = this;
-
 		this.forgotPasswordForm = this.formBuilder.group({
-			
 			email: ['', {validators: [ Validators.required, Validators.email, Validators.maxLength(32)], updateOn:'change'}],
 		});
-		// get return url from route parameters or default to '/'
-		//this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 	}
 
 	isFieldValid(field: string) {
@@ -75,17 +58,14 @@ export class ForgotPasswordComponent implements OnInit {
 
 	onSubmit() {
 		this.submitted = true;
-        // stop here if form is invalid
         if (this.forgotPasswordForm.invalid) {
             return;
-        }
-
-		//this.validateAllFormFields(this.loginForm);
+		}
+		
 		if(this.loading){
 			return;
 		}
 
-		//this.validateAllFormFields(this.loginForm);
 		this.loading = true;
 		this.userService.forgotPassword(this.forgotPasswordForm.value)
 		.pipe(first())
@@ -99,7 +79,7 @@ export class ForgotPasswordComponent implements OnInit {
 			},
 			() => {
 				this.loading = false;
-			});
+		});
 	}
 	
 	validateAllFormFields(formGroup: FormGroup) {
@@ -111,10 +91,10 @@ export class ForgotPasswordComponent implements OnInit {
 			this.validateAllFormFields(control);
 		  }
 		});
-	  }
+	}
 	  
 	reset() {
 		this.forgotPasswordForm.reset();
 		this.submitted = false;
-	  }
+	}
 }
