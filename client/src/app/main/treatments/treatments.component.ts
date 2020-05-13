@@ -20,7 +20,6 @@ export class TreatmentsComponent implements OnInit {
   garageList :Garage[];
   selectedGarage:Garage;
 
-
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
