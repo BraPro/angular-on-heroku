@@ -35,19 +35,19 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { PanelComponent } from './panel/panel.component';
 import { AccountComponent } from './account/account.component'
+import { WelcomeComponent } from './panel/welcome/welcome.component';
+import { TreatmentsComponent } from './panel/treatments/treatments.component';
+import { UsersComponent } from './panel/users/users.component';
+import { MapComponent } from './panel/map/map.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { SideComponent } from './panel/shared/side/side.component';
 import { AlertComponent } from './shared/alert/alert.component';
 import { FieldErrorDisplayComponent } from './shared/field-error-display/field-error-display.component';
-import { PassValidator } from './validators/pass-validators'
-import { PassMatchValidator } from './validators/passmatch-validators'
+import { PassValidator } from './validators/pass-validators';
+import { PassMatchValidator } from './validators/passmatch-validators';
 import { ForgotPasswordComponent } from './login/forgotpassword.component';
-import { InfoCardComponent } from './panel/welcome/info-card.component';
-import { TreatmentsComponent } from './panel/treatments/treatments.component';
-import { UsersComponent } from './panel/users/users.component';
-import { BrandchartComponent } from './panel/welcome/brandchart/brandchart.component'
-import { MapComponent } from './panel/map/map.component'
+import { BrandchartComponent } from './panel/welcome/brandchart/brandchart.component';
 
 
 //services
@@ -79,7 +79,7 @@ import { JwtInterceptor, ErrorInterceptor, SyncInterceptor } from './_helpers';
     PassValidator,
     PassMatchValidator,
     ForgotPasswordComponent,
-    InfoCardComponent,
+    WelcomeComponent,
     UsersComponent,
     BrandchartComponent,
     TreatmentsComponent,
