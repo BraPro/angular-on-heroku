@@ -17,7 +17,6 @@ function sendMail(to, subject, text){
 	subject: subject,
 	text: text
 	};
-	return; //asljdlkajsdklsjadlksjflkdsjf  =<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	transporter.sendMail(mailOptions, function(error, info){
 		if (error) {
 			console.log(error);
