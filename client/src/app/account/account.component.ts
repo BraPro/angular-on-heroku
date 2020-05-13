@@ -175,6 +175,7 @@ export class AccountComponent implements OnInit {
 			data => {
 				//this.alertService.success('Registration successful', true);
 				this.sharedService.sendAlertEvent(data);
+				this.ngOnInit();
 				//if(data.response == 'Success'){
 					//setTimeout(() => {  this.router.navigate(['/login']); }, 1000);
 				//}
