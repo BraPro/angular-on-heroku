@@ -4,7 +4,6 @@ import * as Highcharts from "highcharts";
 import { GarageService, UserService } from '@app/_services';
 import { first } from 'rxjs/operators';
 import { GarageReport } from '@app/_models';
-import { config } from 'rxjs';
 
 @Component({
   selector: 'app-brandchart',
@@ -13,11 +12,11 @@ import { config } from 'rxjs';
 })
 
 export class BrandchartComponent implements OnInit {
-  Highcharts: typeof Highcharts = Highcharts; // required
-  chartConstructor: string = 'chart'; // optional string, defaults to 'chart'
-  updateFlag: boolean = false; // optional boolean
-  oneToOneFlag: boolean = true; // optional boolean, defaults to false
-  runOutsideAngular: boolean = false; // optional boolean, defaults to false
+  Highcharts: typeof Highcharts = Highcharts;
+  chartConstructor: string = 'chart';
+  updateFlag: boolean = false;
+  oneToOneFlag: boolean = true;
+  runOutsideAngular: boolean = false;
 
   chart : Highcharts.Chart;
   chartOptions : any = {   
@@ -54,6 +53,22 @@ export class BrandchartComponent implements OnInit {
     this.chart = Highcharts.chart('container', this.chartOptions);
     this.Highcharts.setOptions({lang:{thousandsSep:','}});
     this.chart.redraw();
+
+    this.sharedService.getGarageReportEvent().subscribe(greport => { 
+      var newseries = [];
+      for(let i = 0; i < greport.length; i++){
+        let garage : GarageReport = greport[i];
+        var temp = this.datafillfunc(garage.report);
+        var element={
+          name: garage.name,
+          keys: ['y', 'x', 'amount'],
+          data: temp};
+        newseries.push(element);
+      }
+      this.chartOptions.series = newseries;
+      this.updateFlag = true;
+    });
+    /*
     switch(String(this.userService.getUserPermission())){
       case 'Admin':
         this.adminChart();
@@ -67,8 +82,10 @@ export class BrandchartComponent implements OnInit {
       default:
         break;
     }
+    */
   }
 
+  /*
   adminChart() {
     this.garageService.getAllReports().pipe(first())
     .subscribe(data => {
@@ -103,6 +120,8 @@ export class BrandchartComponent implements OnInit {
     });
   }
 
+  */
+ 
   Datefunc(){
     const month_names_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var col = new Array();

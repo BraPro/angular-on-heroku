@@ -72,7 +72,7 @@ module.exports = function (app, apiLocation) {
 					fullGarage.employees = result.length;
 					const report = await getGarageReport(req.params.id);
 					fullGarage.report = report;
-					return res.json(fullGarage);
+					return res.json([fullGarage]);
 				});
 			});
 		});

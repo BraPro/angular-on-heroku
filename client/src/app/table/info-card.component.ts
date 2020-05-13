@@ -61,10 +61,11 @@ export class InfoCardComponent implements OnInit {
   getGarageReport() {
     this.garageService.getReportById(Number(this.user.garage)).pipe(first())
     .subscribe(data => {
-        //import to table
-        this.managerName = data.manager.firstname + ' ' + data.manager.lastname; 
-        this.garageName = data.name;
-        this.garageAddress = data.location.country + ', ' + data.location.city +', '+ data.location.street;
+        var greport = data[0];
+        this.managerName = greport.manager.firstname + ' ' + greport.manager.lastname; 
+        this.garageName = greport.name;
+        this.garageAddress = greport.location.country + ', ' + greport.location.city +', '+ greport.location.street;
+        this.sharedService.sendGarageReport(data);
 		});
   }
     
@@ -77,11 +78,11 @@ export class InfoCardComponent implements OnInit {
         this.usersNum=0;
         this.monthIncome=0;
         data.forEach(function (garageReport) {
-         this.usersNum+=garageReport.employees;
+         this.usersNum += garageReport.employees;
          if(garageReport.report.length)
           this.monthIncome+=garageReport.report[garageReport.report.length-1].cost;
-          //garageReport.report.lastIndexOf;
         }.bind(this));
+        this.sharedService.sendGarageReport(data);
 			});
   }
 }

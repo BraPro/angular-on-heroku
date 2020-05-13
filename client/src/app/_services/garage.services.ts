@@ -33,7 +33,7 @@ export class GarageService {
     }
 
     getReportById(id: number) {
-        return this.http.get<GarageReport>(`${environment.apiUrl}/garages/${id}/report`);
+        return this.http.get<GarageReport[]>(`${environment.apiUrl}/garages/${id}/report`);
     }
 
     getAllReports() {

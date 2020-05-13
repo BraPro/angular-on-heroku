@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { Employee } from '../_models/employee'
+import { GarageReport } from '@app/_models';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,16 @@ export class SharedService{
   alertMessage = new Subject<any>();
   loginState = new Subject<string>();
   selectState = new Subject<string>();
+  garageReport = new Subject<GarageReport[]>();
   constructor() {
+  }
+
+  sendGarageReport(greport : GarageReport[]){
+    this.garageReport.next(greport);
+  }
+
+  getGarageReportEvent(): Observable<GarageReport[]>{ 
+    return this.garageReport.asObservable();
   }
 
   sendLoginState(status : string){
