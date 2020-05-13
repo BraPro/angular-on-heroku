@@ -198,7 +198,6 @@ module.exports = function (app, apiLocation) {
 				}
 			});
 		} else if(req.body.action == 'Edit' || req.body.action == 'ResetPassword') {
-			//if
 			Employee.findByIdAndUpdate(updateEmployee._id, { $set: updateEmployee }, (err, result) => {
 				if(err) return res.json({response : 'Error'});
 				if(result == null) return res.json({response : 'Error', msg : 'Employee doesnt exist'}); 
