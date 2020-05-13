@@ -4,7 +4,7 @@ import { first } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { PassValidator } from '@app/shared/validators'
 import { ForgotPasswordComponent } from './forgotpassword.component';
-import { ModalService } from '@app/_modal';
+import { ModalService } from '@app/shared/_modal';
 import { UserService } from '@app/_services';
 import { SharedService } from '@app/shared/shared.service';
 

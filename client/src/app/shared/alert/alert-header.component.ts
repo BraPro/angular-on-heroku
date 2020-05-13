@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ViewContainerRef, ComponentFactoryResolver, ComponentFactory, ComponentRef, ViewChild } from '@angular/core';
-import { ModalService } from '@app/_modal';
+import { ModalService } from '@app/shared/_modal';
 import { AlertComponent } from './alert.component';
 import { SharedService } from '../shared.service';
 

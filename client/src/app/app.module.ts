@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //Modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
-import { ModalModule } from './_modal';
+import { ModalModule } from './shared/_modal';
 
 //Mat_Modules
 import { MatTableModule } from '@angular/material/table';
