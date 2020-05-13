@@ -10,7 +10,6 @@ const employeeSchema = new mongoose.Schema({
 	garage: { type: Number, ref: 'Garage' },
 	manager: { type: Number, ref: 'Employee', default: undefined},
 	status: {type: String, enum : ['New Employee','Employee', 'Manager', 'Admin', 'None'], default: 'New Employee', required: true},
-	//token
 });
 
 module.exports = Employee = mongoose.model('Employee' ,employeeSchema);
