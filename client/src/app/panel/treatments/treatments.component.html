@@ -1,4 +1,4 @@
-<mat-toolbar class="tableBG" style="justify-content: center; height: 56px;">
+<mat-toolbar class="tableBG" style="justify-content: center; height: 56px;" >
   <h2> <b>Treatments list </b></h2>
 </mat-toolbar>
 <mat-toolbar class="tableBG">
@@ -23,8 +23,8 @@
 </div>
 </mat-toolbar>
 
-
-  <table mat-table [dataSource]="dataSource" #mytable matSort class="my-table mat-elevation-z8" class="tableBG">
+<div class='table-responsive mat-elevation-z8'>
+  <table mat-table [dataSource]="dataSource" #mytable matSort class="my-table mat-elevation-z8" class="tableBG" >
  
     <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
@@ -78,4 +78,5 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+</div>
   <mat-paginator [pageSizeOptions]="[12, 25, 50]" showFirstLastButtons class="tableBG"></mat-paginator>
