@@ -11,8 +11,6 @@ export class SharedService{
   loginState = new Subject<string>();
   selectState = new Subject<string>();
   garageReport = new Subject<GarageReport[]>();
-  constructor() {
-  }
 
   sendGarageReport(greport : GarageReport[]){
     this.garageReport.next(greport);
