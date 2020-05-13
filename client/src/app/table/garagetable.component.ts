@@ -21,6 +21,7 @@ export class GarageTableComponent implements OnInit {
   dataSource = new MatTableDataSource<Treatment>();
   garageList :Garage[];
   selectedGarage:Garage;
+  status:boolean = true;
 
 
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
