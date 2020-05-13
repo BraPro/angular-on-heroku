@@ -69,7 +69,6 @@ export class SideComponent implements OnInit {
   endsession(){
     this.userService.logout().pipe(first())
     .subscribe(data => {
-        this.router.navigate(['/']); //need to delete!!
     }); 
   }
 
