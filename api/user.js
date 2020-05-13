@@ -39,7 +39,7 @@ module.exports = function (app, apiLocation) {
 					}
 	
 					var text = 'User: ' + req.body.email + '\nPassword: ' + req.body.password;
-					emailHandler.sendMail(req.body.email, 'Thank you for registering', text); //send mail to user about successful registration
+					emailHandler.sendMail(req.body.email, 'Thank you for registering', newEmployee.firstname, text); //send mail to user about successful registration
 					return res.json({response : 'Success', msg : 'Successfully registered to user ' + req.body.email });
 				});
 			});
@@ -55,7 +55,7 @@ module.exports = function (app, apiLocation) {
 			if(result == null) return res.json({response : 'Error', msg : 'User ' + req.body.email + ' doesnt in the system'});
 			
 			var text = 'User: ' + result.email + '\nPassword: ' + result.password;
-			emailHandler.sendMail(req.body.email, 'Reset Password', text); //send mail with the password
+			emailHandler.sendMail(req.body.email, 'Reset Password', result.firstname, text); //send mail with the password
 			return res.json({response : 'Success', msg : 'Password sent to email ' + req.body.email });
 		});
 	});
