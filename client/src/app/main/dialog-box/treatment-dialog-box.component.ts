@@ -5,17 +5,17 @@ import { Treatment } from '../../_models'
 import { UserService } from '@app/_services';
  
 @Component({
-  selector: 'app-car-dialog-box',
-  templateUrl: './car-dialog-box.component.html',
-  styleUrls: ['./car-dialog-box.component.css']
+  selector: 'app-treatment-dialog-box',
+  templateUrl: './treatment-dialog-box.component.html',
+  styleUrls: ['./treatment-dialog-box.component.css']
 })
 
-export class CarDialogBoxComponent {
+export class TreatmentDialogBoxComponent {
   action:string;
   local_data:any;
  
   constructor(
-    public dialogRef: MatDialogRef<CarDialogBoxComponent>, 
+    public dialogRef: MatDialogRef<TreatmentDialogBoxComponent>, 
     private userService : UserService,
     //@Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: Treatment) {

@@ -53,7 +53,7 @@ import { MapComponent } from './main/map/map.component'
 //services
 import { SharedService } from './shared/shared.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CarDialogBoxComponent } from './main/dialog-box/car-dialog-box.component';
+import { TreatmentDialogBoxComponent } from './main/dialog-box/treatment-dialog-box.component';
 import { UserDialogBoxComponent } from './main/dialog-box/user-dialog-box.component';
 import { MapDialogBoxComponent } from './main/dialog-box/map-dialog-box.component';
 
@@ -83,7 +83,7 @@ import { JwtInterceptor, ErrorInterceptor, SyncInterceptor } from './_helpers';
     UsersComponent,
     BrandchartComponent,
     TreatmentsComponent,
-    CarDialogBoxComponent,
+    TreatmentDialogBoxComponent,
     UserDialogBoxComponent,
     MapDialogBoxComponent,
     MapComponent,

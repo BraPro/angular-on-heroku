@@ -1,5 +1,5 @@
 import { Component,OnInit, ViewChild } from '@angular/core';
-import { CarDialogBoxComponent } from '../dialog-box/car-dialog-box.component';
+import { TreatmentDialogBoxComponent } from '../dialog-box/treatment-dialog-box.component';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -57,7 +57,7 @@ export class TreatmentsComponent implements OnInit {
 
   openDialog(action,obj) {
     obj.action = action;
-    const dialogRef = this.dialog.open(CarDialogBoxComponent, {
+    const dialogRef = this.dialog.open(TreatmentDialogBoxComponent, {
       width: '250px',
       data:obj
     });
