@@ -19,7 +19,6 @@ app.use(errorHandler);
 
 require('./api/user')(app, '/api/users');			//handle users requests
 require('./api/employee')(app, '/api/employees');	//handle employees requests
-require('./api/manager')(app, '/api/managers');		//handle managers requests
 require('./api/treatment')(app, '/api/treatments');	//handle treatments requests
 require('./api/garage')(app, '/api/garages');		//handle garages requests
 require('./api/sync').appsync(app, '/api/sync');	//handle sync

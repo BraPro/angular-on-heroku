@@ -1,5 +1,4 @@
 const Employee = require('../models/employee');
-const Counter = require('../models/counter');
 const Garage = require('../models/garage');
 const syncUser = require('./sync').sync;
 
