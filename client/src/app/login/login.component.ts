@@ -114,7 +114,7 @@ export class LoginComponent implements OnInit {
 					if(this.userService.isLoggin()){
 						this.sharedService.sendLoginState(this.userService.getUserPermission());
 					}
-					setTimeout(() => {  this.router.navigate(['/main']); }, 1000);
+					setTimeout(() => {  this.router.navigate(['/panel']); }, 1000);
 				}
 			});
 	}
