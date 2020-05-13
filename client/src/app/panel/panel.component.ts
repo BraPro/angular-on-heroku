@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { SharedService } from '../shared/shared.service';
 
 @Component({
-	selector: 'app-main',
-	templateUrl: './main.component.html',
-	styleUrls: ['./main.component.css']
+	selector: 'app-panel',
+	templateUrl: './panel.component.html',
+	styleUrls: ['./panel.component.css']
 	
 })
-export class MainComponent {
+export class PanelComponent {
 
   selected:string = 'Income';
   constructor(private SelectService: SharedService) {

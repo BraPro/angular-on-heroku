@@ -4,7 +4,7 @@
     <ul >
     <div *ngIf="checkpermission('active');else blocked"> 
       <li (click)="Select('Income')">
-          <a href="/main" [ngClass]="{'is-active ': selected=='Income'}" onclick="return false;">
+          <a href="/panel" [ngClass]="{'is-active ': selected=='Income'}" onclick="return false;">
               <i class="fa fa-bar-chart-o fa-2x"  [ngClass]="{'is-active ': selected=='Income'}" #Income></i>
               <span class="nav-text">
                   Income
@@ -12,7 +12,7 @@
           </a>
       </li>
       <li (click)="Select('Treatment')">
-          <a href="/main" [ngClass]="{'is-active ': selected=='Treatment'}" onclick="return false;">
+          <a href="/panel" [ngClass]="{'is-active ': selected=='Treatment'}" onclick="return false;">
               <i class="fa fa-table fa-2x" [ngClass]="{'is-active ': selected=='Treatment'}" #Treatment ></i>
               <span class="nav-text">
                   Treatment
@@ -21,7 +21,7 @@
           
       </li>
       <li *ngIf="checkpermission('users')" #menu (click)="Select('Users')">
-        <a href="/main" [ngClass]="{'is-active ': selected=='Users'}" onclick="return false;">
+        <a href="/panel" [ngClass]="{'is-active ': selected=='Users'}" onclick="return false;">
            <i class="fa fa-list fa-2x"  [ngClass]="{'is-active ': selected=='Users'}" #Users ></i>
             <span class="nav-text">
                 Users
@@ -29,7 +29,7 @@
         </a>
     </li>
     <li  (click)="Select('Map')">
-        <a href="/main" [ngClass]="{'is-active ': selected=='Map'}" onclick="return false;">
+        <a href="/panel" [ngClass]="{'is-active ': selected=='Map'}" onclick="return false;">
             <i class="fa fa-map-marker fa-2x" [ngClass]="{'is-active ': selected=='Map'}" #Map ></i>
             <span class="nav-text">
                 Map
@@ -40,7 +40,7 @@
 
 <ng-template #blocked>
     <li *ngIf="checkpermission('welcome')" #menu (click)="Select('Welcome')">
-        <a href="/main" [ngClass]="{'is-active ': selected=='Welcome'}" onclick="return false;">
+        <a href="/panel" [ngClass]="{'is-active ': selected=='Welcome'}" onclick="return false;">
            <i class="fa fa-thumbs-o-up fa-2x"  [ngClass]="{'is-active ': selected=='Welcome'}" #Users ></i>
             <span class="nav-text">
                 Welcome
@@ -48,7 +48,7 @@
         </a>
     </li>
     <li *ngIf="checkpermission('blocked')" #menu (click)="Select('Blocked')">
-        <a href="/main" [ngClass]="{'is-active ': selected=='Blocked'}" onclick="return false;">
+        <a href="/panel" [ngClass]="{'is-active ': selected=='Blocked'}" onclick="return false;">
            <i class="fa fa-ban fa-2x"  [ngClass]="{'is-active ': selected=='Blocked'}" #Users ></i>
             <span class="nav-text">
                 Blocked
