@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { PassValidator } from '../shared/validators/pass-validators'
-import { PassMatchValidator } from '../shared/validators/passmatch-validators'
-import { trigger, transition, animate, style, state } from '@angular/animations'
 import { first } from 'rxjs/operators';
-import { UserService } from '../_services';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { PassValidator } from '@app/shared/validators/pass-validators'
+import { PassMatchValidator } from '@app/shared/validators/passmatch-validators'
+import { trigger, transition, animate, style, state } from '@angular/animations'
+import { EmployeeService, UserService } from '@app/_services';
 import { SharedService } from './../shared/shared.service';
 import { Employee } from '@app/_models';
-import { EmployeeService } from '@app/_services/employee.services';
-
-
 
  class UserEvent extends Employee {
 	action: string; 
@@ -52,25 +49,14 @@ export class AccountComponent implements OnInit {
 	visible :boolean = false;
 	showCardBody = false;
 
-	constructor(
-    private formBuilder: FormBuilder,
-        //private route: ActivatedRoute,
-		private router: Router,
+	constructor(private formBuilder: FormBuilder,
 		private userService : UserService,
 		private employeeService : EmployeeService,
 		private sharedService:SharedService,
-        //private authenticationService: AuthenticationService,
-        //private alertService: AlertService
     ) {
-        // redirect to home if already logged in
-        //if (this.authenticationService.currentUserValue) { 
-        //    this.router.navigate(['/']);
-        //}
 	}
 	
 	ngOnInit() {
-		
-	
 		this.accountForm = this.formBuilder.group({
 			_id: ['', {validators: [ Validators.required], updateOn:'change'}],
 			firstname: ['', {validators: [ Validators.required], updateOn:'change'}],
@@ -83,24 +69,18 @@ export class AccountComponent implements OnInit {
 			cpassword:['', {validators: [ Validators.required], updateOn:'change'}]},{ 
 		    validator: PassMatchValidator.passwordMatchValidator('password','cpassword',)
 		});
-			
-
-		this.user =this.userService.currentUserValue;
-
-		// get return url from route parameters or default to '/'
-		//this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+		this.user = this.userService.currentUserValue;
 	}
 
 
-	  isFieldValid(field: string) {
-		  if(!this.showCardBody)
+	isFieldValid(field: string) {
+		if(!this.showCardBody)
 			return ((this.accountForm.get(field).untouched && this.submitted));
-		  else
+		else
 		  return ((this.passwordForm.get(field).untouched && this.submitted));
-	  }
+	}
 	
-	  displayFieldCss(field: string) {
-		  //return true;
+	displayFieldCss(field: string) {
 		if(!this.showCardBody){
 			if ((this.accountForm.get(field)) && (this.accountForm.get(field).pristine || this.accountForm.get(field).untouched)){
 				return;
@@ -112,7 +92,6 @@ export class AccountComponent implements OnInit {
 				return;
 			}
 		}
-
 
 		this.check = this.isFieldValid(field);
 		return {
@@ -148,7 +127,6 @@ export class AccountComponent implements OnInit {
 	}
 
 	onSubmit() {
-        // stop here if form is invalid
         if (!this.showCardBody && this.accountForm.invalid) {
             return;
         }else if(this.showCardBody && this.passwordForm.invalid){
@@ -167,45 +145,37 @@ export class AccountComponent implements OnInit {
 		this.userevent = new UserEvent();
 		this.userevent = { ...this.user, action: 'Edit'};
 
-		//this.validateAllFormFields(this.registerForm);
 		this.loading = true;
-		
 		this.employeeService.update(this.userevent)
 		.pipe(first())
 		.subscribe(
 			data => {
-				
 				this.sharedService.sendAlertEvent(data);
-				//if(data.response == 'Success'){
-				//}
-			});
-
+		});
 		this.loading = false;
 	}
 	
 	validateAllFormFields(formGroup: FormGroup) {
 		Object.keys(formGroup.controls).forEach(field => {
-		  const control = formGroup.get(field);
-		  if (control instanceof FormControl) {
-			control.markAsTouched({ onlySelf: true });
-		  } else if (control instanceof FormGroup) {
-			this.validateAllFormFields(control);
+			const control = formGroup.get(field);
+			if (control instanceof FormControl) {
+				control.markAsTouched({ onlySelf: true });
+			} else if (control instanceof FormGroup) {
+				this.validateAllFormFields(control);
 		  }
 		});
-	  }
+	}
     
- 
 	reset() {
 		this.accountForm.reset();
 		this.submitted = false;
-	  }
+	}
 
 	visibleChange(){
 		this.showCardBody = !this.showCardBody;
 		if(this.showCardBody)
 			this.visible=false;
 		else
-		this.visible=true;
-		
+			this.visible=true;
 	  }
 }
