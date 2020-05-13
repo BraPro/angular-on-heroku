@@ -1,6 +1,6 @@
-import { Component, OnInit ,NgModule,Input, Inject  } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormControl, ControlContainer } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { PassValidator } from '../validators/pass-validators'
 import { PassMatchValidator } from '../validators/passmatch-validators'
 import { trigger, transition, animate, style, state } from '@angular/animations'
@@ -9,7 +9,7 @@ import { UserService } from '../_services';
 import { SharedService } from './../shared/shared.service';
 import { Employee } from '@app/_models';
 import { EmployeeService } from '@app/_services/employee.services';
-import { Action } from 'rxjs/internal/scheduler/Action';
+
 
 
 
@@ -173,12 +173,13 @@ export class AccountComponent implements OnInit {
 		.pipe(first())
 		.subscribe(
 			data => {
-				//this.alertService.success('Registration successful', true);
+				
 				this.sharedService.sendAlertEvent(data);
-				if(data.response == 'Success'){
-					this.user =this.userService.currentUserValue;
-				}
+				//if(data.response == 'Success'){
+				//}
 			});
+
+		this.loading = false;
 	}
 	
 	validateAllFormFields(formGroup: FormGroup) {
