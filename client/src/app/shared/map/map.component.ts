@@ -119,7 +119,7 @@ export class MapComponent implements AfterViewInit {
       var controlAdd = document.createElement('img');
       controlAdd.style.paddingLeft = '20px';
       controlAdd.style.paddingRight = '35px';
-      controlAdd.srcset="https://img.icons8.com/emoji/50/000000/plus-emoji.png";
+      controlAdd.srcset="./assets/img/plus-emoji.png";
       controlAdd.title ="Add New Garage";
       controlDiv.appendChild(controlAdd);
 
