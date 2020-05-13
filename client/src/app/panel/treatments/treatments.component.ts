@@ -1,11 +1,11 @@
 import { Component,OnInit, ViewChild } from '@angular/core';
-import { TreatmentDialogBoxComponent } from '../dialog-box/treatment-dialog-box.component';
+import { first } from 'rxjs/operators';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { GarageService , UserService ,TreatmentService } from '../../_services';
-import { first } from 'rxjs/operators';
+import { TreatmentDialogBoxComponent } from '../dialog-box/treatment-dialog-box.component';
+import { GarageService , UserService ,TreatmentService } from '@app/_services';
 import { Treatment , Garage } from '@app/_models';
 
 @Component({

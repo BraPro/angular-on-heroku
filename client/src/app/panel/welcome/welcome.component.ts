@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService, GarageService } from '@app/_services';
-import { Employee } from '@app/_models';
-import { SharedService } from '@app/shared/shared.service';
 import { first } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
+import { UserService, GarageService } from '@app/_services';
+import { Employee } from '@app/_models';
+import { SharedService } from '@app/shared/shared.service';
 
 @Component({
   selector: 'app-welcome',
@@ -22,7 +22,6 @@ export class WelcomeComponent implements OnInit {
   garagesNum:number;
   usersNum:number;
   monthIncome:number;
-
 
   constructor(private sharedService : SharedService,
     private userService : UserService,
@@ -68,7 +67,6 @@ export class WelcomeComponent implements OnInit {
         this.sharedService.sendGarageReport(data);
 		});
   }
-    
 
   getAdminReport(){
     this.garageService.getAllReports().pipe(first())
@@ -86,4 +84,3 @@ export class WelcomeComponent implements OnInit {
 			});
   }
 }
-

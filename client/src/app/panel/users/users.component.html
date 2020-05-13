@@ -8,7 +8,6 @@
 <span class="example-fill-remaining-space"></span>
 </mat-toolbar>
   <table mat-table [dataSource]="dataSource" #mytable matSort class="my-table mat-elevation-z8" class="tableBG">
- 
     <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
     
@@ -54,7 +53,6 @@
       <td mat-cell *matCellDef="let element"> {{element.email}} </td>
     </ng-container>
 
- 
     <!-- Action Column -->
     <ng-container matColumnDef="action" *ngIf="columnNotInclude('action')">
       <th mat-header-cell *matHeaderCellDef > Action </th>
@@ -62,11 +60,11 @@
         <a (click)="openDialog('Permission',element)"> <i class="fa fa-wrench fa-2x" aria-hidden="true"></i></a> |
         <a (click)="openDialog('Edit',element)"> <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></a> | 
         <a (click)="openDialog('ResetPassword',element)"> <i class="fa fa-key fa-2x" aria-hidden="true"></i></a>
-         
       </td>
     </ng-container>
  
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-paginator [pageSizeOptions]="[12, 25, 50]" showFirstLastButtons class="tableBG"></mat-paginator> 
+
+  <mat-paginator [pageSizeOptions]="[12, 25, 50]" showFirstLastButtons class="tableBG"></mat-paginator>

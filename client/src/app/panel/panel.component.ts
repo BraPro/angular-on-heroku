@@ -20,4 +20,3 @@ export class PanelComponent {
     return (src == this.selected);
   }
 }
-  

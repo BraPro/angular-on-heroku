@@ -1,13 +1,13 @@
 import { Component,OnInit, ViewChild } from '@angular/core';
-import { UserDialogBoxComponent } from '../dialog-box/user-dialog-box.component';
+import { first } from 'rxjs/operators';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { UserDialogBoxComponent } from '../dialog-box/user-dialog-box.component';
 import { Employee } from '@app/_models';
-import { EmployeeService, GarageService , UserService  } from '../../_services';
+import { EmployeeService, GarageService , UserService  } from '@app/_services';
 import { SharedService } from '@app/shared/shared.service';
-import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users',
@@ -40,8 +40,7 @@ export class UsersComponent implements OnInit {
         break;
       default:
         break;
-    }
-    
+    } 
     this.loadTable();
 	  this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator; 
@@ -76,14 +75,6 @@ export class UsersComponent implements OnInit {
         this.sharedService.sendAlertEvent(data);
         this.loadTable();
 			});
-  }
-  
-  deleteRowData(row_obj){
-
-  /*  this.dataSource.data = this.dataSource.data.filter((value,key)=>{
-      return value.id != row_obj.id;
-    });
-    this.loadTable();*/
   }
 
   applyFilter(event: Event) {
@@ -131,4 +122,3 @@ export class UsersComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 }
- 
