@@ -83,26 +83,22 @@ export class LoginComponent implements OnInit {
 	onSubmit() {
 		this.submitted = true;
 		
-        if (this.loginForm.invalid) {
+        if (this.loginForm.invalid || this.loading) {
             return;
-		}
-		if(this.loading){
-			return;
 		}
 
 		this.loading = true;
-		this.userService.login(this.loginForm.value)
-		.pipe(first())
-		.subscribe(
-			data => {
-				this.sharedService.sendAlertEvent(data);
-				if(data.response == 'Success'){
-					if(this.userService.isLoggin()){
-						this.sharedService.sendLoginState(this.userService.getUserPermission());
-					}
+		this.userService.login(this.loginForm.value).pipe(first())
+		.subscribe(data => {
+			this.sharedService.sendAlertEvent(data);
+			if(data.response == 'Success'){
+				if(this.userService.isLoggin()){
+					this.sharedService.sendLoginState(this.userService.getUserPermission());
 					setTimeout(() => {  this.router.navigate(['/panel']); }, 1000);
 				}
-			});
+			}
+		});
+		this.loading = false;
 	}
 	
 	validateAllFormFields(formGroup: FormGroup) {
@@ -114,10 +110,5 @@ export class LoginComponent implements OnInit {
 			this.validateAllFormFields(control);
 		  }
 		});
-	  }
-	  
-	reset() {
-		this.loginForm.reset();
-		this.submitted = false;
 	}
 }

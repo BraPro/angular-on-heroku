@@ -17,7 +17,6 @@ export class RegisterComponent implements OnInit {
 	registerForm: FormGroup;
     loading = false;
 	submitted = false;
-	returnUrl: string;
 	check: boolean;
 
 	constructor(private formBuilder: FormBuilder,
@@ -86,13 +85,10 @@ export class RegisterComponent implements OnInit {
         this.submitted = true;
 
         // stop here if form is invalid
-        if (this.registerForm.invalid) {
+        if (this.registerForm.invalid || this.loading) {
             return;
-        }
-		if(this.loading){
-			return;
 		}
-
+		
 		this.loading = true;
 		this.userService.signup(this.registerForm.value)
 		.pipe(first())
@@ -103,6 +99,7 @@ export class RegisterComponent implements OnInit {
 				setTimeout(() => {  this.router.navigate(['/login']); }, 1000);
 			}
 		});
+		this.loading = false;
 	}
 	
 	validateAllFormFields(formGroup: FormGroup) {

@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Component, OnInit, Input, EventEmitter, Output, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { UserService } from '@app/_services';
 import { SharedService } from '@app/shared/shared.service';
@@ -14,22 +14,12 @@ export class ForgotPasswordComponent implements OnInit {
 	forgotPasswordForm: FormGroup;
     loading = false;
     submitted = false;
-	returnUrl: string;
-
-	visibility = 'visible';
-	@Output() output = new EventEmitter();
-	@Output() end = new EventEmitter();
-
-	@Input() id: string;
-    private element: any;
 
 	constructor(private formBuilder: FormBuilder,
 		private router: Router,
-		private el: ElementRef,
 		private userService : UserService,
 		private sharedService:SharedService
     ) {
-		this.element = el.nativeElement;
 	}
 
 	ngOnInit() {
@@ -58,28 +48,19 @@ export class ForgotPasswordComponent implements OnInit {
 
 	onSubmit() {
 		this.submitted = true;
-        if (this.forgotPasswordForm.invalid) {
+        if (this.forgotPasswordForm.invalid || this.loading) {
             return;
-		}
-		
-		if(this.loading){
-			return;
 		}
 
 		this.loading = true;
-		this.userService.forgotPassword(this.forgotPasswordForm.value)
-		.pipe(first())
-		.subscribe(
-			data => {
-				//this.alertService.success('Registration successful', true);
-				this.sharedService.sendAlertEvent(data);
-				if(data.response == 'Success'){
-					setTimeout(() => {  this.router.navigate(['/login']); }, 1000);
-				}
-			},
-			() => {
-				this.loading = false;
+		this.userService.forgotPassword(this.forgotPasswordForm.value).pipe(first())
+		.subscribe(data => {
+			this.sharedService.sendAlertEvent(data);
+			if(data.response == 'Success'){
+				setTimeout(() => {  this.router.navigate(['/login']); }, 1000);
+			}
 		});
+		this.loading = false;
 	}
 	
 	validateAllFormFields(formGroup: FormGroup) {
@@ -91,10 +72,5 @@ export class ForgotPasswordComponent implements OnInit {
 			this.validateAllFormFields(control);
 		  }
 		});
-	}
-	  
-	reset() {
-		this.forgotPasswordForm.reset();
-		this.submitted = false;
 	}
 }
