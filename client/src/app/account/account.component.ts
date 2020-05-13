@@ -9,6 +9,13 @@ import { UserService } from '../_services';
 import { SharedService } from './../shared/shared.service';
 import { Employee } from '@app/_models';
 import { EmployeeService } from '@app/_services/employee.services';
+import { Action } from 'rxjs/internal/scheduler/Action';
+
+
+
+ class UserEvent extends Employee {
+	action: string; 
+ }
 
 @Component({
 	selector: 'app-account',
@@ -39,6 +46,7 @@ export class AccountComponent implements OnInit {
 	accountForm: FormGroup;
 	passwordForm: FormGroup;
 	user: Employee;
+	userevent:UserEvent;
 	loading = false;
 	submitted = false;
 	check = false;
@@ -55,7 +63,6 @@ export class AccountComponent implements OnInit {
         //private authenticationService: AuthenticationService,
         //private alertService: AlertService
     ) {
-		this.user = this.userService.currentUserValue;
         // redirect to home if already logged in
         //if (this.authenticationService.currentUserValue) { 
         //    this.router.navigate(['/']);
@@ -76,6 +83,8 @@ export class AccountComponent implements OnInit {
 			cpassword:['', {validators: [ Validators.required], updateOn:'change'}]},{ 
 		    validator: PassMatchValidator.passwordMatchValidator('password','cpassword',)
 		});
+
+		this.user =this.userService.currentUserValue;
 
 		// get return url from route parameters or default to '/'
 		//this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -154,11 +163,13 @@ export class AccountComponent implements OnInit {
 		this.user.firstname = this.accountForm.get('firstname').value;
 		this.user.lastname = this.accountForm.get('lastname').value;
 		this.user.email = this.accountForm.get('email').value;
-		
+		this.userevent = new UserEvent();
+		this.userevent = { ...this.user, action: 'Edit'};
+
 		//this.validateAllFormFields(this.registerForm);
 		this.loading = true;
 		
-		this.employeeService.update(this.user)
+		this.employeeService.update(this.userevent)
 		.pipe(first())
 		.subscribe(
 			data => {
