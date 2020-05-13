@@ -1,18 +1,18 @@
-import { Component, OnInit ,NgModule,Input  } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormControl, ControlContainer } from '@angular/forms';
-import { PassValidator } from '../shared/validators/pass-validators'
-import { PassMatchValidator } from '../shared/validators/passmatch-validators'
-
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { UserService } from '../_services';
-import { SharedService } from './../shared/shared.service';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { PassValidator } from '@app/shared/validators/pass-validators'
+import { PassMatchValidator } from '@app/shared/validators/passmatch-validators'
+import { UserService } from '@app/_services';
+import { SharedService } from '@app/shared/shared.service';
 
 @Component({
 	selector: 'app-register',
 	templateUrl: './register.component.html',
 	styleUrls: ['./register.component.css']
 })
+
 export class RegisterComponent implements OnInit {
 	title = 'Register';
 	registerForm: FormGroup;
@@ -21,23 +21,14 @@ export class RegisterComponent implements OnInit {
 	returnUrl: string;
 	check: boolean;
 
-	constructor(
-        private formBuilder: FormBuilder,
-        //private route: ActivatedRoute,
+	constructor(private formBuilder: FormBuilder,
 		private router: Router,
 		private userService : UserService,
 		private sharedService:SharedService
-        //private authenticationService: AuthenticationService,
-        //private alertService: AlertService
     ) {
-        // redirect to home if already logged in
-        //if (this.authenticationService.currentUserValue) { 
-        //    this.router.navigate(['/']);
-        //}
 	}
 	
 	ngOnInit() {
-		
 		this.registerForm = this.formBuilder.group({
 			firstname: ['', {validators: [ Validators.required], updateOn:'change'}],
 			lastname: ['', {validators: [ Validators.required], updateOn:'change'}],
@@ -46,8 +37,6 @@ export class RegisterComponent implements OnInit {
 			cpassword:['', {validators: [ Validators.required], updateOn:'change'}]},{ 
 		    validator: PassMatchValidator.passwordMatchValidator('password','cpassword',)
 	    });
-		// get return url from route parameters or default to '/'
-		//this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 	}
 
 
@@ -70,16 +59,12 @@ export class RegisterComponent implements OnInit {
 			'has-success' : !this.check
 		};
 	}
-	
-	get f() { return this.registerForm.controls; }
 
 	geterror(field: string) {
-
         if(field =='cpassword' && this.registerForm.get(field).touched){
 			if(this.registerForm.controls['cpassword'].hasError('NoPassswordMatch')){
 				return "Password does't match!";
 			}
-			
 			return "Please valid password";
 		}
 
@@ -95,7 +80,6 @@ export class RegisterComponent implements OnInit {
 			}else if(this.registerForm.controls['password'].hasError('NoSpecialCharacter')){
 				return "Enter Special case Character!";
 			}}
-
 			return "Please enter password";	
 	}
 
@@ -110,19 +94,16 @@ export class RegisterComponent implements OnInit {
 			return;
 		}
 
-		//this.validateAllFormFields(this.registerForm);
 		this.loading = true;
-
 		this.userService.signup(this.registerForm.value)
 		.pipe(first())
-		.subscribe(
-			data => {
-				//this.alertService.success('Registration successful', true);
-				this.sharedService.sendAlertEvent(data);
-				if(data.response == 'Success'){
-					setTimeout(() => {  this.router.navigate(['/login']); }, 1000);
-				}
-			});
+		.subscribe(data => {
+			//this.alertService.success('Registration successful', true);
+			this.sharedService.sendAlertEvent(data);
+			if(data.response == 'Success'){
+				setTimeout(() => {  this.router.navigate(['/login']); }, 1000);
+			}
+		});
 	}
 	
 	validateAllFormFields(formGroup: FormGroup) {
@@ -134,10 +115,10 @@ export class RegisterComponent implements OnInit {
 			this.validateAllFormFields(control);
 		  }
 		});
-	  }
+	}
 	  
 	reset() {
 		this.registerForm.reset();
 		this.submitted = false;
-	  }
+	}
 }
