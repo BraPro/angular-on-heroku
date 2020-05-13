@@ -3,7 +3,6 @@ const projectConfig = require('./config');
 const Employee = require('./models/employee');
 
 function jwt() {
-    //const secret = {secret : projectConfig.jwtSecret};
     return expressJwt({ secret : projectConfig.jwtSecret, isRevoked : isRevoked }).unless({
         path: [
             // public routes that don't require authentication
