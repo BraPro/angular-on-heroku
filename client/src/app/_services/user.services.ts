@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Employee, Response} from '../_models'
 import { environment } from '@environments/environment';
+import {Employee, Response} from '../_models'
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

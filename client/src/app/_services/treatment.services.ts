@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Response, Treatment, Garage} from '../_models'
 import {environment} from '@environments/environment'
+import { Response, Treatment, Garage} from '../_models'
 
 @Injectable({ providedIn: 'root' })
 export class TreatmentService {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Employee, Response, Manager, Garage} from '../_models'
 import {environment} from '@environments/environment'
+import {Employee, Response, Manager, Garage} from '../_models'
 
 @Injectable({ providedIn: 'root' })
 export class EmployeeService {
