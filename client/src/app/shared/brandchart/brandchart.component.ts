@@ -4,6 +4,7 @@ import * as Highcharts from "highcharts";
 import { GarageService, UserService } from '@app/_services';
 import { first } from 'rxjs/operators';
 import { GarageReport } from '@app/_models';
+import { config } from 'rxjs';
 
 @Component({
   selector: 'app-brandchart',
@@ -12,14 +13,16 @@ import { GarageReport } from '@app/_models';
 })
 
 export class BrandchartComponent implements OnInit {
-  updateFromInput = false;
-  highcharts = Highcharts;
-  chart = this.highcharts.chart;
-  chartConstructor = "chart";
-  chartCallback;
-  chartOptions = {   
+  Highcharts: typeof Highcharts = Highcharts; // required
+  chartConstructor: string = 'chart'; // optional string, defaults to 'chart'
+  updateFlag: boolean = false; // optional boolean
+  oneToOneFlag: boolean = true; // optional boolean, defaults to false
+  runOutsideAngular: boolean = false; // optional boolean, defaults to false
+
+  chart : Highcharts.Chart;
+  chartOptions : any = {   
     chart: {
-       type: "spline"
+      type: "spline"
     },
     title: {
        text: "Monthly Garages Income"
@@ -36,7 +39,7 @@ export class BrandchartComponent implements OnInit {
       pointFormat: '<span style="color:{series.color}">{series.name}</span>:<br>M.Income=<b>{point.y}</b><br>Treatments=<b>{point.amount}<b>',
       split: true
     },
-    series:[],
+    series: [],
     exporting: {
       enabled: true
     }
@@ -45,13 +48,12 @@ export class BrandchartComponent implements OnInit {
   constructor(private sharedService : SharedService,
     private garageService:GarageService,
     private userService : UserService) {
-      const self = this;
-      this.chartCallback = chart => {
-        const self = chart;
-      };
   }
 
   ngOnInit() {
+    this.chart = Highcharts.chart('container', this.chartOptions);
+    this.Highcharts.setOptions({lang:{thousandsSep:','}});
+    this.chart.redraw();
     switch(String(this.userService.getUserPermission())){
       case 'Admin':
         this.adminChart();
@@ -67,25 +69,21 @@ export class BrandchartComponent implements OnInit {
     }
   }
 
-  adminChart(){
+  adminChart() {
     this.garageService.getAllReports().pipe(first())
     .subscribe(data => {
       var newseries = [];
-      data.forEach(function (garage : GarageReport) {
-          var temp = this.datafillfunc(garage.report);
-          var element={
-            name: garage.name,
-            keys: ['y', 'x', 'amount'],
-            data: temp};
-          newseries.push(element);
-      }.bind(this));
-      Highcharts.setOptions({
-        lang: {
-          thousandsSep: ','
-        }
-      });
-      this.chartOptions.series=newseries;
-      this.highcharts.chart('container',this.chartOptions);
+      for(let i = 0; i < data.length; i++){
+        let garage : GarageReport = data[i];
+        var temp = this.datafillfunc(garage.report);
+        var element={
+          name: garage.name,
+          keys: ['y', 'x', 'amount'],
+          data: temp};
+        newseries.push(element);
+      }
+      this.chartOptions.series = newseries;
+      this.updateFlag = true;
     });
   }
 
@@ -94,19 +92,14 @@ export class BrandchartComponent implements OnInit {
     this.garageService.getReportById(Number(this.userService.currentUserValue.garage)).pipe(first())
     .subscribe(data => {
       var newseries = [];
-      var temp = this.datafillfunc(data.report);
-      var element={
-        name: data.name,
-        keys: ['y', 'x', 'amount'],
-        data: temp};
+        var temp = this.datafillfunc(data.report);
+        var element={
+          name: data.name,
+          keys: ['y', 'x', 'amount'],
+          data: temp};
       newseries.push(element);
-      Highcharts.setOptions({
-        lang: {
-          thousandsSep: ','
-        }
-      });
-      this.chartOptions.series=newseries;
-      this.highcharts.chart('container',this.chartOptions);
+      this.chartOptions.series = newseries;
+      this.updateFlag = true;
     });
   }
 
