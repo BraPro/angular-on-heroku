@@ -39,6 +39,7 @@ export class MapComponent implements AfterViewInit {
     });
  
     dialogRef.afterClosed().subscribe(result => {
+      if(!result) return;
       if(result.event == 'Add'){
         this.AddGarage(result.data, this.garageService, this.sharedService);
       }else if(result.event == 'Edit'){

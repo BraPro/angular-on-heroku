@@ -12,11 +12,7 @@ const transporter = nodemailer.createTransport({
 
 //test mail sender
 function sendMail(to, subject, text){
-	var mailOptions = {
-	to: to,
-	subject: subject,
-	text: text
-	};
+	var mailOptions = {to: to, subject: subject, text: text};
 	transporter.sendMail(mailOptions, function(error, info){
 		if (error) {
 			console.log(error);

@@ -54,6 +54,7 @@ export class UsersComponent implements OnInit {
     });
  
     dialogRef.afterClosed().subscribe(result => {
+      if(!result) return;
       if((result.data.garage != null) && !(result.data.garage as number)){
         result.data.garage = result.data.garage._id;
       }
