@@ -65,13 +65,13 @@ export class UserDialogBoxComponent {
  
   createPassword(){
     var generate = (
-      length = 8,
+      length = 5,
       wishlist = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$"
     ) => Array(length)
           .fill('') // fill an empty will reduce memory usage
           .map(() => wishlist[Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xffffffff + 1) * wishlist.length)])
           .join('');
-    return generate();
+    return 'A1!' + generate();
   }
 
   getGarages(){
