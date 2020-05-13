@@ -45,7 +45,7 @@ import { PassMatchValidator } from './validators/passmatch-validators'
 import { ForgotPasswordComponent } from './login/forgotpassword.component';
 import { InfoCardComponent } from './main/welcome/info-card.component';
 import { TreatmentsComponent } from './main/treatments/treatments.component';
-import { UserTableComponent } from './main/users/usertable.component';
+import { UsersComponent } from './main/users/users.component';
 import { BrandchartComponent } from './main/welcome/brandchart/brandchart.component'
 import { MapComponent } from './main/map/map.component'
 
@@ -80,7 +80,7 @@ import { JwtInterceptor, ErrorInterceptor, SyncInterceptor } from './_helpers';
     PassMatchValidator,
     ForgotPasswordComponent,
     InfoCardComponent,
-    UserTableComponent,
+    UsersComponent,
     BrandchartComponent,
     TreatmentsComponent,
     CarDialogBoxComponent,

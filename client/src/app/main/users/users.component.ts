@@ -1,24 +1,21 @@
 import { Component,OnInit, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
 import { UserDialogBoxComponent } from '../dialog-box/user-dialog-box.component';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTable } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Employee } from '@app/_models';
-import { GarageService , UserService  } from '../../_services';
+import { EmployeeService, GarageService , UserService  } from '../../_services';
 import { SharedService } from '@app/shared/shared.service';
 import { first } from 'rxjs/operators';
-import { EmployeeService } from '@app/_services/employee.services';
- 
 
 @Component({
-  selector: 'app-usertable',
-  templateUrl: './usertable.component.html',
-  styleUrls: ['./usertable.component.css']
+  selector: 'app-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.css']
 })
 
-export class UserTableComponent implements OnInit {
+export class UsersComponent implements OnInit {
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<Employee>();
  
