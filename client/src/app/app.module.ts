@@ -4,7 +4,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //Modules
-import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { ModalModule } from './_modal';
@@ -57,7 +56,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CarDialogBoxComponent } from './main/dialog-box/car-dialog-box.component';
 import { UserDialogBoxComponent } from './main/dialog-box/user-dialog-box.component';
 import { MapDialogBoxComponent } from './main/dialog-box/map-dialog-box.component';
-import { SyncInterceptor } from './_helpers/sync.interceptor';
+
+
+//Interceptor
+import { JwtInterceptor, ErrorInterceptor, SyncInterceptor } from './_helpers';
 
 
   
