@@ -16,7 +16,7 @@ module.exports = function (app, apiLocation) {
 
 	//new employee
 	app.post(apiLocation + '/signup', function(req, res) {
-		//if(!checkEmailAndPassword(req.body.email, req.body.password)) return res.json({response : 'Error'}); //check signup mail&password like client
+		if(!checkEmailAndPassword(req.body.email, req.body.password)) return res.json({response : 'Error'}); //check signup mail&password like client
 
 		Employee.findOne({email: req.body.email.toLowerCase()}, (err, result) => {
 			if(err) return res.json({response : 'Error'});
