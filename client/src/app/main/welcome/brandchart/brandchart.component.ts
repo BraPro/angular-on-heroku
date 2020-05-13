@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from "highcharts";
-import { SharedService } from '../../shared/shared.service';
+import { SharedService } from '../../../shared/shared.service';
 import { GarageReport } from '@app/_models';
 
 @Component({
