@@ -1,20 +1,19 @@
+.container {
+    background-color: white;
+    opacity: 0.75;
+    width: 100%;
+    height: 409.4px;
+}
 
- .container{
-  background-color:white;
-  opacity: 0.75;
-  width: 100%;
-  height: 409.4px;
- }
-  
-  .row {
+.row {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0 25px;
     margin-top: 2%;
-  }
-  
-  .card {
+}
+
+.card {
     width: 150px;
     border: 1px solid #ef9a9a;
     border-radius: 4px;
@@ -22,9 +21,9 @@
     display: flex;
     flex-direction: column;
     margin: 5px;
-  }
+}
 
-  .card2 {
+.card2 {
     width: 465px;
     border: 1px solid #ef9a9a;
     border-radius: 4px;
@@ -32,10 +31,9 @@
     display: flex;
     flex-direction: column;
     margin: 5px;
-  }
-  
-  
-  .card-header {
+}
+
+.card-header {
     color: #d32f2f;
     text-align: center;
     font-size: 12px;
@@ -43,67 +41,66 @@
     border-bottom: 1px solid #ef9a9a;
     background-color: #ffebee;
     padding: 5px 10px;
-  }
-  
-  .card-main {
+}
+
+.card-main {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 15px 0;
-  }
-  
-  .material-icons {
+}
+
+.material-icons {
     font-size: 36px;
     color: #d32f2f;
     margin-bottom: 5px;
-  }
-  
-  .main-description {
+}
+
+.main-description {
     color: #d32f2f;
     font-size: 12px;
     text-align: center;
-  }
-  
-  #or-border {
+}
+
+#or-border {
     border-color: #ffe082;
-  }
-  
-  #or-header {
+}
+
+#or-header {
     background-color: #fff8e1;
     border-color: #ffe082;
     color: #ffa000;
-  }
-  
-  #or-color {
+}
+
+#or-color {
     color: #ffa000;
-  }
-  
-  #or-border2 {
+}
+
+#or-border2 {
     border-color: #80deea;
-  }
-  
-  #or-header2 {
+}
+
+#or-header2 {
     background-color: #e0f7fa;
     border-color: #80deea;
     color: #0097a7;
-  }
-  
-  #or-color2 {
+}
+
+#or-color2 {
     color: #0097a7;
-  }
+}
 
-  .truncate-cell {
-    max-width: 130px; 
+.truncate-cell {
+    max-width: 130px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
+}
 
-  .truncate-header {
-    max-width: 445px; 
+.truncate-header {
+    max-width: 445px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-   
+}
