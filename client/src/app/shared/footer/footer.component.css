@@ -10,8 +10,17 @@
     border-top:1px solid #212121 ;
 }
 
-@media(max-width: 990px) {
-    span {
-        display:none;
+@media(max-width: 600px) {
+    .long {
+        display:none;   
     }
+}
+
+@media(min-width: 600px) {
+    .short {
+        display:none; 
+        font-size: 40%;
+    }
+
+    
 }

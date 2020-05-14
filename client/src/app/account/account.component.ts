@@ -19,7 +19,7 @@ import { Employee } from '@app/_models';
             })),
             state('closed', style({
                 height: '0',
-                opacity: 0
+                opacity: 0,
             })),
             transition('open => closed', [
                 animate('0.35s')

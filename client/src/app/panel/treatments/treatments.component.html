@@ -1,26 +1,35 @@
+
+                                    <!-- fxShow="true" fxHide.gt-sm  מקומות קטנים מופיע-->
+                                    <!-- fxHide="true" fxShow.gt-sm  מקומות גדולים מופיע-->
 <mat-toolbar class="tableBG" style="justify-content: center; height: 56px;" >
   <h2> <b>Treatments list </b></h2>
 </mat-toolbar>
+                                                                               
 <mat-toolbar class="tableBG">
-<span class="glyphicon glyphicon-search" style="text-align: center"></span>
-<input (keyup)="applyFilter($event)" placeholder="Search">
-<span class="example-fill-remaining-space"></span>
+  <span class="glyphicon glyphicon-search" style="text-align: center" ></span>
+    <input (keyup)="applyFilter($event)" placeholder="Search">
+  <span class="example-fill-remaining-space" ></span>
 
-<div *ngIf="allGaragesPermission()">
-  <mat-form-field>
-   <mat-label>Choose Garage</mat-label>
-     <mat-select [(value)]="selectedGarage" (selectionChange)="loadGarage()" required>
-       <mat-option *ngFor="let garage of garageList" [value]="garage">
-        {{garage.name}}
-       </mat-option>
-    </mat-select>
-</mat-form-field>
-</div>
+  <div *ngIf="allGaragesPermission()" >
+    <mat-form-field fxHide="true" fxShow.gt-sm>
+      <mat-label> <i class="fa fa-globe " aria-hidden="true"></i>Choose Garage</mat-label>
+        <mat-select [(value)]="selectedGarage" (selectionChange)="loadGarage()" required>
+           <mat-option *ngFor="let garage of garageList" [value]="garage">
+             {{garage.name}}
+           </mat-option>
+        </mat-select>
+     </mat-form-field>
+    <i class="fa fa-globe fa-2x" aria-hidden="true" (click)="selection.toggle()" style="text-align: center;"  fxShow="true" fxHide.gt-sm></i>
+       <mat-select #selection [(value)]="selectedGarage" (selectionChange)="loadGarage()" required style="width: 0px;" fxShow="true" fxHide.gt-sm>
+         <mat-option style="margin: auto;" *ngFor="let garage of garageList" [value]="garage">
+           {{garage.name}}
+         </mat-option>
+       </mat-select>
+  </div>
 
-
-<div class="wrapper">
-<ul><li class="pluslogo" *ngIf="isSelectedGarage()"><a (click)="openDialog('Add',{})" ><i class="fa fa-plus fa-lg" aria-hidden="true"></i></a></li></ul>
-</div>
+  <div class="wrapper">
+    <ul><li class="pluslogo" *ngIf="isSelectedGarage()"><a (click)="openDialog('Add',{})" ><i class="fa fa-plus fa-lg" aria-hidden="true"></i></a></li></ul>
+  </div>
 </mat-toolbar>
 
 <div class='table-responsive mat-elevation-z8'>
@@ -78,5 +87,6 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-</div>
   <mat-paginator [pageSizeOptions]="[12, 25, 50]" showFirstLastButtons class="tableBG"></mat-paginator>
+</div>
+  
